@@ -1,0 +1,22 @@
+{
+    "app_name": "OneDrive Index",
+    "continue_to_drive": "Tiếp tục tới OneDrive",
+    "auth": {
+        "step_1": "Bước 1/3: Chuẩn bị đăng nhập",
+        "step_1_desc": "Bạn nên sử dụng REDIS để có được tốc độ ổn định cho ứng dụng và hãy chắc chắn rằng bạn đã điền đầy đủ thông tin của OneDrive Client ID và Client Secret trong ENV",
+        "client_id": "Client ID",
+        "client_secret": "Client Secret",
+        "redirect_uri": "Redirect URI",
+        "auth_api_url": "Auth API URL",
+        "drive_api_url": "Drive API URL",
+        "scope": "Quyền truy cập",
+        "login": "Đăng nhập",
+        "step_2": "Bước 2/3: Lấy mã xác thực",
+        "step_2_desc": "Nếu bạn không phải là chủ sở hữu của trang web này, hãy dừng lại ngay vì tiếp tục quá trình này có thể làm lộ các tệp cá nhân của bạn trên OneDrive.",
+        "step_2_desc_2": "Liên kết OAuth để lấy mã xác thực đã được tạo. Nhấp vào liên kết trên để lấy mã xác thực. Trình duyệt của bạn sẽ mở một tab mới đến trang đăng nhập tài khoản Microsoft. Sau khi đăng nhập và xác thực với tài khoản Microsoft của bạn, bạn sẽ được chuyển hướng đến một trang trắng trên localhost. Dán địa chỉ URL được chuyển hướng toàn bộ xuống dưới đây.",
+        "step_2_desc_3": "Mã xác thực đã được trích xuất là:",
+        "step_2_code_valid": "✅ Bạn hiện tại có thể tiếp tục đến bước tiếp theo: yêu cầu access token và refresh token",
+        "step_2_code_invalid": "❌ Không có mã xác thực hợp lệ được trích xuất",
+        "get_token": "Lấy mã xác thực"
+    }
+}
