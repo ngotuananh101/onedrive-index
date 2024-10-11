@@ -34,13 +34,5 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-    'one_drive' => [
-        'client' => [
-            'id' => env('VITE_ONE_DRIVE_CLIENT_ID'),
-            'secret' => env('VITE_ONE_DRIVE_CLIENT_SECRET')
-        ],
-        'redirect_uri' => env('VITE_ONE_DRIVE_REDIRECT_URI'),
-        'auth_api_url' => env('VITE_ONE_DRIVE_AUTH_API_URL'),
-        'api_url' => env('VITE_ONE_DRIVE_API_URL')
-    ],
+
 ];
