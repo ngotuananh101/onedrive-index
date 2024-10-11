@@ -71,9 +71,9 @@ class OauthController extends Controller
                 'redirect_uri' => $this->one_drive_redirect_uri,
                 'grant_type' => 'refresh_token'
             ];
-            $res = $this->http_client->request('POST', $url, ['form_params' => $data]);
-            if ($res->getStatusCode() == 200) {
-                $body = json_decode($res->getBody(), true);
+            $res = Http::asForm()->post($url, $data);
+            if ($res->status() == 200) {
+                $body = $res->json();
                 $expires_in = $body['expires_in'];
                 $this->one_drive_access_token = $body['access_token'];
                 cache(['one_drive_access_token' => $this->one_drive_access_token], $expires_in);
