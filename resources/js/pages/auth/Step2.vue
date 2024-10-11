@@ -51,7 +51,7 @@
                     type="text"
                     class="mb-5"
                     placeholder="http://localhost/?code=123456789"
-                    @input="this.code = $event.target.value"
+                    @input="extractCode"
                 />
                 <p class="mb-5">
                     {{ $t("auth.step_2_desc_3") }}
@@ -64,16 +64,22 @@
                     :value="this.code"
                 />
                 <p class="mb-5">
-                    {{ this.code ? $t("auth.step_2_code_valid") : $t("auth.step_2_code_invalid") }}
+                    {{
+                        this.code
+                            ? $t("auth.step_2_code_valid")
+                            : $t("auth.step_2_code_invalid")
+                    }}
                 </p>
             </div>
             <div class="text-right">
-                <Button
-                    class="text-white bg-sky-600 dark:hover:text-black hover:text-white"
-                    :disabled="!this.code"
-                >
-                    {{ $t("auth.get_token") }}
-                </Button>
+                <router-link :to="{ name: 'auth.step3' }">
+                    <Button
+                        class="text-white bg-sky-600 dark:hover:text-black hover:text-white"
+                        :disabled="!this.code"
+                    >
+                        {{ $t("auth.get_token") }}
+                    </Button>
+                </router-link>
             </div>
         </div>
     </div>
@@ -95,10 +101,12 @@ export default {
             import.meta.env.VITE_ONE_DRIVE_AUTH_API_URL +
             "?client_id=" +
             import.meta.env.VITE_ONE_DRIVE_CLIENT_ID +
-            "&scope=" +
-            import.meta.env.VITE_ONE_DRIVE_SCOPE.split(" ").join("+") +
+            "&response_type=code" +
             "&redirect_uri=" +
-            import.meta.env.VITE_ONE_DRIVE_REDIRECT_URI;
+            import.meta.env.VITE_ONE_DRIVE_REDIRECT_URI +
+            "&response_mode=query" +
+            "&scope=" +
+            import.meta.env.VITE_ONE_DRIVE_SCOPE.split(" ").join("+");
     },
     data() {
         return {
@@ -113,6 +121,13 @@ export default {
         ...mapActions(useSystemConfigStore, ["switchThemeMode"]),
         openLoginUrl: function () {
             window.open(this.login_url);
+        },
+        extractCode: function (e) {
+            let url = new URL(e.target.value);
+            this.code = url.searchParams.get("code");
+            if (this.code) {
+                localStorage.setItem("code", this.code);
+            }
         },
     },
 };

@@ -19,4 +19,13 @@ async function checkLogin() {
     }
 }
 
-export { httpClient, checkLogin };
+async function getToken(code) {
+    try {
+        const response = await httpClient.get('/oauth/getToken', { params: { code } });
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+}
+
+export { httpClient, checkLogin, getToken };

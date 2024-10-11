@@ -78,7 +78,11 @@
             </div>
             <div class="text-right">
                 <router-link :to="{ name: 'auth.step2' }">
-                    <Button class="text-white bg-sky-600 hover:text-black">Đăng nhập</Button>
+                    <Button
+                        class="text-white bg-sky-600 dark:hover:text-black hover:text-white"
+                    >
+                        Đăng nhập
+                    </Button>
                 </router-link>
             </div>
         </div>

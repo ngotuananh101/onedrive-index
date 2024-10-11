@@ -17,6 +17,17 @@
         "step_2_desc_3": "Mã xác thực đã được trích xuất là:",
         "step_2_code_valid": "✅ Bạn hiện tại có thể tiếp tục đến bước tiếp theo: yêu cầu access token và refresh token",
         "step_2_code_invalid": "❌ Không có mã xác thực hợp lệ được trích xuất",
-        "get_token": "Lấy mã xác thực"
+        "get_token": "Lấy mã xác thực",
+        "step_3": "Bước 3/3: Yêu cầu access token và refresh token",
+        "step_3_desc": "",
+        "re_request": "Yêu cầu lại",
+        "requesting":"Đang yêu cầu access token...",
+        "success": "Thành công! API đã trả về những gì chúng ta cần",
+        "error": "Lỗi! API không thể trả về những gì chúng ta cần. Hãy xem chi tiết bên dưới",
+        "store_token": "Lưu token",
+        "store_token_desc": "Lưu token có thể mất một lúc để hoàn thành. Nếu bạn trở về trang chủ và bị điều hướng lại trang đăng nhập, vui lòng không làm gì và chờ cho đến khi quá trình lưu token hoàn thành",
+        "expires_in": "Hết hạn sau",
+        "second" : "giây",
+        "seconds" : "giây"
     }
 }

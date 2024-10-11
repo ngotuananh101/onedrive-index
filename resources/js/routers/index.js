@@ -16,7 +16,8 @@ const routes = [
         redirect: '/auth/step-1',
         children: [
             { path: 'step-1', name: 'auth.step1', component: () => import('../pages/auth/Step1.vue') },
-            { path: 'step-2', name: 'auth.step2', component: () => import('../pages/auth/Step2.vue') }
+            { path: 'step-2', name: 'auth.step2', component: () => import('../pages/auth/Step2.vue') },
+            { path: 'step-3', name: 'auth.step3', component: () => import('../pages/auth/Step3.vue') },
         ]
     },
 ];
