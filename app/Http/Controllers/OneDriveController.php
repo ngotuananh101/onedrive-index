@@ -22,7 +22,6 @@ class OneDriveController extends Controller
             if ($res->status() === 200) {
                 $json = $res->json();
                 $value = $json['value'];
-                dd($value);
                 $data = [];
                 foreach ($value as $key => $v) {
                     $data[] = [
@@ -30,6 +29,7 @@ class OneDriveController extends Controller
                         'id' => $v['id'],
                         'size' => $v['size'] > 0 ? $this->convertSize($v['size']) : '-',
                         'type' => isset($v['folder']) ? 'folder' : 'file',
+                        'modified' => $v['lastModifiedDateTime'] ?? '-',
                     ];
                 }
                 return response()->json([

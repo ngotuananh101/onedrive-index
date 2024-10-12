@@ -32,7 +32,6 @@
 </template>
 <script>
 import Header from "../components/Header.vue";
-import {getDriveRoot} from "../services/driveService";
 export default {
     name: "App Layout",
     components: {
@@ -43,11 +42,6 @@ export default {
             scroll_y: 0,
             search: "",
         };
-    },
-    mounted() {
-        getDriveRoot().then((res) => {
-            console.log(res);
-        });
     },
     methods: {
         onScrollEvent(event) {

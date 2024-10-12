@@ -1,6 +1,6 @@
 <template>
     <div
-        class="sticky top-0 text-black bg-neutral-100 dark:bg-neutral-900 dark:text-white"
+        class="sticky top-0 mb-5 text-black bg-neutral-100 dark:bg-neutral-900 dark:text-white"
         id="content-header"
     >
         <h1
@@ -39,45 +39,53 @@
             </div>
         </div>
     </div>
+    <DataTable :data="table_data" :columns="columns" :loading="loading" @sort="sort" />
 </template>
 <script>
 import { Input } from "@/components/ui/input";
+import DataTable from "../../components/DataTable.vue";
+import { getDriveRoot } from "../../services/driveService";
 
 export default {
     name: "Home",
     components: {
         Input,
+        DataTable,
     },
     data() {
         return {
             scroll_y: 0,
             show_header: true,
-            data: [
-                [1, 2],
-                [3, 4],
-            ],
+            loading: false,
+            table_data: [],
             columns: [
                 {
                     name: "name",
                     label: "Tên",
-                    sortable: true,
-                },
-                {
-                    name: "size",
-                    label: "Kích thước",
-                    sortable: true,
+                    sortable: "asc",
+                    class: "text-left font-bold",
+                    has_icon: true,
                 },
                 {
                     name: "modified",
-                    label: "Ngày cập nhật",
-                    sortable: true,
+                    label: "Lần sửa đổi cuối",
+                },
+                {
+                    name: "size",
+                    label: "Kích cỡ tệp",
                 },
             ],
         };
     },
     mounted() {
-        console.log($.ajax("/api/drive/root"));
+        this.loading = true;
+        getDriveRoot().then((res) => {
+            console.log(res);
+            res.status == 200 ? this.table_data = [...this.table_data, ...res.data.data] : null;
+            console.log(this.table_data);
 
+            this.loading = false;
+        });
     },
     watch: {
         "$parent.$parent.$parent.$data.scroll_y": function (scroll_y) {
@@ -92,6 +100,11 @@ export default {
             } else {
                 this.show_header = true;
             }
+        },
+    },
+    methods: {
+        sort(column) {
+            console.log(column);
         },
     },
 };
