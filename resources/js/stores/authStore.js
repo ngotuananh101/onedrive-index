@@ -1,5 +1,5 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { checkLogin, getToken } from '../services/apiService';
+import { checkLogin, getToken } from '../services/authService';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({

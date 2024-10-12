@@ -29,5 +29,6 @@
         "expires_in": "Hết hạn sau",
         "second" : "giây",
         "seconds" : "giây"
-    }
+    },
+    "search": "Tìm kiếm..."
 }

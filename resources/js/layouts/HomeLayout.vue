@@ -1,5 +1,5 @@
 <template>
-    <div class="flex p-2 md:p-4 h-screen max-h-screen">
+    <div class="flex h-screen max-h-screen p-2 md:p-4">
         <div class="hidden md:block min-w-60">
             <div class="flex flex-col">
                 <div class="flex items-center">
@@ -8,7 +8,7 @@
                         alt="Logo"
                         class="w-10 mr-3"
                     />
-                    <span class="text-xl dark:text-neutral-300 font-medium">
+                    <span class="text-xl font-medium dark:text-neutral-300">
                         OneDrive
                     </span>
                 </div>
@@ -17,11 +17,11 @@
         <div class="flex flex-col content-between grow">
             <Header />
             <div
-                class="grow flex mt-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 p-2 md:p-4 md:pr-1"
+                class="flex p-2 mt-2 grow rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:p-4"
                 id="content-wrapper"
             >
                 <PerfectScrollbar
-                    class="grow flex flex-col text-neutral-200"
+                    class="flex flex-col max-h-full overflow-auto grow text-neutral-200"
                     @ps-scroll-y="onScrollEvent"
                 >
                     <router-view />
@@ -32,6 +32,7 @@
 </template>
 <script>
 import Header from "../components/Header.vue";
+import {getDriveRoot} from "../services/driveService";
 export default {
     name: "App Layout",
     components: {
@@ -40,7 +41,13 @@ export default {
     data() {
         return {
             scroll_y: 0,
+            search: "",
         };
+    },
+    mounted() {
+        getDriveRoot().then((res) => {
+            console.log(res);
+        });
     },
     methods: {
         onScrollEvent(event) {
@@ -53,5 +60,6 @@ export default {
 <style lang="scss">
 #content-wrapper {
     max-height: calc(100vh - 76px);
+    overflow: auto;
 }
 </style>

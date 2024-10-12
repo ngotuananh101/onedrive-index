@@ -19,11 +19,11 @@ export const useSystemConfigStore = defineStore('system', {
             themeMode: getThemeMode(),
             listSocial: [
                 {
-                    icon: 'pi pi-facebook text-xl',
+                    icon: 'fa-brands fa-facebook text-xl',
                     url: 'https://www.facebook.com/ngotuananh2101',
                 },
                 {
-                    icon: 'pi pi-github text-xl',
+                    icon: 'fa-brands fa-github text-xl',
                     url: 'https://github.com/ngotuananh101',
                 },
             ],

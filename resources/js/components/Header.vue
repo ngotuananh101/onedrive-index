@@ -1,58 +1,81 @@
 <template>
-    <div class="flex w-full">
+    <div class="flex w-full text-black dark:text-white">
         <div class="search grow" id="search-header">
-            <IconField class="font-semibold" v-if="this.scroll_y">
-                <InputIcon class="pi pi-search" />
-                <InputText
-                    v-model="search"
-                    placeholder="Tìm kiếm file..."
-                    class="rounded-full w-full md:w-[40%] max-w-full border-none dark:bg-neutral-700 bg-neutral-100"
+            <div class="relative items-center w-full max-w-sm">
+                <Input
+                    id="search"
+                    type="text"
+                    :placeholder="$t('search')"
+                    class="pl-10 rounded-full"
+                    v-model="this.$parent.search"
                 />
-            </IconField>
+                <span
+                    class="absolute inset-y-0 flex items-center justify-center px-2 start-2"
+                >
+                    <i class="fa-regular fa-magnifying-glass"></i>
+                </span>
+                <span
+                    class="absolute inset-y-0 flex items-center justify-center px-2 end-2"
+                    @click="this.$parent.search = ''"
+                    v-if="this.$parent.search"
+                >
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </span>
+            </div>
         </div>
         <div class="flex items-center">
             <Button
                 v-for="(item, index) in this.listSocial"
-                as="a"
-                :href="item.url"
-                :icon="item.icon"
-                class="bg-transparent text-neutral-900 dark:text-white border-none hidden md:flex justify-center items-center"
+                variant="ghost"
+                size="icon"
                 :key="index"
-                target="_blank"
-                rel="noopener"
-            />
+            >
+                <i :class="item.icon"></i>
+            </Button>
             <!-- Switch theme -->
-            <Button
-                :icon="this.darkMode ? 'pi pi-sun text-xl' : 'pi pi-moon text-xl'"
-                class="bg-transparent text-neutral-900 dark:text-white border-none"
-                @click="this.toggleDarkMode"
-            />
+            <Button variant="ghost" size="icon" @click="switchThemeMode">
+                <i
+                    class="text-xl fa-solid fa-sun"
+                    v-if="themeMode === 'dark'"
+                ></i>
+                <i
+                    class="text-xl fa-solid fa-moon"
+                    v-if="themeMode === 'light'"
+                ></i>
+            </Button>
         </div>
     </div>
 </template>
 
 <script>
 import { useSystemConfigStore } from "../stores/systemConfigStore";
-import { mapStores, mapActions, mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default {
     name: "App Header",
+    components: {
+        Input,
+        Button,
+    },
     data() {
         return {
-            search: "",
-            scroll_y: 0
+            scroll_y: 0,
         };
     },
+    mounted() {
+    },
     computed: {
-        ...mapState(useSystemConfigStore, ['darkMode', 'listSocial']),
+        ...mapState(useSystemConfigStore, ["themeMode", "listSocial"]),
     },
     methods: {
-        ...mapActions(useSystemConfigStore, ['toggleDarkMode']),
+        ...mapActions(useSystemConfigStore, ["switchThemeMode"]),
     },
     watch: {
-        '$parent.$data.scroll_y': function(newValue) {
+        "$parent.$data.scroll_y": function (newValue) {
             this.scroll_y = newValue;
-        }
-    }
+        },
+    },
 };
 </script>

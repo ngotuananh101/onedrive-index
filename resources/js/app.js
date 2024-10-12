@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 import '../css/fa6/css/all.min.css';
+import 'vue3-perfect-scrollbar/style.css';
 
 // Import library
 import { createApp } from 'vue';
