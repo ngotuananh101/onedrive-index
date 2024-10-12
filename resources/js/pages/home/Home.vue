@@ -39,25 +39,14 @@
             </div>
         </div>
     </div>
-    <DataTable :data="data" class="text-black display dark:text-white">
-        <thead>
-            <tr>
-                <th>A</th>
-                <th>B</th>
-            </tr>
-        </thead>
-    </DataTable>
 </template>
 <script>
 import { Input } from "@/components/ui/input";
 
-DataTable.use(DataTablesCore);
-// DataTable.use(DataTableTailwind);
 export default {
     name: "Home",
     components: {
         Input,
-        DataTable,
     },
     data() {
         return {

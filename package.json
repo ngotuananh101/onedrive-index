@@ -16,7 +16,6 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "@tanstack/vue-table": "^8.20.5",
         "@vueuse/core": "^11.1.0",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
