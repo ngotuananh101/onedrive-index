@@ -79,8 +79,8 @@ export default {
         },
       ],
       query: {
-        page: 1,
         per_page: 50,
+        next_url: "",
       },
       total: 0,
       searchModel: "",
@@ -100,7 +100,8 @@ export default {
       getDriveRoot(this.query).then((res) => {
         if (res.status === 200) {
           this.table_data = res.data.data;
-          this.total = res.data.total;
+          this.query.next_url = res.data.next_url;
+          this.query.next_url ? (this.is_end = 1) : (this.is_end = 0);
         }
         this.loading = false;
       });
@@ -114,12 +115,13 @@ export default {
       }
     },
     loadMore() {
-      if (this.table_data.length < this.total && !this.loading && this.is_end === 1) {
-        this.query.page += 1;
+      if (this.query.next_url && !this.loading && this.is_end === 1) {
         this.loading = true;
         getDriveRoot(this.query).then((res) => {
           if (res.status === 200) {
             this.table_data = [...this.table_data, ...res.data.data];
+            this.query.next_url = res.data.next_url;
+            this.query.next_url ? (this.is_end = 1) : (this.is_end = 0);
           }
           this.loading = false;
         });
@@ -132,7 +134,7 @@ export default {
       this.scroll_y = event.srcElement.scrollTop;
       console.log(this.scroll_y, event.srcElement.scrollHeight);
       const viewportHeight = event.srcElement.clientHeight;
-      if (this.scroll_y >= event.srcElement.scrollHeight - viewportHeight - 100) {
+      if (this.scroll_y >= event.srcElement.scrollHeight - viewportHeight - 20) {
         this.is_end = 1;
       }
       this.toggleHeader();
