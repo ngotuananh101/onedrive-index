@@ -80,7 +80,7 @@ export default {
         },
       ],
       query: {
-        per_page: 50,
+        per_page: import.meta.env.VITE_ONE_DRIVE_PER_PAGE,
         next_url: "",
       },
       total: 0,
@@ -146,6 +146,8 @@ export default {
           name: "folders.show",
           params: { id: row.id },
         });
+      } else {
+        this.$root.showPreview(row);
       }
     },
   },

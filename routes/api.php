@@ -10,4 +10,5 @@ Route::get('/oauth/getToken', [OauthController::class, 'getToken']);
 Route::group(['prefix' => 'drive'], function () {
     Route::get('/root', [OneDriveController::class, 'getRoot']);
     Route::get('/folder/{id}', [OneDriveController::class, 'getFolderById']);
+    Route::get('/download/{id}', [OneDriveController::class, 'download']);
 });

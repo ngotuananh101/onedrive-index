@@ -1,5 +1,5 @@
 <template lang="">
-  <div> </div> <FileTable :data="table_data" :columns="columns" :loading="loading"
+  <div></div> <FileTable :data="table_data" :columns="columns" :loading="loading"
   @onScrollEvent="onScrollEvent" @rowClick="rowClick" />
 </template>
 
@@ -39,7 +39,7 @@ export default {
         },
       ],
       query: {
-        per_page: 50,
+        per_page: import.meta.env.VITE_ONE_DRIVE_PER_PAGE,
         next_url: "",
       },
       total: 0,
@@ -95,6 +95,8 @@ export default {
           name: "folders.show",
           params: { id: row.id },
         });
+      } else {
+        this.$root.showPreview(row);
       }
     },
   },

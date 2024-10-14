@@ -35,13 +35,14 @@ class OneDriveController extends Controller
                         'name' => data_get($v, 'name', '-'),
                         'id' => data_get($v, 'id', '-'),
                         'size' => data_get($v, 'size', 0) > 0 ? $this->convertSize($v['size']) : '-',
+                        'size_raw' => data_get($v, 'size', 0),
                         'type' => isset($v['folder']) ? 'folder' : 'file',
                         'modified' => isset($v['lastModifiedDateTime']) ? date_create($v['lastModifiedDateTime'])->format('d/m/Y H:i:s') : '-',
                         'created_by' => data_get($v, 'createdBy.user.displayName', '-'),
                         'icon' => isset($v['folder'])
                             ? asset('uploads/images/icon/folder.png')
                             : $this->mapFileTypeImage($v['name']),
-                        'download_url' => data_get($v, '@microsoft.graph.downloadUrl', '-')
+                        'download_url' => !isset($v['folder']) ? url('api/drive/download/' . $v['id']) : '-'
                     ];
                 }
                 return response()->json([
@@ -80,13 +81,14 @@ class OneDriveController extends Controller
                         'name' => data_get($v, 'name', '-'),
                         'id' => data_get($v, 'id', '-'),
                         'size' => data_get($v, 'size', 0) > 0 ? $this->convertSize($v['size']) : '-',
+                        'size_raw' => data_get($v, 'size', 0),
                         'type' => isset($v['folder']) ? 'folder' : 'file',
                         'modified' => isset($v['lastModifiedDateTime']) ? date_create($v['lastModifiedDateTime'])->format('d/m/Y H:i:s') : '-',
                         'created_by' => data_get($v, 'createdBy.user.displayName', '-'),
                         'icon' => isset($v['folder'])
                             ? asset('uploads/images/icon/folder.png')
                             : $this->mapFileTypeImage($v['name']),
-                        'download_url' => data_get($v, '@microsoft.graph.downloadUrl', '-')
+                        'download_url' => !isset($v['folder']) ? url('api/drive/download/' . $v['id']) : '-',
                     ];
                 }
                 return response()->json([
@@ -103,6 +105,47 @@ class OneDriveController extends Controller
             ], 500);
         }
     }
+
+    public function download(Request $request, $id)
+    {
+        try {
+            // Get item details
+            $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id);
+
+            if ($res->status() === 200) {
+                $json = $res->json();
+                $name = data_get($json, 'name', 'downloaded_file');
+
+                // Stream file to browser
+                $client = new \GuzzleHttp\Client();
+                $response = $client->get($this->endpoint . '/items/' . $id . '/content', [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->access_token,
+                    ],
+                    'stream' => true,
+                ]);
+
+                return response()->streamDownload(function () use ($response) {
+                    $body = $response->getBody();
+                    while (!$body->eof()) {
+                        echo $body->read(1024);
+                    }
+                }, $name);
+
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'File not found or access denied.',
+                ], $res->status());
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 
     public function convertSize($size)
     {

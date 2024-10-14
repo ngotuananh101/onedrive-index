@@ -1,16 +1,53 @@
 <template>
-    <router-view></router-view>
+  <router-view></router-view>
+  <!-- File preview -->
+  <FilePreview
+    :is_open="this.filePreview.is_open"
+    :name="this.filePreview.name"
+    :url="this.filePreview.url"
+    :download_url="this.filePreview.download_url"
+    :onClose="() => (this.filePreview.is_open = false)"
+    :onDownload="download"
+  />
 </template>
 <script>
 import { mapStores } from "pinia";
 import { useSystemConfigStore } from "./stores/systemConfigStore";
+import FilePreview from "./components/FilePreview.vue";
 export default {
-    name: "App",
-    computed: {
-        ...mapStores(useSystemConfigStore),
+  name: "App",
+  data() {
+    return {
+      filePreview: {
+        is_open: false,
+        name: "",
+        url: "",
+        download_url: "",
+      },
+    };
+  },
+  components: {
+    FilePreview,
+  },
+  computed: {
+    ...mapStores(useSystemConfigStore),
+  },
+  mounted() {
+    this.systemStore.init();
+  },
+  methods: {
+    download(url) {
+      window.open(url);
     },
-    mounted() {
-        this.systemStore.init();
+    showPreview(file) {
+      this.filePreview.is_open = true;
+      this.filePreview.name = file.name;
+      this.filePreview.url =
+        file.size_raw < import.meta.env.VITE_ONE_DRIVE_MAX_PREVIEW_SIZE
+          ? file.download_url
+          : "-";
+      this.filePreview.download_url = file.download_url;
     },
+  },
 };
 </script>

@@ -5,6 +5,7 @@
         <TableHead v-for="column in columns" :key="column.name">
           {{ column.label }}
         </TableHead>
+        <TableHead> </TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
@@ -23,7 +24,7 @@
             v-for="column in columns"
             :key="column.name"
             :class="column.class + ' py-2'"
-            @click="$emit('rowClick', row)"
+            @dblclick="$emit('rowClick', row)"
           >
             <div class="flex items-center">
               <template v-if="column.has_icon">
@@ -33,6 +34,13 @@
                 {{ row[column.name] }}
               </span>
             </div>
+          </TableCell>
+          <TableCell class="p-1 text-right">
+            <i
+              class="p-3 text-lg rounded-full fa-light fa-arrow-down-to-bracket hover:bg-neutral-400 hover:bg-opacity-50"
+              v-if="row.download_url !== '-'"
+              @click="downloadFile(row.download_url)"
+            ></i>
           </TableCell>
         </TableRow>
       </template>
@@ -83,6 +91,9 @@ export default {
   methods: {
     loadMore() {
       this.$emit("loadMore");
+    },
+    downloadFile(url) {
+      window.open(url);
     },
   },
 };
