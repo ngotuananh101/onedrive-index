@@ -37,6 +37,7 @@
     :columns="columns"
     :loading="loading"
     @onScrollEvent="onScrollEvent"
+    @rowClick="rowClick"
   />
 </template>
 
@@ -62,7 +63,7 @@ export default {
         {
           name: "name",
           label: "Tên",
-          class: "text-left font-bold",
+          class: "text-left font-semibold",
           has_icon: true,
         },
         {
@@ -132,13 +133,20 @@ export default {
     },
     onScrollEvent(event) {
       this.scroll_y = event.srcElement.scrollTop;
-      console.log(this.scroll_y, event.srcElement.scrollHeight);
       const viewportHeight = event.srcElement.clientHeight;
       if (this.scroll_y >= event.srcElement.scrollHeight - viewportHeight - 20) {
         this.is_end = 1;
       }
       this.toggleHeader();
       this.loadMore();
+    },
+    rowClick(row) {
+      if (row.type === "folder") {
+        this.$router.push({
+          name: "folders.show",
+          params: { id: row.id },
+        });
+      }
     },
   },
 };

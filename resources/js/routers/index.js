@@ -8,6 +8,7 @@ const routes = [
         redirect: '/home',
         children: [
             { path: 'home', name: 'index', component: () => import('../pages/home/Home.vue') },
+            { path: 'folders/:id', name: 'folders.show', component: () => import('../pages/folders/Show.vue') },
         ]
     },
     {

@@ -23,6 +23,7 @@
             v-for="column in columns"
             :key="column.name"
             :class="column.class + ' py-2'"
+            @click="$emit('rowClick', row)"
           >
             <div class="flex items-center">
               <template v-if="column.has_icon">
@@ -95,11 +96,10 @@ export default {
 }
 
 .ball {
-  width: 22px;
-  height: 22px;
+  width: 15px;
+  height: 15px;
   border-radius: 11px;
-  margin: 0 10px;
-
+  margin: 0 5px;
   animation: 2s bounce ease infinite;
 }
 

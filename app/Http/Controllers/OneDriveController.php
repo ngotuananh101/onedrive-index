@@ -22,7 +22,7 @@ class OneDriveController extends Controller
             if ($request->has('next_url') && !empty($request->input('next_url'))) {
                 $res = Http::withToken($this->access_token)->get($request->input('next_url'));
             } else {
-                $res = Http::withToken($this->access_token)->get($this->endpoint . '/root/children',[
+                $res = Http::withToken($this->access_token)->get($this->endpoint . '/root/children', [
                     '$top' => $per_page,
                 ]);
             }
@@ -40,7 +40,8 @@ class OneDriveController extends Controller
                         'created_by' => data_get($v, 'createdBy.user.displayName', '-'),
                         'icon' => isset($v['folder'])
                             ? asset('uploads/images/icon/folder.png')
-                            : $this->mapFileTypeImage($v['name'])
+                            : $this->mapFileTypeImage($v['name']),
+                        'download_url' => data_get($v, '@microsoft.graph.downloadUrl', '-')
                     ];
                 }
                 return response()->json([
@@ -49,7 +50,50 @@ class OneDriveController extends Controller
                     'data' => $data,
                 ], 200);
             } else {
-                dd($res->json());
+                abort(500, 'Failed to retrieve file list');
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getFolderById(Request $request, $id)
+    {
+        try {
+            $per_page = max(1, intval($request->input('per_page', 50)));
+            if ($request->has('next_url') && !empty($request->input('next_url'))) {
+                $res = Http::withToken($this->access_token)->get($request->input('next_url'));
+            } else {
+                $res = Http::withToken($this->access_token)->get($this->endpoint . '//items/' . $id . '/children', [
+                    '$top' => $per_page,
+                ]);
+            }
+            if ($res->status() === 200) {
+                $json = $res->json();
+                $value = $json['value'];
+                $data = [];
+                foreach ($value as $key => $v) {
+                    $data[] = [
+                        'name' => data_get($v, 'name', '-'),
+                        'id' => data_get($v, 'id', '-'),
+                        'size' => data_get($v, 'size', 0) > 0 ? $this->convertSize($v['size']) : '-',
+                        'type' => isset($v['folder']) ? 'folder' : 'file',
+                        'modified' => isset($v['lastModifiedDateTime']) ? date_create($v['lastModifiedDateTime'])->format('d/m/Y H:i:s') : '-',
+                        'created_by' => data_get($v, 'createdBy.user.displayName', '-'),
+                        'icon' => isset($v['folder'])
+                            ? asset('uploads/images/icon/folder.png')
+                            : $this->mapFileTypeImage($v['name']),
+                        'download_url' => data_get($v, '@microsoft.graph.downloadUrl', '-')
+                    ];
+                }
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $data,
+                ], 200);
+            } else {
                 abort(500, 'Failed to retrieve file list');
             }
         } catch (\Exception $e) {

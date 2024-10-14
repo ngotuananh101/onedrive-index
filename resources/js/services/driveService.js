@@ -19,3 +19,12 @@ export async function getDriveRoot(query) {
         return error;
     }
 }
+
+export async function getFolderById(query, id) {
+    try {
+        const response = await httpClient.get(`/drive/folder/${id}`);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
