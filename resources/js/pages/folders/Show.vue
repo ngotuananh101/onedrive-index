@@ -68,6 +68,19 @@ export default {
         this.loading = false;
       });
     },
+    loadMore() {
+      if (this.query.next_url && !this.loading && this.is_end === 1) {
+        this.loading = true;
+        getDriveRoot(this.query).then((res) => {
+          if (res.status === 200) {
+            this.table_data = [...this.table_data, ...res.data.data];
+            this.query.next_url = res.data.next_url;
+            this.query.next_url ? (this.is_end = 1) : (this.is_end = 0);
+          }
+          this.loading = false;
+        });
+      }
+    },
     onScrollEvent(event) {
       this.scroll_y = event.srcElement.scrollTop;
       const viewportHeight = event.srcElement.clientHeight;
