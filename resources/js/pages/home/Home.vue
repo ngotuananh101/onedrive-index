@@ -1,112 +1,144 @@
 <template>
-    <div
-        class="sticky top-0 mb-5 text-black bg-neutral-100 dark:bg-neutral-900 dark:text-white"
-        id="content-header"
+  <div
+    class="sticky top-0 w-full text-black bg-neutral-100 dark:bg-neutral-900 dark:text-white"
+    :class="{ 'mb-5': show_header }"
+    id="content-header"
+  >
+    <h1
+      class="mb-5 text-xl md:text-2xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-900"
+      :class="{ 'text-left': !show_header, 'text-center': show_header }"
     >
-        <h1
-            class="text-xl text-left md:text-2xl text-neutral-900 dark:text-white"
-            v-if="!show_header"
+      Chào mừng bạn đến với Drive
+    </h1>
+    <div class="flex justify-center" v-if="scroll_y === 0">
+      <div class="relative w-full md:w-[50%] lg:w-[35%]">
+        <Input
+          id="search"
+          type="text"
+          :placeholder="$t('search')"
+          class="pl-10 rounded-full"
+          v-model="searchModel"
+        />
+        <span class="absolute inset-y-0 flex items-center justify-center px-2 start-2">
+          <i class="fa-regular fa-magnifying-glass"></i>
+        </span>
+        <span
+          class="absolute inset-y-0 flex items-center justify-center px-2 end-2"
+          @click="clearSearch"
+          v-if="searchModel"
         >
-            Chào mừng bạn đến với Drive
-        </h1>
-        <h1
-            class="mb-5 text-xl text-center md:text-2xl text-neutral-900 dark:text-white"
-            v-if="show_header"
-        >
-            Chào mừng bạn đến với Drive
-        </h1>
-        <div class="flex justify-center" v-if="scroll_y == 0">
-            <div class="relative w-full md:w-[50%] lg:w-[35%]">
-                <Input
-                    id="search"
-                    type="text"
-                    :placeholder="$t('search')"
-                    class="pl-10 rounded-full"
-                    v-model="this.$parent.$parent.$parent.search"
-                />
-                <span
-                    class="absolute inset-y-0 flex items-center justify-center px-2 start-2"
-                >
-                    <i class="fa-regular fa-magnifying-glass"></i>
-                </span>
-                <span
-                    class="absolute inset-y-0 flex items-center justify-center px-2 end-2"
-                    @click="this.$parent.$parent.$parent.search = ''"
-                    v-if="this.$parent.$parent.$parent.search"
-                >
-                    <i class="fa-solid fa-circle-xmark"></i>
-                </span>
-            </div>
-        </div>
+          <i class="fa-solid fa-circle-xmark"></i>
+        </span>
+      </div>
     </div>
-    <DataTable :data="table_data" :columns="columns" :loading="loading" @sort="sort" />
+  </div>
+  <FileTable
+    :data="table_data"
+    :columns="columns"
+    :loading="loading"
+    @onScrollEvent="onScrollEvent"
+  />
 </template>
+
 <script>
 import { Input } from "@/components/ui/input";
-import DataTable from "../../components/DataTable.vue";
+import FileTable from "../../components/FileTable.vue";
 import { getDriveRoot } from "../../services/driveService";
 
 export default {
-    name: "Home",
-    components: {
-        Input,
-        DataTable,
+  name: "Home",
+  components: {
+    Input,
+    FileTable,
+  },
+  data() {
+    return {
+      scroll_y: 0,
+      is_end: 0,
+      show_header: true,
+      loading: false,
+      table_data: [],
+      columns: [
+        {
+          name: "name",
+          label: "Tên",
+          class: "text-left font-bold",
+          has_icon: true,
+        },
+        {
+          name: "created_by",
+          label: "Chủ sở hữu",
+        },
+        {
+          name: "modified",
+          label: "Lần sửa đổi cuối",
+        },
+        {
+          name: "size",
+          label: "Kích cỡ tệp",
+        },
+      ],
+      query: {
+        page: 1,
+        per_page: 50,
+      },
+      total: 0,
+      searchModel: "",
+    };
+  },
+  mounted() {
+    this.fetchData();
+  },
+  watch: {
+    searchModel(value) {
+      this.$parent.$parent.$parent.search = value;
     },
-    data() {
-        return {
-            scroll_y: 0,
-            show_header: true,
-            loading: false,
-            table_data: [],
-            columns: [
-                {
-                    name: "name",
-                    label: "Tên",
-                    sortable: "asc",
-                    class: "text-left font-bold",
-                    has_icon: true,
-                },
-                {
-                    name: "modified",
-                    label: "Lần sửa đổi cuối",
-                },
-                {
-                    name: "size",
-                    label: "Kích cỡ tệp",
-                },
-            ],
-        };
+  },
+  methods: {
+    fetchData() {
+      this.loading = true;
+      getDriveRoot(this.query).then((res) => {
+        if (res.status === 200) {
+          this.table_data = res.data.data;
+          this.total = res.data.total;
+        }
+        this.loading = false;
+      });
     },
-    mounted() {
+    toggleHeader() {
+      const element = document.getElementById("content-header");
+      const height = element ? element.offsetHeight : 0;
+      this.show_header = this.scroll_y <= height;
+      if (this.show_header) {
+        this.$emit("toggleHeader", true);
+      }
+    },
+    loadMore() {
+      if (this.table_data.length < this.total && !this.loading && this.is_end === 1) {
+        this.query.page += 1;
         this.loading = true;
-        getDriveRoot().then((res) => {
-            console.log(res);
-            res.status == 200 ? this.table_data = [...this.table_data, ...res.data.data] : null;
-            console.log(this.table_data);
-
-            this.loading = false;
+        getDriveRoot(this.query).then((res) => {
+          if (res.status === 200) {
+            this.table_data = [...this.table_data, ...res.data.data];
+          }
+          this.loading = false;
         });
+      }
     },
-    watch: {
-        "$parent.$parent.$parent.$data.scroll_y": function (scroll_y) {
-            this.scroll_y = scroll_y;
-            let element = document.getElementById("content-header");
-            let height = 0;
-            if (element) {
-                height = element.offsetHeight;
-            }
-            if (scroll_y > height) {
-                this.show_header = false;
-            } else {
-                this.show_header = true;
-            }
-        },
+    clearSearch() {
+      this.searchModel = "";
     },
-    methods: {
-        sort(column) {
-            console.log(column);
-        },
+    onScrollEvent(event) {
+      this.scroll_y = event.srcElement.scrollTop;
+      console.log(this.scroll_y, event.srcElement.scrollHeight);
+      const viewportHeight = event.srcElement.clientHeight;
+      if (this.scroll_y >= event.srcElement.scrollHeight - viewportHeight - 100) {
+        this.is_end = 1;
+      }
+      this.toggleHeader();
+      this.loadMore();
     },
+  },
 };
 </script>
-<style lang=""></style>
+<style scoped></style>

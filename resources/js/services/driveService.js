@@ -9,9 +9,11 @@ let httpClient = axios.create({
     }
 });
 
-export async function getDriveRoot() {
+export async function getDriveRoot(query) {
     try {
-        const response = await httpClient.get('/drive/root');
+        const response = await httpClient.get('/drive/root', {
+            params: query
+        });
         return response;
     } catch (error) {
         return error;
