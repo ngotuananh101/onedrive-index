@@ -175,7 +175,6 @@ class OneDriveController extends Controller
         try {
             // Get item details
             $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id);
-
             if ($res->status() === 200) {
                 $json = $res->json();
                 $name = data_get($json, 'name', 'downloaded_file');
@@ -200,6 +199,72 @@ class OneDriveController extends Controller
                     'status' => 'error',
                     'message' => 'File not found or access denied.',
                 ], $res->status());
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        try {
+            $search_data = [
+                "requests" => [
+                    [
+                        "entityTypes" => ["driveItem"],
+                        "query" => [
+                            "queryString" => $query
+                        ],
+                        "from" => 0,
+                        "size" => 100,
+                        "scopes" => [env('VITE_ONE_DRIVE_SEARCH_SCOPE')],
+                        "fields" => [
+                            "id",
+                            "name",
+                            "size",
+                            "mimeType",
+                            "fileType",
+                            "parentLink"
+                        ]
+                    ],
+                ]
+            ];
+            $res = Http::withToken($this->access_token)->post(env('VITE_ONE_DRIVE_SEARCH_API_URL'), $search_data);
+            if ($res->status() === 200) {
+                $json = $res->json();
+                $total = $json['value'][0]['hitsContainers'][0]['total'];
+                $data_file = [];
+                $data_folder = [];
+                if ($total > 0) {
+                    foreach ($json['value'][0]['hitsContainers'][0]['hits'] as $k => $v) {
+                        $type = $v['resource']['listItem']['fields']['mimeType'] == 'Folder' ? 'folder' : 'file';
+                        $da = [
+                            'id' => $v['resource']['id'],
+                            'name' => $v['resource']['name'],
+                            'size' => $this->convertSize($v['resource']['size']),
+                            'type' => $type,
+                            'path' => '/' . env('VITE_ONE_DRIVE_ROOT_FOLDER') . str_replace(env('VITE_ONE_DRIVE_SEARCH_SCOPE'), '', $v['resource']['listItem']['fields']['parentLink'])
+                        ];
+                        if ($type == 'folder') {
+                            $data_folder[] = $da;
+                        } else {
+                            $data_file[] = $da;
+                        }
+                    }
+                }
+                return response()->json([
+                    'status' => 'success',
+                    'data_file' => $data_file,
+                    'data_folder' => $data_folder,
+                    'query' => $query,
+                    'total' => $total
+                ], 200);
+            } else {
+                abort(500, 'Failed to retrieve search results');
             }
         } catch (\Exception $e) {
             return response()->json([

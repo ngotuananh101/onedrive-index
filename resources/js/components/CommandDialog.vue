@@ -15,6 +15,7 @@ const props = defineProps({
     modal: { type: Boolean, required: false },
     searchTerm: { type: String, required: false },
     filterFunction: { type: Function, required: false },
+    displayValue: { type: Function, required: false },
 });
 const emits = defineEmits([
     "update:open",

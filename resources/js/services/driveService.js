@@ -46,3 +46,15 @@ export async function getPreviewUrl(id) {
         return error;
     }
 }
+
+export async function searchFileAndFolder(query){
+    try {
+        const response = await httpClient.get('/drive/search', {
+            params: query
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
