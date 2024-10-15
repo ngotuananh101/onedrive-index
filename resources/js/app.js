@@ -1,13 +1,11 @@
 import './bootstrap';
 import '../css/app.css';
 import '../css/fa6/css/all.min.css';
-import 'vue3-perfect-scrollbar/style.css';
 
 // Import library
 import { createApp } from 'vue';
 import routers from './routers';
 import { createPinia } from 'pinia'
-import { PerfectScrollbarPlugin } from 'vue3-perfect-scrollbar';
 import { createI18n } from 'vue-i18n';
 import messages from './lang/index';
 
@@ -24,7 +22,6 @@ import App from './App.vue';
 const app = createApp(App);
 app.use(createPinia());
 app.use(routers);
-app.use(PerfectScrollbarPlugin);
 app.use(i18n);
 
 // Mount app

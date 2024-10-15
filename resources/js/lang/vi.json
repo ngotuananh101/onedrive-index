@@ -42,5 +42,8 @@
     "created_by" : "Chủ sở hữu",
     "modified" : "Lần sửa đổi cuối",
     "size": "Kích thước",
-    "copied_to_clipboard": "Đã sao chép vào clipboard"
+    "copied_to_clipboard": "Đã sao chép vào clipboard",
+    "search_placeholder": "Nhập tên tệp để tìm kiếm...",
+    "result": "Kết quả",
+    "no_result" : "Không có tệp nào được tìm thấy"
 }

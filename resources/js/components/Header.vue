@@ -1,27 +1,12 @@
 <template>
     <div class="flex w-full text-black dark:text-white">
-        <div class="search grow" id="search-header">
-            <div class="relative items-center w-full max-w-sm">
-                <Input
-                    id="search"
-                    type="text"
-                    :placeholder="$t('search')"
-                    class="pl-10 rounded-full"
-                    v-model="this.$parent.search"
-                />
-                <span
-                    class="absolute inset-y-0 flex items-center justify-center px-2 start-2"
-                >
-                    <i class="fa-regular fa-magnifying-glass"></i>
+        <div class="flex items-center search grow " id="search-header">
+            <button @click="openSearch" class="dark:bg-neutral-900 w-full md:w-[50%] lg:w-[30%] h-full rounded-full text-left bg-neutral-100">
+                <i class="ml-5 mr-2 fa-regular fa-magnifying-glass"></i>
+                <span class="opacity-75">
+                    {{ $t("search") }}
                 </span>
-                <span
-                    class="absolute inset-y-0 flex items-center justify-center px-2 end-2"
-                    @click="this.$parent.search = ''"
-                    v-if="this.$parent.search"
-                >
-                    <i class="fa-solid fa-circle-xmark"></i>
-                </span>
-            </div>
+            </button>
         </div>
         <div class="flex items-center">
             <Button
@@ -51,22 +36,19 @@
 <script>
 import { useSystemConfigStore } from "../stores/systemConfigStore";
 import { mapActions, mapState } from "pinia";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default {
     name: "App Header",
-    components: {
-        Input,
-        Button,
-    },
     data() {
         return {
             scroll_y: 0,
         };
     },
-    mounted() {
+    components: {
+        Button,
     },
+    mounted() {},
     computed: {
         ...mapState(useSystemConfigStore, ["themeMode", "listSocial"]),
     },
@@ -75,6 +57,9 @@ export default {
         openUrl(item) {
             window.open(item.url);
         },
+        openSearch(){
+            this.$parent.open_search = true;
+        }
     },
     watch: {
         "$parent.$data.scroll_y": function (newValue) {

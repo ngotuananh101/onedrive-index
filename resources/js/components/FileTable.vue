@@ -40,24 +40,26 @@
                             </span>
                         </div>
                     </TableCell>
-                    <TableCell class="flex justify-end p-1 text-right">
-                        <button
-                            class="flex items-center justify-center w-12 h-12 p-3 text-lg rounded-full hover:bg-neutral-400 hover:bg-opacity-50"
-                            @click="copyUrl(row)"
+                    <TableCell class="p-1">
+                        <div
+                            class="flex items-center justify-end text-right"
                         >
-                            <i class="fa-light fa-clipboard"></i>
-                        </button>
-                        <!-- <i
-                            class="w-12 h-12 p-3 text-lg rounded-full fa-light fa-arrow-down-to-bracket hover:bg-neutral-400 hover:bg-opacity-50"
-                            v-if="row.download_url !== '-'"
-                            @click="downloadFile(row.download_url)"
-                        ></i> -->
-                        <button
-                            class="flex items-center justify-center w-12 h-12 p-3 text-lg rounded-full hover:bg-neutral-400 hover:bg-opacity-50"
-                            @click="downloadFile(row.download_url)"
-                        >
-                            <i class="fa-light fa-arrow-down-to-bracket"></i>
-                        </button>
+                            <button
+                                class="flex items-center justify-center p-3 text-lg rounded-full w-9 h-9 hover:bg-neutral-400 hover:bg-opacity-50"
+                                @click="copyUrl(row)"
+                            >
+                                <i class="fa-light fa-clipboard"></i>
+                            </button>
+                            <button
+                                class="flex items-center justify-center p-3 text-lg rounded-full w-9 h-9 hover:bg-neutral-400 hover:bg-opacity-50"
+                                @click="downloadFile(row.download_url)"
+                                v-if="row.type !== 'folder'"
+                            >
+                                <i
+                                    class="fa-light fa-arrow-down-to-bracket"
+                                ></i>
+                            </button>
+                        </div>
                     </TableCell>
                 </TableRow>
             </template>
@@ -90,7 +92,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useToast } from '@/components/ui/toast/use-toast';
+import { useToast } from "@/components/ui/toast/use-toast";
 const { toast } = useToast();
 export default {
     components: {
@@ -114,7 +116,7 @@ export default {
         downloadFile(url) {
             window.open(url);
         },
-        copyUrl(row){
+        copyUrl(row) {
             if (row.type === "folder") {
                 let url = this.$router.resolve({
                     name: "folders.show",
@@ -128,7 +130,7 @@ export default {
             toast({
                 title: this.$t("copied_to_clipboard"),
             });
-        }
+        },
     },
 };
 </script>

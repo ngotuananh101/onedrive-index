@@ -28,18 +28,26 @@
             </div>
         </div>
     </div>
+    <Search :open="open_search" @update:open="updateOpen"/>
 </template>
 <script>
 import Header from "../components/Header.vue";
+import Search from "../components/Search.vue";
 export default {
     name: "App Layout",
     components: {
         Header,
+        Search,
     },
     data() {
         return {
-            search: "",
+            open_search: false,
         };
+    },
+    methods: {
+        updateOpen(open) {
+            this.open_search = open;
+        },
     },
 };
 </script>
