@@ -8,11 +8,19 @@ use Illuminate\Support\Facades\Http;
 class OneDriveController extends Controller
 {
     public mixed $endpoint;
+    public mixed $refresh_token;
     public mixed $access_token;
     public function __construct()
     {
         $this->endpoint = env('VITE_ONE_DRIVE_API_URL');
+        $this->refresh_token = cache('one_drive_refresh_token');
         $this->access_token = cache('one_drive_access_token');
+        if (!$this->access_token && $this->refresh_token) {
+            $check = (new OauthController())->refreshToken();
+            if ($check) {
+                $this->access_token = cache('one_drive_access_token');
+            }
+        }
     }
 
     public function getRoot(Request $request)
@@ -264,6 +272,7 @@ class OneDriveController extends Controller
                     'total' => $total
                 ], 200);
             } else {
+                dd($res->json());
                 abort(500, 'Failed to retrieve search results');
             }
         } catch (\Exception $e) {
