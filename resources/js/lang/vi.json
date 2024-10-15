@@ -28,11 +28,17 @@
         "store_token_desc": "Lưu token có thể mất một lúc để hoàn thành. Nếu bạn trở về trang chủ và bị điều hướng lại trang đăng nhập, vui lòng không làm gì và chờ cho đến khi quá trình lưu token hoàn thành",
         "expires_in": "Hết hạn sau",
         "second" : "giây",
-        "seconds" : "giây"
+        "seconds" : "giây",
+        "access_token": "Access Token",
+        "refresh_token": "Refresh Token"
     },
     "search": "Tìm kiếm...",
     "table_empty" : "Không có dữ liệu",
     "table_loading" : "Đang tải...",
     "loading_preview": "Đang tải xem trước...",
-    "can_not_preview" : "Không thể xem trước nội dung"
+    "can_not_preview" : "Không thể xem trước nội dung",
+    "name": "Tên",
+    "created_by" : "Chủ sở hữu",
+    "modified" : "Lần sửa đổi cuối",
+    "size": "Kích thước"
 }

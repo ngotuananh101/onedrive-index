@@ -81,7 +81,7 @@
                     <Button
                         class="text-white bg-sky-600 dark:hover:text-black hover:text-white"
                     >
-                        Đăng nhập
+                        {{ $t("auth.login") }}
                     </Button>
                 </router-link>
             </div>

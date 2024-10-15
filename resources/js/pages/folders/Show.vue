@@ -77,21 +77,21 @@ export default {
             columns: [
                 {
                     name: "name",
-                    label: "Tên",
+                    label: $('name'),
                     class: "text-left font-semibold",
                     has_icon: true,
                 },
                 {
                     name: "created_by",
-                    label: "Chủ sở hữu",
+                    label: $t("created_by"),
                 },
                 {
                     name: "modified",
-                    label: "Lần sửa đổi cuối",
+                    label: $t("modified"),
                 },
                 {
                     name: "size",
-                    label: "Kích cỡ tệp",
+                    label: $t("size"),
                 },
             ],
             query: {
