@@ -8,7 +8,7 @@
             class="mb-5 text-xl md:text-2xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-900"
             :class="{ 'text-left': !show_header, 'text-center': show_header }"
         >
-            Chào mừng bạn đến với Drive
+            {{ this.$t("hello") }}
         </h1>
         <div class="flex justify-center" v-if="scroll_y === 0">
             <div class="relative w-full md:w-[50%] lg:w-[35%]">
@@ -64,21 +64,21 @@ export default {
             columns: [
                 {
                     name: "name",
-                    label: $("name"),
+                    label: this.$t("name"),
                     class: "text-left font-semibold",
                     has_icon: true,
                 },
                 {
                     name: "created_by",
-                    label: $t("created_by"),
+                    label: this.$t("created_by"),
                 },
                 {
                     name: "modified",
-                    label: $t("modified"),
+                    label: this.$t("modified"),
                 },
                 {
                     name: "size",
-                    label: $t("size"),
+                    label: this.$t("size"),
                 },
             ],
             query: {

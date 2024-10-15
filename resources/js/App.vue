@@ -10,12 +10,14 @@
         :onClose="() => (this.filePreview.is_open = false)"
         :onDownload="download"
     />
+    <Toaster />
 </template>
 <script>
 import { mapStores } from "pinia";
 import { useSystemConfigStore } from "./stores/systemConfigStore";
 import { getPreviewUrl } from "./services/driveService";
 import FilePreview from "./components/FilePreview.vue";
+import Toaster from '@/components/ui/toast/Toaster.vue'
 export default {
     name: "App",
     data() {
@@ -31,6 +33,7 @@ export default {
     },
     components: {
         FilePreview,
+        Toaster
     },
     computed: {
         ...mapStores(useSystemConfigStore),

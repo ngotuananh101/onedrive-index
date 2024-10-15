@@ -1,6 +1,7 @@
 {
     "app_name": "OneDrive Index",
     "continue_to_drive": "Tiếp tục tới OneDrive",
+    "hello" : "Chào mừng bạn đến với Drive",
     "auth": {
         "step_1": "Bước 1/3: Chuẩn bị đăng nhập",
         "step_1_desc": "Bạn nên sử dụng REDIS để có được tốc độ ổn định cho ứng dụng và hãy chắc chắn rằng bạn đã điền đầy đủ thông tin của OneDrive Client ID và Client Secret trong ENV",
@@ -40,5 +41,6 @@
     "name": "Tên",
     "created_by" : "Chủ sở hữu",
     "modified" : "Lần sửa đổi cuối",
-    "size": "Kích thước"
+    "size": "Kích thước",
+    "copied_to_clipboard": "Đã sao chép vào clipboard"
 }

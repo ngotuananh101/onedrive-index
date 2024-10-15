@@ -26,7 +26,7 @@
                             </template>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator/>
+                    <BreadcrumbSeparator />
                 </template>
                 <BreadcrumbItem>
                     <BreadcrumbPage>{{ current_folder_name }}</BreadcrumbPage>
@@ -77,21 +77,21 @@ export default {
             columns: [
                 {
                     name: "name",
-                    label: $('name'),
+                    label: this.$t("name"),
                     class: "text-left font-semibold",
                     has_icon: true,
                 },
                 {
                     name: "created_by",
-                    label: $t("created_by"),
+                    label: this.$t("created_by"),
                 },
                 {
                     name: "modified",
-                    label: $t("modified"),
+                    label: this.$t("modified"),
                 },
                 {
                     name: "size",
-                    label: $t("size"),
+                    label: this.$t("size"),
                 },
             ],
             query: {
