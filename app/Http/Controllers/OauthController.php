@@ -37,6 +37,7 @@ class OauthController extends Controller
         if ($this->one_drive_refresh_token === null) {
             return response()->json([
                 'status' => '401',
+                'isLogin' => false,
                 'message' => 'Chưa đăng nhập',
             ]);
         }
