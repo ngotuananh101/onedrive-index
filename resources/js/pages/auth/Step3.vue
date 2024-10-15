@@ -8,34 +8,28 @@
   </p> </div> <!-- Switch theme --> <Button variant="ghost" size="icon"
   @click="switchThemeMode"> <i class="text-xl fa-solid fa-sun" v-if="themeMode === 'dark'"
   ></i> <i class="text-xl fa-solid fa-moon" v-if="themeMode === 'light'" ></i> </Button>
-  </div> </div> <div class="w-full md:w-[70%] h-full md:h-auto"> <div class="flex flex-col
-  justify-between h-full"> <div class="grow"> <h1 class="mb-5 text-2xl">{{
+  </div> </div> <div class="w-full md:w-[70%] h-full md:h-auto"> <div class="flex flex-col justify-between h-full"> <div class="grow"> <h1 class="mb-5 text-2xl">{{
     $t("auth.step_3")
   }}</h1> <div class="mb-3">
   {{ this.message }}
   </div> <p :class="'mb-3 ' + this.color" v-if="this.error">
   {{ this.error }}
-  </p> <div v-if="this.success"> <p class="mb-3 truncate"> <i class="text-lg
-  text-green-400 fa-regular fa-circle-check" ></i> <span class="text-lg ms-2">Access
+  </p> <div v-if="this.success"> <p class="mb-3 truncate"> <i class="text-lg text-green-400 fa-regular fa-circle-check" ></i> <span class="text-lg ms-2">Access
   token: </span>
   {{ this.access_token }}
-  </p> <p class="mb-3 truncate"> <i class="text-lg text-green-400 fa-regular
-  fa-circle-check" ></i> <span class="text-lg ms-2">Refresh token: </span>
+  </p> <p class="mb-3 truncate"> <i class="text-lg text-green-400 fa-regular fa-circle-check" ></i> <span class="text-lg ms-2">Refresh token: </span>
   {{ this.refresh_token }}
   </p> <p class="mb-3 truncate"> <i class="text-lg text-green-400 fa-regular fa-timer"
   ></i> <span class="text-lg ms-2">
   {{ $t("auth.expires_in") }}: </span>
   {{ this.expires_in + " " + $t("auth.seconds") }}
-  </p> <p class="mb-3 text-green-400"> <i class="text-lg text-green-400 fa-duotone
-  fa-solid fa-circle-info" ></i>
+  </p> <p class="mb-3 text-green-400"> <i class="text-lg text-green-400 fa-duotone fa-solid fa-circle-info" ></i>
   {{ $t("auth.store_token_desc") }}
-  </p> </div> </div> <div class="text-right"> <Button class="text-white bg-sky-600
-  dark:hover:text-black hover:text-white" :disabled="this.disable" v-if="!this.success"
+  </p> </div> </div> <div class="text-right"> <Button class="text-white bg-sky-600 dark:hover:text-black hover:text-white" :disabled="this.disable" v-if="!this.success"
   @click="makeRequest" >
   {{ $t("auth.re_request") }}
   </Button> <Button class="text-white bg-sky-600 dark:hover:text-black hover:text-white"
-  :disabled="this.disable" v-if="this.success" @click="makeRequest" > <i class="mr-2
-  fa-duotone fa-solid fa-key"></i>
+  :disabled="this.disable" v-if="this.success" @click="returnHome" > <i class="mr-2 fa-duotone fa-solid fa-key"></i>
   {{ $t("auth.store_token") }}
   </Button> </div> </div> </div>
 </template>
@@ -108,6 +102,9 @@ export default {
           this.color = "text-red-400";
         }
       }
+    },
+    returnHome() {
+      this.$router.push({ name: "index" });
     },
   },
 };
