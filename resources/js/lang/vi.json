@@ -44,6 +44,7 @@
     "size": "Kích thước",
     "copied_to_clipboard": "Đã sao chép vào clipboard",
     "search_placeholder": "Nhập tên tệp để tìm kiếm...",
+    "searching": "Đang tìm kiếm...",
     "result": "Kết quả",
     "no_result" : "Không có tệp nào được tìm thấy",
     "file": "Tập tin",

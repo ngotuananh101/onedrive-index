@@ -12,10 +12,14 @@
                     v-for="f in data_folder"
                     :key="f.id"
                     :value="f"
-                    class="outline-0"
+                    class="justify-between hover:text-neutral-950"
                 >
-                    {{ f.name }}</CommandItem
-                >
+                    <span>
+                        <p class="text-sm">{{ f.name }}</p>
+                        <p class="text-xs text-gray-500">{{ f.path }}</p>
+                    </span>
+                    <span>{{ f.size }}</span>
+                </CommandItem>
             </CommandGroup>
             <CommandSeparator />
             <CommandGroup :heading="this.$t('file')">
@@ -23,10 +27,14 @@
                     v-for="f in data_file"
                     :key="f.id"
                     :value="f"
-                    class="outline-0"
+                    class="justify-between"
                 >
-                    {{ f.name }}</CommandItem
-                >
+                    <span>
+                        <p class="text-sm">{{ f.name }}</p>
+                        <p class="text-xs text-gray-500">{{ f.path }}</p>
+                    </span>
+                    <span>{{ f.size }}</span>
+                </CommandItem>
             </CommandGroup>
         </CommandList>
     </CommandDialog>
@@ -65,8 +73,12 @@ export default {
     },
     methods: {
         handleOpenChange(open) {
-            console.log(open);
-
+            if (!open) {
+                this.searchTerm = "";
+                this.data_folder = [];
+                this.data_file = [];
+                clearInterval(this.searchInterval);
+            }
             this.$emit("update:open", open);
         },
     },
