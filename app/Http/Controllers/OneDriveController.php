@@ -148,6 +148,27 @@ class OneDriveController extends Controller
         }
     }
 
+    // public function preview($id)
+    // {
+    //     try {
+    //         $res = Http::withToken($this->access_token)->post($this->endpoint . '/items/' . $id . '/preview');
+    //         if ($res->status() === 200) {
+    //             $json = $res->json();
+    //             return response()->json([
+    //                 'status' => 'success',
+    //                 'data' => $json['getUrl'],
+    //             ], 200);
+    //         } else {
+    //             dd($res->body());
+    //             abort(500, 'Failed to retrieve file preview');
+    //         }
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
 
     public function download(Request $request, $id)
     {

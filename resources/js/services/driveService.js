@@ -37,3 +37,12 @@ export async function getBreadcrumb(id) {
         return error;
     }
 }
+
+export async function getPreviewUrl(id) {
+    try {
+        const response = await httpClient.get(`/drive/preview/${id}`);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}

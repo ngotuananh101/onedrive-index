@@ -13,6 +13,7 @@
 <script>
 import { mapStores } from "pinia";
 import { useSystemConfigStore } from "./stores/systemConfigStore";
+import { getPreviewUrl } from "./services/driveService";
 import FilePreview from "./components/FilePreview.vue";
 export default {
   name: "App",
@@ -42,10 +43,7 @@ export default {
     showPreview(file) {
       this.filePreview.is_open = true;
       this.filePreview.name = file.name;
-      this.filePreview.url =
-        file.size_raw < import.meta.env.VITE_ONE_DRIVE_MAX_PREVIEW_SIZE
-          ? file.download_url
-          : "-";
+      this.filePreview.url = file.download_url;
       this.filePreview.download_url = file.download_url;
     },
   },

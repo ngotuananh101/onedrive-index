@@ -12,4 +12,5 @@ Route::group(['prefix' => 'drive'], function () {
     Route::get('/folder/{id}', [OneDriveController::class, 'getFolderById']);
     Route::get('/download/{id}', [OneDriveController::class, 'download']);
     Route::get('/breadcrumb/{id}', [OneDriveController::class, 'breadcrumb']);
+    Route::get('/preview/{id}', [OneDriveController::class, 'preview']);
 });
