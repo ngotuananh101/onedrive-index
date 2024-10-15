@@ -75,10 +75,9 @@ class OauthController extends Controller
      */
     public function getToken(Request $request)
     {
-        // Xác thực rằng tham số 'code' là bắt buộc và phải là chuỗi
-        $request->validate(['code' => 'required|string']);
-
         try {
+            // Xác thực rằng tham số 'code' là bắt buộc và phải là chuỗi
+            $request->validate(['code' => 'required|string']);
             // Lấy giá trị của code từ yêu cầu
             $code = $request->input('code');
             // URL để yêu cầu access token
