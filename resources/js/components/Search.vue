@@ -1,5 +1,5 @@
 <template lang="">
-    <CommandDialog :open="open" :searchTerm="searchTerm" @update:open="handleOpenChange" @update:searchTerm="updateSearch">
+    <CommandDialog :open="open" @update:open="handleOpenChange" v-model:searchTerm="searchTerm" @update:searchTerm="updateSearch">
         <CommandInput :placeholder="this.$t('search_placeholder')" />
         <CommandList>
             <CommandEmpty>{{ this.$t('no_result') }}</CommandEmpty>
@@ -19,7 +19,6 @@
 </template>
 <script>
 import {
-    CommandDialog,
     CommandEmpty,
     CommandGroup,
     CommandInput,
@@ -27,6 +26,7 @@ import {
     CommandList,
     CommandSeparator,
 } from "@/components/ui/command";
+import CommandDialog from "@/components/CommandDialog.vue";
 export default {
     components: {
         CommandDialog,
@@ -43,7 +43,7 @@ export default {
     data() {
         return {
             value: [],
-            searchTerm: "123",
+            searchTerm: "",
         };
     },
     methods: {
@@ -54,6 +54,8 @@ export default {
             console.log(value);
         }
     },
+    watch:{
+    }
 };
 </script>
 <style lang=""></style>
