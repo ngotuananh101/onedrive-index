@@ -2,10 +2,10 @@
   <div class="flex h-screen max-h-screen p-2 md:p-4">
     <div class="hidden md:block min-w-60">
       <div class="flex flex-col">
-        <div class="flex items-center">
+        <router-link :to="{ name: 'index' }" class="flex items-center">
           <img src="/uploads/images/logo.png" alt="Logo" class="w-10 mr-3" />
           <span class="text-xl font-medium dark:text-neutral-300"> OneDrive </span>
-        </div>
+        </router-link>
       </div>
     </div>
     <div class="flex flex-col content-between grow">
