@@ -1,0 +1,12 @@
+name: Deploy to server
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Call webhook
+      run: curl -k ${{ secrets.WEB_HOOK }}
