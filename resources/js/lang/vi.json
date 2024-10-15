@@ -32,5 +32,7 @@
     },
     "search": "Tìm kiếm...",
     "table_empty" : "Không có dữ liệu",
-    "table_loading" : "Đang tải..."
+    "table_loading" : "Đang tải...",
+    "loading_preview": "Đang tải xem trước...",
+    "can_not_preview" : "Không thể xem trước nội dung"
 }
