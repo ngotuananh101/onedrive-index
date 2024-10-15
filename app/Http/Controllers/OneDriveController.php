@@ -22,7 +22,7 @@ class OneDriveController extends Controller
             if ($request->has('next_url') && !empty($request->input('next_url'))) {
                 $res = Http::withToken($this->access_token)->get($request->input('next_url'));
             } else {
-                $res = Http::withToken($this->access_token)->get($this->endpoint . '/root/children', [
+                $res = Http::withToken($this->access_token)->get($this->endpoint . '/root:/' . env('VITE_ONE_DRIVE_ROOT_FOLDER') . ':/children', [
                     '$top' => $per_page,
                 ]);
             }
@@ -68,7 +68,7 @@ class OneDriveController extends Controller
             if ($request->has('next_url') && !empty($request->input('next_url'))) {
                 $res = Http::withToken($this->access_token)->get($request->input('next_url'));
             } else {
-                $res = Http::withToken($this->access_token)->get($this->endpoint . '//items/' . $id . '/children', [
+                $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id . '/children', [
                     '$top' => $per_page,
                 ]);
             }
@@ -106,6 +106,49 @@ class OneDriveController extends Controller
         }
     }
 
+    public function breadcrumb($id)
+    {
+        try {
+            $parent = [];
+            $currentPath = "";
+            $rootPath = env('VITE_ONE_DRIVE_ROOT_FOLDER') == "/" ? '/drive/root:/' : '/drive/root:/' . env('VITE_ONE_DRIVE_ROOT_FOLDER');
+            $loop = 1;
+            do {
+                $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id);
+                if ($res->status() === 200) {
+                    $json = $res->json();
+                    if ($loop == 1) {
+                        $current = $json['name'];
+                    }
+                    $parentReference = $json['parentReference'];
+                    // Add parent details to the parent array
+                    $parent[] = [
+                        'name' => $parentReference['name'],
+                        'id' => $parentReference['id'],
+                    ];
+                    // Update currentPath for the next loop iteration
+                    $currentPath = $parentReference['path'];
+                    $id = $parentReference['id'];
+                } else {
+                    // Break the loop if an error occurs while fetching parent details
+                    break;
+                }
+                $loop++;
+            } while ($currentPath !== $rootPath);
+            return response()->json([
+                'status' => 'success',
+                'current_folder_name' => $current,
+                'data' => array_reverse($parent),
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+
     public function download(Request $request, $id)
     {
         try {
@@ -131,7 +174,6 @@ class OneDriveController extends Controller
                         echo $body->read(1024);
                     }
                 }, $name);
-
             } else {
                 return response()->json([
                     'status' => 'error',
@@ -145,7 +187,6 @@ class OneDriveController extends Controller
             ], 500);
         }
     }
-
 
     public function convertSize($size)
     {

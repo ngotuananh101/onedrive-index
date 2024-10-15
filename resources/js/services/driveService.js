@@ -28,3 +28,12 @@ export async function getFolderById(query, id) {
         return error;
     }
 }
+
+export async function getBreadcrumb(id) {
+    try {
+        const response = await httpClient.get(`/drive/breadcrumb/${id}`);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
