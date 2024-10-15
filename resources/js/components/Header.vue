@@ -29,6 +29,7 @@
                 variant="ghost"
                 size="icon"
                 :key="index"
+                @click="openUrl(item)"
             >
                 <i :class="item.icon"></i>
             </Button>
@@ -71,6 +72,9 @@ export default {
     },
     methods: {
         ...mapActions(useSystemConfigStore, ["switchThemeMode"]),
+        openUrl(item) {
+            window.open(item.url);
+        },
     },
     watch: {
         "$parent.$data.scroll_y": function (newValue) {
