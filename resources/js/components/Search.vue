@@ -13,6 +13,7 @@
                     :key="f.id"
                     :value="f"
                     class="justify-between hover:text-neutral-950"
+                    @click="rowClick(f)"
                 >
                     <span>
                         <p class="text-sm">{{ f.name }}</p>
@@ -80,6 +81,15 @@ export default {
                 clearInterval(this.searchInterval);
             }
             this.$emit("update:open", open);
+        },
+        rowClick(row) {
+            if(row && row.type === "folder"){
+                this.$root.need_reload_breadcrumb = true;
+                this.$router.push({
+                    name: "folders.show",
+                    params: { id: row.id },
+                });
+            }
         },
     },
     watch: {

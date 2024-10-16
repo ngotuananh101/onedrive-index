@@ -16,10 +16,12 @@ const props = defineProps({
     searchTerm: { type: String, required: false },
     filterFunction: { type: Function, required: false },
     displayValue: { type: Function, required: false },
+    selectedValue: { type: null, required: false },
 });
 const emits = defineEmits([
     "update:open",
-    "update:searchTerm"
+    "update:searchTerm",
+    "update:selectedValue"
 ]);
 const forwarded = useForwardPropsEmits(props, emits);
 </script>

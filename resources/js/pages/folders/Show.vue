@@ -103,14 +103,10 @@ export default {
         };
     },
     mounted() {
-        getBreadcrumb(this.id).then((res) => {
-            if (res.status === 200) {
-                this.breadcrumb = res.data.data;
-                this.current_folder = res.data.current_folder;
-            }
-        });
+        this.fetchBreadcrumb();
         this.$parent.$parent.scroll_y = 0;
         this.$parent.$parent.show_search = true;
+        this.$root.need_reload_breadcrumb = false;
         this.fetchData();
 
         // Watch for route changes
@@ -120,6 +116,7 @@ export default {
                 this.table_data = [];
                 this.$parent.$parent.scroll_y = 0;
                 this.fetchData();
+                this.$root.need_reload_breadcrumb ? this.fetchBreadcrumb() : "";
             }
         });
     },
@@ -134,6 +131,17 @@ export default {
                 }
                 this.loading = false;
             });
+        },
+        fetchBreadcrumb() {
+            this.breadcrumb = [];
+            this.current_folder = "";
+            getBreadcrumb(this.id).then((res) => {
+                if (res.status === 200) {
+                    this.breadcrumb = res.data.data;
+                    this.current_folder = res.data.current_folder;
+                }
+            });
+            this.$root.need_reload_breadcrumb = false;
         },
         loadMore() {
             if (this.query.next_url && !this.loading && this.is_end === 1) {
