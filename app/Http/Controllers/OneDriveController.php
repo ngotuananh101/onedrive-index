@@ -229,24 +229,8 @@ class OneDriveController extends Controller
             $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id);
             if ($res->status() === 200) {
                 $json = $res->json();
-                $name = data_get($json, 'name', 'downloaded_file');
-
-                // Use GuzzleHttp to stream the file from OneDrive to the browser
-                $client = new \GuzzleHttp\Client();
-                $response = $client->get($this->endpoint . '/items/' . $id . '/content', [
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . $this->access_token,
-                    ],
-                    'stream' => true,
-                ]);
-
-                // Stream the file content to the browser
-                return response()->streamDownload(function () use ($response) {
-                    $body = $response->getBody();
-                    while (!$body->eof()) {
-                        echo $body->read(1024);
-                    }
-                }, $name);
+                $download_url = $json['@microsoft.graph.downloadUrl'];
+                return response()->redirectTo($download_url);
             } else {
                 abort($res->status(), 'Failed to download file');
             }
