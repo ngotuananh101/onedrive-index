@@ -223,6 +223,7 @@ class OneDriveController extends Controller
 
     public function download(Request $request, $id)
     {
+        set_time_limit(0);
         try {
             // Get item details from OneDrive using the item ID
             $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id);
@@ -238,9 +239,6 @@ class OneDriveController extends Controller
                     ],
                     'stream' => true,
                 ]);
-
-                // Set php time limit to 0 to prevent timeout when download large file
-                set_time_limit(0);
 
                 // Stream the file content to the browser
                 return response()->streamDownload(function () use ($response) {
