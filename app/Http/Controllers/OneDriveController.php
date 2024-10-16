@@ -239,6 +239,9 @@ class OneDriveController extends Controller
                     'stream' => true,
                 ]);
 
+                // Set php time limit to 0 to prevent timeout when download large file
+                set_time_limit(0);
+
                 // Stream the file content to the browser
                 return response()->streamDownload(function () use ($response) {
                     $body = $response->getBody();
