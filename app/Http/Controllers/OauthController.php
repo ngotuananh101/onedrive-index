@@ -5,121 +5,124 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 
 class OauthController extends Controller
 {
-    public mixed $one_drive_client_id;
-    public mixed $one_drive_client_secret;
-    public mixed $one_drive_redirect_uri;
-    public mixed $one_drive_scope;
-    public mixed $one_drive_access_token;
-    public mixed $one_drive_refresh_token;
+    // Define class properties for storing OAuth credentials and tokens
+    private string $one_drive_client_id;
+    private string $one_drive_client_secret;
+    private string $one_drive_redirect_uri;
+    private ?string $one_drive_access_token;
+    private ?string $one_drive_refresh_token;
+    private string $token_api_url;
 
-    // Init Oath
+    // Constructor to initialize OAuth credentials from environment variables
     public function __construct()
     {
         $this->one_drive_client_id = env('VITE_ONE_DRIVE_CLIENT_ID', '');
         $this->one_drive_client_secret = env('VITE_ONE_DRIVE_CLIENT_SECRET', '');
         $this->one_drive_redirect_uri = env('VITE_ONE_DRIVE_REDIRECT_URI', '');
-        $this->one_drive_scope = explode(" ", env('VITE_ONE_DRIVE_SCOPE', ''));
         $this->one_drive_access_token = cache('one_drive_access_token');
         $this->one_drive_refresh_token = cache('one_drive_refresh_token');
+        $this->token_api_url = env('VITE_ONE_DRIVE_TOKEN_API_URL', '');
+
+        // Throw an exception if the token API URL is not set
+        if (empty($this->token_api_url)) {
+            throw new \Exception('Token API URL is not set in environment variables.');
+        }
     }
 
     /**
-     * Kiểm tra trạng thái đăng nhập
+     * Check login status
      *
-     * @return \Illuminate\Http\JsonResponse Trả về kết quả dưới dạng JSON
+     * @return JsonResponse JSON response indicating login status
      */
-    public function checkLogin()
+    public function checkLogin(): JsonResponse
     {
-        // Kiểm tra xem refresh token đã được lưu trữ hay chưa
+        // Check if the refresh token is stored in cache
         if ($this->one_drive_refresh_token === null) {
             return response()->json([
                 'status' => '401',
-                'message' => 'Chưa đăng nhập',
+                'message' => 'Not logged in',
             ], 401);
         }
 
-        // Khai báo xem có cần làm mới token hay không
+        // Determine if a token refresh is needed
         $need_refresh = !$this->one_drive_access_token;
 
-        // Lấy access token mới nếu cần
-        if ($need_refresh) {
-            try {
-                $refresh_success = $this->refreshToken();
-            } catch (\Exception $e) {
-                return response()->json([
-                    'status' => '500',
-                    'message' => 'Lỗi khi làm mới token',
-                ]);
-            }
-        } else {
-            $refresh_success = true;
+        try {
+            // Refresh the access token if needed
+            $refresh_success = $need_refresh ? $this->refreshToken() : true;
+        } catch (\Exception $e) {
+            // Return an error response if token refresh fails
+            return response()->json([
+                'status' => '500',
+                'message' => 'Error refreshing token: ' . $e->getMessage(),
+            ], 500);
         }
 
-        // Trả về kết quả
+        // Return the login status response
         return response()->json([
             'status' => '200',
-            'message' => 'Đã đăng nhập',
+            'message' => 'Logged in',
             'need_refresh' => $need_refresh,
             'refresh_success' => $refresh_success,
         ]);
     }
 
     /**
-     * Lấy access token và refresh token từ code nhận được
+     * Obtain access token and refresh token from the authorization code
      *
-     * @param Request $request Đối tượng yêu cầu để lấy thông tin code
-     * @return \Illuminate\Http\JsonResponse Trả về kết quả dưới dạng JSON
+     * @param Request $request Request object to obtain the authorization code
+     * @return JsonResponse JSON response with token details
      */
-    public function getToken(Request $request)
+    public function getToken(Request $request): JsonResponse
     {
+        // Validate the 'code' parameter in the request
+        $request->validate(['code' => 'required|string']);
+        // Get the authorization code from the request
+        $code = $request->input('code');
+
+        // Data required to request the token
+        $data = [
+            'client_id' => $this->one_drive_client_id,
+            'client_secret' => $this->one_drive_client_secret,
+            'code' => $code,
+            'redirect_uri' => $this->one_drive_redirect_uri,
+            'grant_type' => 'authorization_code'
+        ];
+
         try {
-            // Xác thực rằng tham số 'code' là bắt buộc và phải là chuỗi
-            $request->validate(['code' => 'required|string']);
-            // Lấy giá trị của code từ yêu cầu
-            $code = $request->input('code');
-            // URL để yêu cầu access token
-            $url = env('VITE_ONE_DRIVE_TOKEN_API_URL');
+            // Send POST request to obtain the tokens
+            $res = Http::asForm()->post($this->token_api_url, $data);
 
-            // Dữ liệu cần gửi để lấy token
-            $data = [
-                'client_id' => $this->one_drive_client_id,
-                'client_secret' => $this->one_drive_client_secret,
-                'code' => $code,
-                'redirect_uri' => $this->one_drive_redirect_uri,
-                'grant_type' => 'authorization_code'
-            ];
-
-            // Gửi yêu cầu POST để lấy token
-            $res = Http::asForm()->post($url, $data);
-
-            // Nếu yêu cầu thành công (trạng thái 200)
+            // Check if the request was successful (status 200)
             if ($res->status() === 200) {
-                // Phân tích kết quả trả về
+                // Parse the response body
                 $body = $res->json();
-                // Lấy thời gian hết hạn của token
+                // Get the token expiration time
                 $expires_in = $body['expires_in'];
-                // Lưu access token vào thuộc tính lớp
+                // Store the access token in the class property
                 $this->one_drive_access_token = $body['access_token'];
-                // Lưu access token vào cache với thời gian hết hạn
+                // Cache the access token with its expiration time
                 cache(['one_drive_access_token' => $this->one_drive_access_token], $expires_in);
-                // Lưu refresh token vào thuộc tính lớp
+                // Store the refresh token in the class property
                 $this->one_drive_refresh_token = $body['refresh_token'];
-                // Lưu refresh token vào cache
+                // Cache the refresh token
                 cache(['one_drive_refresh_token' => $this->one_drive_refresh_token]);
-                // Thêm trường trạng thái vào kết quả và trả về
+                // Add status field to the response and return it
                 $body['status'] = '200';
+
                 return response()->json($body);
-            } else {
-                // Nếu yêu cầu không thành công, trả lại kết quả gốc
-                return response()->json($res->json(), $res->status());
             }
+
+            // If the request was not successful, return the original response
+            return response()->json($res->json(), $res->status());
         } catch (\Exception $e) {
-            // Ghi nhật ký lỗi
+            // Log the error
             Log::error('Error getting token: ' . $e->getMessage());
-            // Trả về thông báo lỗi với mã trạng thái 500
+            // Return error message with status code 500
             return response()->json([
                 'error_description' => $e->getMessage(),
             ], 500);
@@ -127,53 +130,47 @@ class OauthController extends Controller
     }
 
     /**
-     * Làm mới access token
+     * Refresh the access token
      *
-     * @return bool Trả về true nếu làm mới thành công, false nếu thất bại
+     * @return bool True if the token was refreshed successfully, false otherwise
      */
-    public function refreshToken()
+    public function refreshToken(): bool
     {
+        // Data required to refresh the token
+        $data = [
+            'client_id' => $this->one_drive_client_id,
+            'client_secret' => $this->one_drive_client_secret,
+            'refresh_token' => $this->one_drive_refresh_token,
+            'redirect_uri' => $this->one_drive_redirect_uri,
+            'grant_type' => 'refresh_token'
+        ];
+
         try {
-            // URL để gọi API làm mới token
-            $url = env('VITE_ONE_DRIVE_TOKEN_API_URL');
+            // Send POST request to refresh the token
+            $res = Http::asForm()->post($this->token_api_url, $data);
 
-            // Dữ liệu cần提交 để làm mới token
-            $data = [
-                'client_id' => $this->one_drive_client_id,
-                'client_secret' => $this->one_drive_client_secret,
-                'refresh_token' => $this->one_drive_refresh_token,
-                'redirect_uri' => $this->one_drive_redirect_uri,
-                'grant_type' => 'refresh_token'
-            ];
-
-            // Gọi API để làm mới token
-            $res = Http::asForm()->post($url, $data);
-
-            // Kiểm tra nếu trả về status 200则 cho rằng làm mới token thành công
+            // Check if the request was successful (status 200)
             if ($res->status() === 200) {
-                // Lấy kết quả trả về ở định dạng json
+                // Parse the response body
                 $body = $res->json();
-
-                // Lấy thời gian hết hạn của access token
+                // Get the token expiration time
                 $expires_in = $body['expires_in'];
-
-                // Cập nhật access token
+                // Update the access token in the class property
                 $this->one_drive_access_token = $body['access_token'];
-
-                // Lưu access token vào cache với thời gian hết hạn tương ứng
+                // Cache the access token with its expiration time
                 cache(['one_drive_access_token' => $this->one_drive_access_token], $expires_in);
 
-                // Trả về true chỉ ra rằng làm mới token thành công
+                // Return true indicating the token was refreshed successfully
                 return true;
-            } else {
-                // Trả về false chỉ ra rằng làm mới token thất bại
-                return false;
             }
+
+            // Return false indicating the token refresh failed
+            return false;
         } catch (\Exception $e) {
-            // Ghi nhật ký lỗi khi xảy ra ngoại lệ
+            // Log the error
             Log::error('Error refreshing token: ' . $e->getMessage());
 
-            // Trả về false chỉ ra rằng làm mới token thất bại
+            // Return false indicating the token refresh failed
             return false;
         }
     }

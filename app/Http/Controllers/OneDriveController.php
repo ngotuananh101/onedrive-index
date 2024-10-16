@@ -4,17 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class OneDriveController extends Controller
 {
+    // Declare class properties for storing API endpoint and tokens
     public mixed $endpoint;
     public mixed $refresh_token;
     public mixed $access_token;
+
+    // Constructor to initialize endpoint and tokens from cache and environment variables
     public function __construct()
     {
         $this->endpoint = env('VITE_ONE_DRIVE_API_URL');
         $this->refresh_token = cache('one_drive_refresh_token');
         $this->access_token = cache('one_drive_access_token');
+
+        // Refresh access token if it's not available and refresh token is present
         if (!$this->access_token && $this->refresh_token) {
             $check = (new OauthController())->refreshToken();
             if ($check) {
@@ -23,10 +29,14 @@ class OneDriveController extends Controller
         }
     }
 
+    // Method to get root folder contents
     public function getRoot(Request $request)
     {
         try {
+            // Set per_page value with a default of 50 and a minimum of 1
             $per_page = max(1, intval($request->input('per_page', 50)));
+
+            // Check if next_url is provided to continue pagination
             if ($request->has('next_url') && !empty($request->input('next_url'))) {
                 $res = Http::withToken($this->access_token)->get($request->input('next_url'));
             } else {
@@ -34,11 +44,15 @@ class OneDriveController extends Controller
                     '$top' => $per_page,
                 ]);
             }
+
+            // Handle successful response
             if ($res->status() === 200) {
                 $json = $res->json();
                 $value = $json['value'];
                 $data = [];
-                foreach ($value as $key => $v) {
+
+                // Process each item in the response
+                foreach ($value as $v) {
                     $data[] = [
                         'name' => data_get($v, 'name', '-'),
                         'id' => data_get($v, 'id', '-'),
@@ -53,15 +67,21 @@ class OneDriveController extends Controller
                         'download_url' => !isset($v['folder']) ? url('api/drive/download/' . $v['id']) : '-'
                     ];
                 }
+
+                // Return successful response
                 return response()->json([
                     'status' => 'success',
                     'next_url' => isset($json['@odata.nextLink']) ? $json['@odata.nextLink'] : null,
                     'data' => $data,
                 ], 200);
             } else {
+                // Handle unsuccessful response
                 abort(500, 'Failed to retrieve file list');
             }
         } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error getting root folder: ' . $e->getMessage());
+            // Handle exception
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
@@ -69,10 +89,14 @@ class OneDriveController extends Controller
         }
     }
 
+    // Method to get contents of a folder by ID
     public function getFolderById(Request $request, $id)
     {
         try {
+            // Set per_page value with a default of 50 and a minimum of 1
             $per_page = max(1, intval($request->input('per_page', 50)));
+
+            // Check if next_url is provided to continue pagination
             if ($request->has('next_url') && !empty($request->input('next_url'))) {
                 $res = Http::withToken($this->access_token)->get($request->input('next_url'));
             } else {
@@ -80,11 +104,15 @@ class OneDriveController extends Controller
                     '$top' => $per_page,
                 ]);
             }
+
+            // Handle successful response
             if ($res->status() === 200) {
                 $json = $res->json();
                 $value = $json['value'];
                 $data = [];
-                foreach ($value as $key => $v) {
+
+                // Process each item in the response
+                foreach ($value as $v) {
                     $data[] = [
                         'name' => data_get($v, 'name', '-'),
                         'id' => data_get($v, 'id', '-'),
@@ -99,14 +127,20 @@ class OneDriveController extends Controller
                         'download_url' => !isset($v['folder']) ? url('api/drive/download/' . $v['id']) : '-',
                     ];
                 }
+
+                // Return successful response
                 return response()->json([
                     'status' => 'success',
                     'data' => $data,
                 ], 200);
             } else {
+                // Handle unsuccessful response
                 abort(500, 'Failed to retrieve file list');
             }
         } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error getting folder by id: ' . $e->getMessage());
+            // Handle exception
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
@@ -114,6 +148,7 @@ class OneDriveController extends Controller
         }
     }
 
+    // Method to generate breadcrumb navigation for a folder
     public function breadcrumb($id)
     {
         try {
@@ -143,19 +178,25 @@ class OneDriveController extends Controller
                 }
                 $loop++;
             } while ($currentPath !== $rootPath);
+
+            // Return successful response
             return response()->json([
                 'status' => 'success',
                 'current_folder_name' => $current,
                 'data' => array_reverse($parent),
             ], 200);
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error getting breadcrumb: ' . $e->getMessage());
+            // Handle exception
             return response()->json([
                 'status' => 'error',
-                'message' => $th->getMessage(),
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
 
+    // Method to get a preview URL for a file
     public function preview($id)
     {
         try {
@@ -167,10 +208,12 @@ class OneDriveController extends Controller
                     'data' => $json['getUrl'],
                 ], 200);
             } else {
-                dd($res->body());
                 abort(500, 'Failed to retrieve file preview');
             }
         } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error getting preview url: ' . $e->getMessage());
+            // Handle exception
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
@@ -181,13 +224,13 @@ class OneDriveController extends Controller
     public function download(Request $request, $id)
     {
         try {
-            // Get item details
+            // Get item details from OneDrive using the item ID
             $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id);
             if ($res->status() === 200) {
                 $json = $res->json();
                 $name = data_get($json, 'name', 'downloaded_file');
 
-                // Stream file to browser
+                // Use GuzzleHttp to stream the file from OneDrive to the browser
                 $client = new \GuzzleHttp\Client();
                 $response = $client->get($this->endpoint . '/items/' . $id . '/content', [
                     'headers' => [
@@ -196,6 +239,7 @@ class OneDriveController extends Controller
                     'stream' => true,
                 ]);
 
+                // Stream the file content to the browser
                 return response()->streamDownload(function () use ($response) {
                     $body = $response->getBody();
                     while (!$body->eof()) {
@@ -203,16 +247,13 @@ class OneDriveController extends Controller
                     }
                 }, $name);
             } else {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'File not found or access denied.',
-                ], $res->status());
+                abort($res->status(), 'Failed to download file');
             }
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage(),
-            ], 500);
+            // Log the error
+            Log::error('Error getting download file: ' . $e->getMessage());
+            // Handle exception
+            abort(500, $e->getMessage());
         }
     }
 
@@ -220,6 +261,7 @@ class OneDriveController extends Controller
     {
         $query = $request->input('query');
         try {
+            // Prepare the search data
             $search_data = [
                 "requests" => [
                     [
@@ -241,13 +283,17 @@ class OneDriveController extends Controller
                     ],
                 ]
             ];
+
+            // Perform the search request to OneDrive
             $res = Http::withToken($this->access_token)->post(env('VITE_ONE_DRIVE_SEARCH_API_URL'), $search_data);
             if ($res->status() === 200) {
                 $json = $res->json();
                 $total = $json['value'][0]['hitsContainers'][0]['total'];
                 $data_file = [];
                 $data_folder = [];
+
                 if ($total > 0) {
+                    // Process the search results
                     foreach ($json['value'][0]['hitsContainers'][0]['hits'] as $k => $v) {
                         $type = $v['resource']['listItem']['fields']['mimeType'] == 'Folder' ? 'folder' : 'file';
                         $da = [
@@ -264,6 +310,8 @@ class OneDriveController extends Controller
                         }
                     }
                 }
+
+                // Return the search results
                 return response()->json([
                     'status' => 'success',
                     'data_file' => $data_file,
@@ -272,10 +320,12 @@ class OneDriveController extends Controller
                     'total' => $total
                 ], 200);
             } else {
-                dd($res->json());
                 abort(500, 'Failed to retrieve search results');
             }
         } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error searching: ' . $e->getMessage());
+            // Handle exception
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
@@ -285,9 +335,10 @@ class OneDriveController extends Controller
 
     public function convertSize($size)
     {
+        // Convert file size to a human-readable format
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
         $i = 0;
-        while ($size >= 1024 && $i < 4) {
+        while ($size >= 1024 && $i < count($units) - 1) {
             $size /= 1024;
             $i++;
         }
@@ -296,9 +347,9 @@ class OneDriveController extends Controller
 
     public function mapFileTypeImage($file_name)
     {
-        $ext = pathinfo($file_name, PATHINFO_EXTENSION);
-        $ext = strtolower($ext);
-        $is_exits = file_exists(public_path('uploads/images/icon/' . $ext . '.png'));
-        return $is_exits ? asset('uploads/images/icon/' . $ext . '.png') : asset('uploads/images/icon/file.png');
+        // Map file extension to a corresponding icon image
+        $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        $is_exists = file_exists(public_path('uploads/images/icon/' . $ext . '.png'));
+        return $is_exists ? asset('uploads/images/icon/' . $ext . '.png') : asset('uploads/images/icon/file.png');
     }
 }
