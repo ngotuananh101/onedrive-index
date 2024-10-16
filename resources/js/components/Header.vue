@@ -1,33 +1,45 @@
 <template>
-  <div class="flex w-full text-black dark:text-white">
-    <div class="flex items-center search grow" id="search-header">
-      <button
-        @click="openSearch"
-        class="dark:bg-neutral-900 w-full md:w-[50%] lg:w-[30%] h-full rounded-full text-left bg-neutral-100"
-      >
-        <i class="ml-5 mr-2 fa-regular fa-magnifying-glass"></i>
-        <span class="opacity-75">
-          {{ $t("search") }}
-        </span>
-      </button>
+    <div class="flex justify-between w-full text-black dark:text-white">
+        <router-link :to="{ name: 'index' }" class="flex items-center">
+            <img src="/uploads/images/logo.png" alt="Logo" class="w-10 mr-3" />
+            <span class="hidden text-xl font-medium dark:text-neutral-300 md:block">
+                {{ $t("app_name") }}
+            </span>
+        </router-link>
+        <div class="flex items-center justify-end search grow" id="search-header" v-if="this.$parent.$data.scroll_y || this.$parent.$data.show_search">
+            <button
+                @click="openSearch"
+                class="w-full h-full text-left md:w-[50%] lg:w-[30%] rounded-full dark:bg-neutral-900 bg-neutral-100"
+            >
+                <i class="ml-5 mr-2 fa-regular fa-magnifying-glass"></i>
+                <span class="opacity-75">
+                    {{ $t("search") }}
+                </span>
+            </button>
+        </div>
+        <div class="flex items-center">
+            <Button
+                v-for="(item, index) in this.listSocial"
+                variant="ghost"
+                size="icon"
+                :key="index"
+                @click="openUrl(item)"
+            >
+                <i :class="item.icon"></i>
+            </Button>
+            <!-- Switch theme -->
+            <Button variant="ghost" size="icon" @click="switchThemeMode">
+                <i
+                    class="text-xl fa-solid fa-sun"
+                    v-if="themeMode === 'dark'"
+                ></i>
+                <i
+                    class="text-xl fa-solid fa-moon"
+                    v-if="themeMode === 'light'"
+                ></i>
+            </Button>
+        </div>
     </div>
-    <div class="flex items-center">
-      <Button
-        v-for="(item, index) in this.listSocial"
-        variant="ghost"
-        size="icon"
-        :key="index"
-        @click="openUrl(item)"
-      >
-        <i :class="item.icon"></i>
-      </Button>
-      <!-- Switch theme -->
-      <Button variant="ghost" size="icon" @click="switchThemeMode">
-        <i class="text-xl fa-solid fa-sun" v-if="themeMode === 'dark'"></i>
-        <i class="text-xl fa-solid fa-moon" v-if="themeMode === 'light'"></i>
-      </Button>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -36,32 +48,22 @@ import { mapActions, mapState } from "pinia";
 import { Button } from "@/components/ui/button";
 
 export default {
-  name: "App Header",
-  data() {
-    return {
-      scroll_y: 0,
-    };
-  },
-  components: {
-    Button,
-  },
-  mounted() {},
-  computed: {
-    ...mapState(useSystemConfigStore, ["themeMode", "listSocial"]),
-  },
-  methods: {
-    ...mapActions(useSystemConfigStore, ["switchThemeMode"]),
-    openUrl(item) {
-      window.open(item.url);
+    name: "App Header",
+    components: {
+        Button,
     },
-    openSearch() {
-      this.$parent.open_search = true;
+    mounted() {},
+    computed: {
+        ...mapState(useSystemConfigStore, ["themeMode", "listSocial"]),
     },
-  },
-  watch: {
-    "$parent.$data.scroll_y": function (newValue) {
-      this.scroll_y = newValue;
+    methods: {
+        ...mapActions(useSystemConfigStore, ["switchThemeMode"]),
+        openUrl(item) {
+            window.open(item.url);
+        },
+        openSearch() {
+            this.$parent.open_search = true;
+        },
     },
-  },
 };
 </script>

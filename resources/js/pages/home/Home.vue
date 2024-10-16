@@ -74,16 +74,12 @@ export default {
         next_url: "",
       },
       total: 0,
-      searchModel: "",
     };
   },
   mounted() {
     this.fetchData();
-  },
-  watch: {
-    searchModel(value) {
-      this.$parent.$parent.$parent.search = value;
-    },
+    this.$parent.$parent.scroll_y = 0;
+    this.$parent.$parent.show_search = false;
   },
   methods: {
     fetchData() {
@@ -118,11 +114,9 @@ export default {
         });
       }
     },
-    clearSearch() {
-      this.searchModel = "";
-    },
     onScrollEvent(event) {
       this.scroll_y = event.srcElement.scrollTop;
+      this.$parent.$parent.scroll_y = this.scroll_y;
       const viewportHeight = event.srcElement.clientHeight;
       if (this.scroll_y >= event.srcElement.scrollHeight - viewportHeight - 20) {
         this.is_end = 1;

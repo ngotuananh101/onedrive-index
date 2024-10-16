@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="mb-4 breadcrumb">
+    <div class="p-3 mb-4 md:p-0 breadcrumb">
         <Breadcrumb>
             <BreadcrumbList>
                 <template v-for="(item, index) in breadcrumb" :key="index">
@@ -109,6 +109,8 @@ export default {
                 this.current_folder = res.data.current_folder;
             }
         });
+        this.$parent.$parent.scroll_y = 0;
+        this.$parent.$parent.show_search = true;
         this.fetchData();
 
         // Watch for route changes
@@ -116,6 +118,7 @@ export default {
             if (newId !== oldId) {
                 this.id = newId;
                 this.table_data = [];
+                this.$parent.$parent.scroll_y = 0;
                 this.fetchData();
             }
         });
@@ -152,6 +155,7 @@ export default {
         },
         onScrollEvent(event) {
             this.scroll_y = event.srcElement.scrollTop;
+            this.$parent.$parent.scroll_y = this.scroll_y;
             const viewportHeight = event.srcElement.clientHeight;
             if (
                 this.scroll_y >=

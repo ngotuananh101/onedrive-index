@@ -1,40 +1,34 @@
 <template>
-    <div class="flex h-screen max-h-screen p-2 md:p-4">
-        <div class="hidden md:block min-w-60">
-            <div class="flex flex-col">
-                <router-link :to="{ name: 'index' }" class="flex items-center">
-                    <img
-                        src="/uploads/images/logo.png"
-                        alt="Logo"
-                        class="w-10 mr-3"
-                    />
-                    <span class="text-xl font-medium dark:text-neutral-300">
-                        {{ $t("app_name") }}
-                    </span>
-                </router-link>
-            </div>
-        </div>
-        <div class="flex flex-col content-between grow">
-            <Header />
+    <div class="flex flex-col h-screen max-h-screen p-2 md:p-4">
+        <Header />
+        <div class="flex flex-row gap-2 mt-2 grow" id="content-wrapper">
             <div
-                class="flex p-2 mt-2 grow rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:p-4 md:pr-0"
-                id="content-wrapper"
+                class="relative flex flex-col max-h-full overflow-auto grow rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:p-4 md:pr-0"
             >
+                <router-view />
+                <!-- btn hide sidebar -->
                 <div
-                    class="flex flex-col max-h-full overflow-auto grow text-neutral-200"
+                    class="absolute flex items-center justify-center w-10 h-10 bg-blue-300 rounded-full bg-opacity-15 top-1 right-1 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                    @click="this.open_info = !this.open_info"
                 >
-                    <router-view />
+                    <i class="text-lg fa-regular fa-circle-info"></i>
                 </div>
+            </div>
+            <div
+                class="flex-col hidden max-h-full overflow-auto w-80 md:flex rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:p-4 md:pr-0"
+                v-if="open_info"
+            >
+                123
             </div>
         </div>
     </div>
-    <Search :open="open_search" @update:open="updateOpen"/>
+    <Search :open="open_search" @update:open="updateOpen" />
 </template>
 <script>
 import Header from "../components/Header.vue";
 import Search from "../components/Search.vue";
 export default {
-    name: "App Layout",
+    name: "Home Layout",
     components: {
         Header,
         Search,
@@ -42,6 +36,9 @@ export default {
     data() {
         return {
             open_search: false,
+            open_info: false,
+            show_search: false,
+            scroll_y: 0,
         };
     },
     methods: {
