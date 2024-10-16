@@ -223,7 +223,6 @@ class OneDriveController extends Controller
 
     public function download(Request $request, $id)
     {
-        set_time_limit(0);
         try {
             // Get item details from OneDrive using the item ID
             $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id);
