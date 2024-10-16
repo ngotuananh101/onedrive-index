@@ -154,14 +154,17 @@ class OneDriveController extends Controller
         try {
             $parent = [];
             $currentPath = "";
-            $rootPath = env('VITE_ONE_DRIVE_ROOT_FOLDER') == "/" ? '/drive/root:/' : '/drive/root:/' . env('VITE_ONE_DRIVE_ROOT_FOLDER');
+            $rootPath = env('VITE_ONE_DRIVE_ROOT_FOLDER') == "/" ? '/drive/root:' : '/drive/root:/' . env('VITE_ONE_DRIVE_ROOT_FOLDER');
             $loop = 1;
             do {
-                $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id);
+                $res = Http::withToken($this->access_token)->get($this->endpoint . '/items/' . $id . '?$select=id,name,parentReference');
                 if ($res->status() === 200) {
                     $json = $res->json();
                     if ($loop == 1) {
-                        $current = $json['name'];
+                        $current = [
+                            'name' => $json['name'],
+                            'id' => $json['id']
+                        ];
                     }
                     $parentReference = $json['parentReference'];
                     // Add parent details to the parent array
@@ -174,15 +177,14 @@ class OneDriveController extends Controller
                     $id = $parentReference['id'];
                 } else {
                     // Break the loop if an error occurs while fetching parent details
-                    break;
+                    throw new \Exception('Failed to retrieve parent details');
                 }
                 $loop++;
             } while ($currentPath !== $rootPath);
-
             // Return successful response
             return response()->json([
                 'status' => 'success',
-                'current_folder_name' => $current,
+                'current_folder' => $current,
                 'data' => array_reverse($parent),
             ], 200);
         } catch (\Exception $e) {

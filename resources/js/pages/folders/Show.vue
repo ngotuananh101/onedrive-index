@@ -11,6 +11,7 @@
                                         name: 'folders.show',
                                         params: { id: item.id },
                                     }"
+                                    @click="updateBreadcrumb(index, item)"
                                 >
                                     {{ item.name }}
                                 </router-link>
@@ -29,7 +30,7 @@
                     <BreadcrumbSeparator />
                 </template>
                 <BreadcrumbItem>
-                    <BreadcrumbPage>{{ current_folder_name }}</BreadcrumbPage>
+                    <BreadcrumbPage>{{ current_folder.name }}</BreadcrumbPage>
                 </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>
@@ -73,7 +74,7 @@ export default {
             loading: false,
             table_data: [],
             breadcrumb: [],
-            current_folder_name: "",
+            current_folder: "",
             columns: [
                 {
                     name: "name",
@@ -102,12 +103,19 @@ export default {
         };
     },
     mounted() {
+        getBreadcrumb(this.id).then((res) => {
+            if (res.status === 200) {
+                this.breadcrumb = res.data.data;
+                this.current_folder = res.data.current_folder;
+            }
+        });
         this.fetchData();
 
         // Watch for route changes
         this.$watch("$route.params.id", (newId, oldId) => {
             if (newId !== oldId) {
                 this.id = newId;
+                this.table_data = [];
                 this.fetchData();
             }
         });
@@ -122,12 +130,6 @@ export default {
                     this.query.next_url ? (this.is_end = 1) : (this.is_end = 0);
                 }
                 this.loading = false;
-            });
-            getBreadcrumb(this.id).then((res) => {
-                if (res.status === 200) {
-                    this.breadcrumb = res.data.data;
-                    this.current_folder_name = res.data.current_folder_name;
-                }
             });
         },
         loadMore() {
@@ -165,10 +167,19 @@ export default {
                     name: "folders.show",
                     params: { id: row.id },
                 });
+                this.breadcrumb = [...this.breadcrumb, this.current_folder];
+                this.current_folder = {
+                    id: row.id,
+                    name: row.name,
+                };
             } else {
                 this.$root.showPreview(row);
             }
         },
+        updateBreadcrumb(index, item){
+            this.breadcrumb = this.breadcrumb.slice(0, index);
+            this.current_folder = item;
+        }
     },
 };
 </script>
