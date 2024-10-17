@@ -4,7 +4,7 @@
             <BreadcrumbList>
                 <template v-for="(item, index) in breadcrumb" :key="index">
                     <BreadcrumbItem>
-                        <BreadcrumbLink as-child>
+                        <BreadcrumbLink as-child class="text-base md:text-lg">
                             <template v-if="index >= 1">
                                 <router-link
                                     :to="{
@@ -27,10 +27,10 @@
                             </template>
                         </BreadcrumbLink>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
+                    <BreadcrumbSeparator class="[&>svg]:size-3 md:[&>svg]:size-5"/>
                 </template>
                 <BreadcrumbItem>
-                    <BreadcrumbPage>{{ current_folder.name }}</BreadcrumbPage>
+                    <BreadcrumbPage class="text-base md:text-lg">{{ current_folder.name }}</BreadcrumbPage>
                 </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>

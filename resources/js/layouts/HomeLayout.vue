@@ -3,19 +3,19 @@
         <Header />
         <div class="flex flex-row gap-2 mt-2 grow" id="content-wrapper">
             <div
-                class="relative flex flex-col max-h-full overflow-auto grow rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:p-4 md:pr-0"
+                class="relative flex flex-col max-h-full overflow-auto grow rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:p-4 md:pr-[1px]"
             >
                 <router-view />
                 <!-- btn hide sidebar -->
                 <div
-                    class="absolute flex items-center justify-center w-10 h-10 bg-blue-300 rounded-full bg-opacity-15 top-1 right-1 hover:bg-neutral-200 dark:hover:bg-neutral-800"
+                    class="absolute flex items-center justify-center w-10 h-10 rounded-full top-1 right-1 hover:bg-neutral-300 dark:hover:bg-neutral-700"
                     @click="this.open_info = !this.open_info"
                 >
                     <i class="text-lg fa-regular fa-circle-info"></i>
                 </div>
             </div>
             <div
-                class="flex-col hidden max-h-full overflow-auto w-80 md:flex rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:p-4 md:pr-0"
+                class="flex-col hidden max-h-full overflow-auto w-80 md:flex rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:p-4"
                 v-if="open_info"
             >
                 123
