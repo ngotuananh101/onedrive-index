@@ -41,9 +41,7 @@
             @yield('body')
         </div>
         <div class="w-full h-[64px] bg-[#ffffff] dark:bg-[#1e1f20] lg:bg-transparent flex justify-between items-center">
-            {{ html()->form('POST', '')->open() }}
-            {{ html()->select('language', ['en' => __('en'), 'vi' => __('vi')], app()->getLocale())->class('select select-ghost text-[#444746] dark:text-[#c4c7c5] h-fit min-h-fit') }}
-            {{ html()->form()->close() }}
+            @include('layouts.partial.changeLanguage')
             @include('layouts.partial.themeTongle')
         </div>
     </div>
