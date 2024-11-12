@@ -37,7 +37,7 @@
 <body
     class="font-sans antialiased bg-[#f0f4f9] text-[#1f1f1f] flex flex-col justify-center items-center w-screen h-screen dark:bg-[#1e1f20]">
     <div class="w-full flex flex-col grow lg:grow-0 justify-center items-center lg:w-[1040px]">
-        <div class=" bg-[#ffffff] flex w-full h-full p-[36px] lg:h-fit lg:rounded-[28px] dark:bg-[#0e0e0e]">
+        <div class=" bg-[#ffffff] flex w-full h-full p-[18px] lg:p-[36px] lg:h-fit lg:rounded-[28px] dark:bg-[#0e0e0e]">
             @yield('body')
         </div>
         <div class="w-full h-[64px] bg-[#ffffff] dark:bg-[#1e1f20] lg:bg-transparent flex justify-between items-center">
