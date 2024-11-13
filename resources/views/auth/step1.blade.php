@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Step 1')
+@section('title', __('message.auth.step1.title'))
 
 @push('headerStyles')
 @endpush
@@ -10,7 +10,7 @@
 
 @section('body')
     <div class="w-full flex flex-col lg:flex-row justify-start lg:justify-between gap-10">
-        <div class="text-[#1f1f1f] dark:text-[#e3e3e3] flex flex-col min-w-[30%]">
+        <div class="text-[#1f1f1f] dark:text-[#e3e3e3] flex flex-col min-w-[25%]">
             <img src="{{ asset('assets/media/logo/onedrive.svg') }}" alt="{{ config('app.name') }}" class="w-[48px]">
             <h1 class="text-4xl font-normal mt-6 leading-8">
                 {{ config('app.name') }}
@@ -37,7 +37,7 @@
                             </tr>
                             <tr>
                                 <th>CLIENT_SECRET</th>
-                                <td>{{ config('onedrive.client_secret') }}</td>
+                                <td>***********************************</td>
                             </tr>
                             <tr>
                                 <th>REDIRECT_URI</th>
@@ -52,7 +52,7 @@
                                 <td>{{ config('onedrive.drive_api_url') }}</td>
                             </tr>
                             <tr>
-                                <th> API Scope</th>
+                                <th> API SCOPE</th>
                                 <td>{{ config('onedrive.scope') }}</td>
                             </tr>
                         </tbody>
@@ -64,10 +64,10 @@
                 </p>
             </div>
             <div class="text-right mt-6">
-                <button
+                <a href="{{ route('auth.step2') }}"
                     class="btn bg-[#0b57d0] dark:bg-[#a8c7fa] h-[40px] px-6 rounded-[24px] text-white dark:text-[#062e6f] hover:bg-[#1a73e8] dark:hover:bg-[#8ab4f8]">
-                    Proccess to OAuth
-                </button>
+                    {{ __('message.auth.step1.process_to_oauth') }}
+                </a>
             </div>
         </div>
     </div>

@@ -7,4 +7,5 @@ return [
     'auth_api_url' => env('ONEDRIVE_AUTH_API_URL'),
     'drive_api_url' => env('ONEDRIVE_DRIVE_API_URL'),
     'scope' => env('ONEDRIVE_SCOPE'),
+    'token_api_url' => env('ONEDRIVE_TOKEN_API_URL'),
 ];

@@ -1,4 +1,6 @@
 {
     "en": "English",
-    "vi": "Tiếng Việt"
+    "vi": "Tiếng Việt",
+    "Opps! Something went wrong.": "Opps! Something went wrong.",
+    "Can not get access token. For more information please check application log.": "Can not get access token. For more information please check application log."
 }
