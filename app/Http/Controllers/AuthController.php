@@ -113,4 +113,45 @@ class AuthController extends Controller
         // Display the third step of the authentication process
         return view('auth.step3');
     }
+
+    public function refreshToken()
+    {
+        // Data required to request the token
+        $data = [
+            'client_id' => config('onedrive.client_id'),
+            'client_secret' => config('onedrive.client_secret'),
+            'refresh_token' => cache('one_drive_refresh_token'),
+            'redirect_uri' => config('onedrive.redirect_uri'),
+            'grant_type' => 'refresh_token'
+        ];
+
+        try {
+            // Post request to OneDrive to obtain the access token
+            $res = Http::asForm()->post(config('onedrive.token_api_url'), $data);
+
+            if ($res->status() === 200) {
+                // Parse the response body
+                $body = $res->json();
+
+                // Cache the access token and refresh token
+                $expires_in = $body['expires_in'];
+                cache(['one_drive_access_token' => $body['access_token']], $expires_in);
+
+                // Return true upon successful acquisition of the token
+                return true;
+            } else {
+                // Log error information upon failure to obtain the token
+                Log::error($res->body());
+
+                // Return false upon failure to obtain the token
+                return false;
+            }
+        } catch (\Exception $e) {
+            // Log exception information
+            Log::error($e->getMessage());
+
+            // Return false upon encountering an exception
+            return false;
+        }
+    }
 }
