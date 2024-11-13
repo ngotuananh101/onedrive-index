@@ -8,6 +8,6 @@ import jquery from 'jquery';
 
 window.$ = window.jQuery = jquery;
 
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 
-window.Swal = Swal;
+// window.Swal = Swal;
