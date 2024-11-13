@@ -12,7 +12,7 @@ Route::get('/language/{lang}', function ($lang) {
 
 Route::group([
     'as' => 'home.',
-    'middleware' => ['checkOnedriveToken']
+    'middleware' => ['checkOneDriveToken']
 ], function () {
     Route::get('/', function () {
         return view('home.index');

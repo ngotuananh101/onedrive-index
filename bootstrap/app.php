@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\CheckOnedriveTokenMiddleware;
+use App\Http\Middleware\CheckOneDriveTokenMiddleware;
 use App\Http\Middleware\LanguageMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -22,7 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'doNotCacheResponse' => DoNotCacheResponse::class,
-            'checkOnedriveToken' => CheckOnedriveTokenMiddleware::class,
+            'checkOneDriveToken' => CheckOneDriveTokenMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
