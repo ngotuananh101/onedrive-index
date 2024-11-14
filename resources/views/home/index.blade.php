@@ -6,7 +6,7 @@
     <div class="h-full overflow-x-auto">
         <table class="table table-sm table-pin-rows text-[#e3e3e3]">
             <thead class="text-[#e3e3e3]">
-                <tr class="bg-transparent">
+                <tr class="dark:bg-[#131314] bg-white text-[#1f1f1f] dark:text-[#e3e3e3]">
                     <td class="w-full max-w-full lg:w-[50%] lg:max-w-[50%]">{{ __('Name') }}</td>
                     <td class="hidden lg:table-cell">{{ __('Owner') }}</td>
                     <td class="hidden lg:table-cell">{{ __('Last Updated At') }}</td>
@@ -16,7 +16,7 @@
             </thead>
             <tbody class="">
                 @foreach ($data as $d)
-                    <tr class="font-light">
+                    <tr class="font-light text-[#1f1f1f] dark:text-[#e3e3e3]">
                         <td>
                             <a href="{{ route('home.index') }}" class="flex items-center gap-2">
                                 <i class="fa-solid fa-folder text-[#f0b429]"></i>

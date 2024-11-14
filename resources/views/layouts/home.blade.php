@@ -83,7 +83,7 @@
             sidebar
         </div>
         <div id="content"
-            class="rounded-[1rem] dark:bg-[#131314] bg-white grow p-3 h-full w-full overflow-auto text-[#e3e3e3]">
+            class="rounded-[1rem] dark:bg-[#131314] bg-white grow p-3 h-full w-full overflow-auto text-[#1f1f1f] dark:text-[#e3e3e3]">
             {{-- <div class="max-w-full max-h-full overflow-auto"> --}}
             @yield('content')
             {{-- </div> --}}
