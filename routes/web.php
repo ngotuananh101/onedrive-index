@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 include __DIR__ . '/auth.php';
@@ -14,7 +15,6 @@ Route::group([
     'as' => 'home.',
     'middleware' => ['checkOneDriveToken']
 ], function () {
-    Route::get('/', function () {
-        return view('home.index');
-    })->name('index');
+    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::get('/download/{path}', [HomeController::class, 'download'])->name('download')->where('path', '.*');
 });
