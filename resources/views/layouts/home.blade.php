@@ -51,7 +51,7 @@
                         <i class="fa-regular fa-circle-info text-[20px]"></i>
                     </div>
                     <ul tabindex="0"
-                        class="dropdown-content menu bg-white dark:bg-[#1e1f20] rounded-box z-[1] w-52 p-2 shadow-md">
+                        class="dropdown-content menu bg-white dark:bg-[#1e1f20] rounded-box z-[9999] w-52 p-2 shadow-md">
                         <li><a>Item 1</a></li>
                         <li><a>Item 2</a></li>
                     </ul>
@@ -66,7 +66,7 @@
                             <i class="text-2xl fa-solid fa-bars"></i>
                         </label>
                     </div>
-                    <div class="drawer-side">
+                    <div class="drawer-side z-[9999]">
                         <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
                         <ul class="min-h-full p-4 menu bg-base-200 text-base-content w-80">
                             <!-- Sidebar content here -->
@@ -83,15 +83,24 @@
             sidebar
         </div>
         <div id="content"
-            class="rounded-[1rem] dark:bg-[#131314] bg-white grow p-3 h-full w-full overflow-auto text-[#1f1f1f] dark:text-[#e3e3e3]">
+            class="rounded-[1rem] dark:bg-[#131314] bg-white grow p-4 pr-2 h-full w-full text-[#1f1f1f] dark:text-[#e3e3e3] flex flex-col">
             {{-- <div class="max-w-full max-h-full overflow-auto"> --}}
+            <div class="max-w-full overflow-hidden breadcrumbs text-[24px] mb-3 p-0 min-h-9">
+                <ul class="">
+                    @foreach ($data['breadcrumbs'] as $b)
+                        <li class="breadcrumbs-item">
+                            <a href="{{ $b['path'] }}" class="decoration-transparent">{{ $b['name'] }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
             @yield('content')
             {{-- </div> --}}
         </div>
     </div>
     <div id="footer" class="h-[32px] flex justify-center items-center">
         <span class="text-[#444746] dark:text-[#c4c7c5] text-xs">
-            &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+            &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved. Made with ❤️ by PontaDev
         </span>
     </div>
     <!-- Custom Styles / Scripts -->

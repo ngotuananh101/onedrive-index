@@ -1,3 +1,79 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.breadcrumbs-item {
+    font-size: 24px;
+    color: #444746;
+    padding: 0 12px;
+    border-radius: 6.25rem;
+}
+
+.breadcrumbs-item:last-child {
+    color: #1f1f1f;
+}
+
+.breadcrumbs-item:hover {
+    background-color: rgba(31, 31, 31, 0.08);
+}
+
+.dark .breadcrumbs-item {
+    color: #c4c7c5;
+}
+
+.dark .breadcrumbs-item:last-child {
+    color: #e3e3e3;
+}
+
+.dark .breadcrumbs-item:hover {
+    background-color: rgba(227, 227, 227, 0.08);
+}
+
+.breadcrumbs-item:last-child::after {
+    content: '';
+}
+
+.loading-container {
+    /* position: absolute; */
+    /* left: 50%;
+    top: 50%; */
+    /* transform: translate(-50%, -50%); */
+}
+
+.loading-container .ball {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    float: left;
+    margin-left: 20px;
+    animation: move1 2s linear infinite;
+}
+
+.loading-container .ball:nth-child(1) {
+    background: #4285f4;
+    animation-delay: 0s;
+}
+
+.loading-container .ball:nth-child(2) {
+    background: #ea4335;
+    animation-delay: 0.25s;
+}
+
+.loading-container .ball:nth-child(3) {
+    background: #fbbc05;
+    animation-delay: 0.5s;
+}
+
+.loading-container .ball:nth-child(4) {
+    animation-delay: 0.75s;
+    background: #34a853;
+}
+
+@keyframes move1 {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}

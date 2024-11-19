@@ -16,5 +16,7 @@ Route::group([
     'middleware' => ['checkOneDriveToken']
 ], function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
-    Route::get('/download/{path}', [HomeController::class, 'download'])->name('download')->where('path', '.*');
+    Route::get('/next-page', [HomeController::class, 'getNextPage'])->name('next-page');
+    Route::get('/folder/{id}', [HomeController::class, 'folder'])->name('folder');
+    Route::get('/file/{id}', [HomeController::class, 'file'])->name('file');
 });
