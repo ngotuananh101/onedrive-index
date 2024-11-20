@@ -17,6 +17,8 @@ Route::group([
 ], function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/next-page', [HomeController::class, 'getNextPage'])->name('next-page');
+    Route::get('/path/{path}', [HomeController::class, 'path'])->name('path')->where('path', '.*');
     Route::get('/folder/{id}', [HomeController::class, 'folder'])->name('folder');
     Route::get('/file/{id}', [HomeController::class, 'file'])->name('file');
+    Route::get('/download/{id}', [HomeController::class, 'download'])->name('download');
 });

@@ -1,6 +1,13 @@
 @extends('layouts.home')
 
-@section('title', __('Home'))
+@section('title')
+    @if (count($data['breadcrumbs']) == 0)
+        {{ __('Home') }}
+    @endif
+    @if (count($data['breadcrumbs']) > 0)
+        {{ $data['breadcrumbs'][count($data['breadcrumbs']) - 1]['name'] }}
+    @endif
+@endsection
 
 @section('content')
     <div class="overflow-x-auto grow" id="content-scroll">
@@ -59,7 +66,7 @@
                                         class="dropdown-content menu bg-white dark:bg-[#1e1f20] rounded-box z-[1] w-52 p-2 shadow">
                                         @if (isset($item['@microsoft.graph.downloadUrl']))
                                             <li>
-                                                <a href="{{ $item['@microsoft.graph.downloadUrl'] }}" target="_blank">
+                                                <a href="{{ route('home.download', $item['id']) }}" target="_blank">
                                                     {{ __('Download') }}
                                                 </a>
                                             </li>

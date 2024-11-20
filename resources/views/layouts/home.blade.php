@@ -87,9 +87,13 @@
             {{-- <div class="max-w-full max-h-full overflow-auto"> --}}
             <div class="max-w-full overflow-hidden breadcrumbs text-[24px] mb-3 p-0 min-h-9">
                 <ul class="">
+                    <li class="breadcrumbs-item">
+                        <a href="{{ route('home.index') }}" class="decoration-transparent">{{ __('Home') }}</a>
+                    </li>
                     @foreach ($data['breadcrumbs'] as $b)
                         <li class="breadcrumbs-item">
-                            <a href="{{ $b['path'] }}" class="decoration-transparent">{{ $b['name'] }}</a>
+                            <a href="{{ route('home.path', $b['path']) }}"
+                                class="decoration-transparent">{{ $b['name'] }}</a>
                         </li>
                     @endforeach
                 </ul>

@@ -85,10 +85,6 @@ class OneDriveController extends Controller
             $data = $response->json();
             $items = $data['value'];
             $breadcrumbs = [];
-            $breadcrumbs[] = [
-                'name' => __('Home'),
-                'path' => route('home.index'),
-            ];
             if ($path !== $root) {
                 $pathFromRoot = str_replace($root, '', $path);
                 $folders = explode('/', $pathFromRoot);
@@ -114,7 +110,7 @@ class OneDriveController extends Controller
             // Log the error
             Log::error('Error getting folder content: ' . $th->getMessage());
             // Redirect to the home page
-            return redirect()->route('home')->with('error', __('Can not get folder content'));
+            abort(500, __('Error getting folder content'));
         }
     }
 
@@ -143,7 +139,7 @@ class OneDriveController extends Controller
                     $item['link'] = $viewLink;
                     $item['viewBtn'] = '<a href="' . $viewLink . '">' . __('View') . '</a>';
                     if (isset($item['@microsoft.graph.downloadUrl'])) {
-                        $item['downloadBtn'] = '<a href="' . $item['@microsoft.graph.downloadUrl'] . '" target="_blank">' . __('Download') . '</a>';
+                        $item['downloadBtn'] = '<a href="' . route('home.download', $item['id']) . '" target="_blank">' . __('Download') . '</a>';
                     } else {
                         $item['downloadBtn'] = '';
                     }
@@ -160,13 +156,54 @@ class OneDriveController extends Controller
         } catch (\Throwable $th) {
             // Log the error
             Log::error('Error getting root folder: ' . $th->getMessage());
-            dd($th->getMessage());
-            // Redirect to the home page
+            // Response with error
             return response()->json([
                 'status' => 'error',
                 'message' => __('Can not get next page'),
                 'data' => []
             ]);
+        }
+    }
+
+    public function getFolderById($folderId)
+    {
+        try {
+            $response = Http::withToken($this->ACCESS_TOKEN)->get("https://graph.microsoft.com/v1.0/me/drive/items/{$folderId}");
+            $data = $response->json();
+            return $data;
+        } catch (\Throwable $th) {
+            // Log the error
+            Log::error('Error getting folder: ' . $th->getMessage());
+            // return empty array
+            return [];
+        }
+    }
+
+    public function getFolderByPath($path)
+    {
+        try {
+            $response = Http::withToken($this->ACCESS_TOKEN)->get("https://graph.microsoft.com/v1.0/me/drive/root:{$path}");
+            $data = $response->json();
+            return $data;
+        } catch (\Throwable $th) {
+            // Log the error
+            Log::error('Error getting folder: ' . $th->getMessage());
+            // return empty array
+            return [];
+        }
+    }
+
+    public function getDownloadData($fileId)
+    {
+        try {
+            $response = Http::withToken($this->ACCESS_TOKEN)->get("https://graph.microsoft.com/v1.0/me/drive/items/{$fileId}?select=id,name,@microsoft.graph.downloadUrl");
+            $data = $response->json();
+            return $data;
+        } catch (\Throwable $th) {
+            // Log the error
+            Log::error('Error getting download URL: ' . $th->getMessage());
+            // return empty array
+            return [];
         }
     }
 }
