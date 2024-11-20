@@ -19,11 +19,15 @@ class OneDriveController extends Controller
 
     public function convertSize($size)
     {
-        $unit = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        for ($i = 0; $size > 1024; $i++) {
-            $size /= 1024;
+        if ($size == 0) {
+            return '-';
+        } else {
+            $unit = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+            for ($i = 0; $size > 1024; $i++) {
+                $size /= 1024;
+            }
+            return round($size, 2) . ' ' . $unit[$i];
         }
-        return round($size, 2) . ' ' . $unit[$i];
     }
 
     public function getFileIcon($path)

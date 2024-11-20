@@ -11,9 +11,10 @@
 
 @section('content')
     <div class="overflow-x-auto grow" id="content-scroll">
-        <table class="table table-sm table-pin-rows text-[#e3e3e3]">
+        <table class="table table-sm table-pin-rows text-[#442424]">
             <thead class="text-[#e3e3e3]">
-                <tr class="dark:bg-[#131314] bg-white text-[#1f1f1f] dark:text-[#e3e3e3] text-[14px]">
+                <tr
+                    class="dark:bg-[#131314] bg-white text-[#1f1f1f] dark:text-[#e3e3e3] text-[14px] border-b-[#c7c7c7] dark:border-b-[#444746]">
                     <td class="w-full max-w-full lg:w-[50%] lg:max-w-[50%]">{{ __('Name') }}</td>
                     <td class="hidden lg:table-cell">{{ __('Owner') }}</td>
                     <td class="hidden lg:table-cell">{{ __('Last Updated At') }}</td>
@@ -21,13 +22,14 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody class="" id="data">
+            <tbody class="border-b border-b-[#c7c7c7] dark:border-b-[#444746]" id="data">
                 @foreach ($data['items'] as $item)
                     @php
                         $controller = new App\Http\Controllers\OneDriveController();
                     @endphp
-                    <tr class="font-light text-[#1f1f1f] dark:text-[#e3e3e3]">
-                        <td class="text-[16px]">
+                    <tr
+                        class="font-light text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f1f1] dark:hover:bg-[#212122] border-b-[#c7c7c7] dark:border-b-[#444746]">
+                        <td class="text-[14px]">
                             <a href="{{ isset($item['folder']) ? route('home.folder', ['id' => $item['id']]) : route('home.file', ['id' => $item['id']]) }}"
                                 class="flex items-center gap-2">
 
