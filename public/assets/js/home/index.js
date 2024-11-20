@@ -25,7 +25,7 @@ content.scroll(function () {
                     html += `<tr class="font-light text-[#1f1f1f] dark:text-[#e3e3e3]">
                         <td class="text-[16px]">
                             <a href="${item['link']}" class="flex items-center gap-2">
-                                <i class="fa-solid ${item['icon']}"></i>
+                                ${item['folder'] ? '<i class="fa-solid fa-folder text-[#f0b429] text-[25px]"></i>' : '<i class="fa-solid ' + item['icon'] + ' text-[25px]"></i>'}
                                 <span class="font-medium">${item['name']}</span>
                             </a>
                         </td>

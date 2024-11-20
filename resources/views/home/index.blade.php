@@ -29,14 +29,14 @@
                     @endphp
                     <tr
                         class="font-light text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f1f1] dark:hover:bg-[#212122] border-b-[#c7c7c7] dark:border-b-[#444746]">
-                        <td class="text-[14px]">
+                        <td class="text-[15px]">
                             <a href="{{ isset($item['folder']) ? route('home.folder', ['id' => $item['id']]) : route('home.file', ['id' => $item['id']]) }}"
                                 class="flex items-center gap-2">
 
                                 @if (isset($item['folder']))
-                                    <i class="fa-solid fa-folder text-[#f0b429]"></i>
+                                    <i class="fa-solid fa-folder text-[#f0b429] text-[25px]"></i>
                                 @else
-                                    <i class="fa-solid {{ $controller->getFileIcon($item['name']) }}"></i>
+                                    <i class="fa-solid {{ $controller->getFileIcon($item['name']) }} text-[25px]"></i>
                                 @endif
                                 <span class="font-medium">{{ $item['name'] }}</span>
                             </a>

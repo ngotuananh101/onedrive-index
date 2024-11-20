@@ -36,44 +36,44 @@ class OneDriveController extends Controller
         $icon = 'far fa-file';
         switch ($extension) {
             case 'pdf':
-                $icon = 'far fa-file-pdf text-red-400';
+                $icon = 'far fa-file-pdf file-pdf';
                 break;
             case 'doc':
             case 'docx':
-                $icon = 'far fa-file-word text-blue-400';
+                $icon = 'far fa-file-word file-word';
                 break;
             case 'xls':
             case 'xlsx':
-                $icon = 'far fa-file-excel text-green-400';
+                $icon = 'far fa-file-excel file-excel';
                 break;
             case 'ppt':
             case 'pptx':
-                $icon = 'far fa-file-powerpoint text-orange-400';
+                $icon = 'far fa-file-powerpoint file-powerpoint';
                 break;
             case 'zip':
             case 'rar':
-                $icon = 'far fa-file-archive text-yellow-400';
+                $icon = 'far fa-file-archive file-archive';
                 break;
             case 'mp3':
             case 'wav':
-                $icon = 'far fa-file-audio text-pink-400';
+                $icon = 'far fa-file-audio file-audio';
                 break;
             case 'mp4':
             case 'avi':
             case 'mov':
-                $icon = 'far fa-file-video text-purple-400';
+                $icon = 'far fa-file-video file-video';
                 break;
             case 'jpg':
             case 'jpeg':
             case 'png':
             case 'gif':
-                $icon = 'far fa-file-image text-indigo-400';
+                $icon = 'far fa-file-image file-image';
                 break;
             case 'php':
             case 'html':
             case 'css':
             case 'js':
-                $icon = 'far fa-file-code text-gray-400';
+                $icon = 'far fa-file-code file-code';
                 break;
         }
 

@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+.file-pdf {
+    @apply text-red-400;
+}
+.file-word {
+    @apply text-blue-400;
+}
+.file-excel {
+    @apply text-green-400;
+}
+.file-powerpoint {
+    @apply text-orange-400;
+}
+.file-archive {
+    @apply text-yellow-400;
+}
+.file-audio {
+    @apply text-purple-400;
+}
+.file-video {
+    @apply text-pink-400;
+}
+.file-image {
+    @apply text-indigo-400;
+}
+.file-code {
+    @apply text-gray-400;
+}
+
 .breadcrumbs-item::before {
     margin: 0 0.25rem !important;
     width: 0.5rem !important;
