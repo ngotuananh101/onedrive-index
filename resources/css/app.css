@@ -104,3 +104,17 @@
         transform: translateY(-15px);
     }
 }
+
+.tab-title {
+    border-color: transparent;
+}
+
+.tab-title.active {
+    color: #0b57d0;
+    border-color: #0b57d0;
+}
+
+.dark .tab-title.active {
+    color: #a8c7fa;
+    border-color: #a8c7fa;
+}

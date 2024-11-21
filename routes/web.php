@@ -21,4 +21,5 @@ Route::group([
     Route::get('/folder/{id}', [HomeController::class, 'folder'])->name('folder');
     Route::get('/file/{id}', [HomeController::class, 'file'])->name('file');
     Route::get('/download/{id}', [HomeController::class, 'download'])->name('download');
+    Route::get('/info/{id}', [HomeController::class, 'info'])->name('info');
 });

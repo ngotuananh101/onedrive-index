@@ -25,7 +25,7 @@ content.scroll(function () {
                     html += `<tr class="font-light text-[#1f1f1f] dark:text-[#e3e3e3]">
                         <td class="text-[16px]">
                             <a href="${item['link']}" class="flex items-center gap-2">
-                                ${item['folder'] ? '<i class="fa-solid fa-folder text-[#f0b429] text-[25px]"></i>' : '<i class="fa-solid ' + item['icon'] + ' text-[25px]"></i>'}
+                                ${item['folder'] ? '<i class="fa-solid fa-folder text-[#f0b429] text-[22px]"></i>' : '<i class="fa-solid ' + item['icon'] + ' text-[22px]"></i>'}
                                 <span class="font-medium">${item['name']}</span>
                             </a>
                         </td>
@@ -70,3 +70,55 @@ content.scroll(function () {
 
     }
 });
+
+
+let items = $('.item-row');
+
+items.each(function (index, item) {
+    $(item).click(function () {
+        let id = $(this).data('id');
+        getInfo(id);
+    });
+});
+
+let tab1 = $('.tab-data #tab_1');
+let tab1Default = tab1.find('.default');
+let tab1Loading = tab1.find('.loading-container');
+let tab1Main = tab1.find('.main');
+let tab2 = $('.tab-data #tab_2');
+function getInfo(id) {
+    hideItemFlex(tab1Default);
+    showItemFlex(tab1Loading);
+    $.ajax({
+        url: '/info/' + id,
+        type: 'GET',
+        data: {
+            id: id
+        },
+        success: function (response) {
+            let objectLength = Object.keys(response).length;
+            if (objectLength > 0) {
+                tab1Main.find('.preview').attr('src', response['thumbnail']);
+                tab1Main.find('.owner-name').text(response['createdBy']['user']['displayName']);
+            }
+            hideItemFlex(tab1Loading);
+            showItemFlex(tab1Main);
+        },
+        error: function (error) {
+        },
+        complete: function () {
+        }
+    });
+}
+
+function showItemFlex(item) {
+    if (item.hasClass('hidden')) {
+        item.removeClass('hidden').addClass('flex');
+    }
+}
+
+function hideItemFlex(item) {
+    if (item.hasClass('flex')) {
+        item.removeClass('flex').addClass('hidden');
+    }
+}

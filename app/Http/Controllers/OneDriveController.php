@@ -210,4 +210,39 @@ class OneDriveController extends Controller
             return [];
         }
     }
+
+    public function getChildFolderList($folderId)
+    {
+        try {
+            $response = Http::withToken($this->ACCESS_TOKEN)->get("https://graph.microsoft.com/v1.0/me/drive/items/{$folderId}/children?select=id,name,folder,parentReference");
+            $data = $response->json();
+            return $data['value'];
+        } catch (\Throwable $th) {
+            // Log the error
+            Log::error('Error getting child folders: ' . $th->getMessage());
+            // return empty array
+            return [];
+        }
+    }
+
+    public function getItemInfoById($itemId)
+    {
+        try {
+            // Get thumbnail, metadata
+            $thumbnail = Http::withToken($this->ACCESS_TOKEN)->get("https://graph.microsoft.com/v1.0/me/drive/items/{$itemId}/thumbnails/0/medium");
+            $response = Http::withToken($this->ACCESS_TOKEN)->get("https://graph.microsoft.com/v1.0/me/drive/items/{$itemId}");
+            $data = $response->json();
+            if (isset($thumbnail['url'])) {
+                $data['thumbnail'] = $thumbnail['url'];
+            } else {
+                $data['thumbnail'] = asset('assets/media/png/folder.png');
+            }
+            return $data;
+        } catch (\Throwable $th) {
+            // Log the error
+            Log::error('Error getting item info: ' . $th->getMessage());
+            // return empty array
+            return [];
+        }
+    }
 }

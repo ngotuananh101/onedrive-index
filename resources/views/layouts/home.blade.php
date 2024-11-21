@@ -78,10 +78,7 @@
             </div>
         </div>
     </div>
-    <div id="content-wrapper" class="flex w-full gap-2 px-4 grow">
-        <div id="sidebar" class="hidden lg:block w-[256px]">
-            sidebar
-        </div>
+    <div id="content-wrapper" class="flex w-full gap-3 px-4 grow">
         <div id="content"
             class="rounded-[1rem] dark:bg-[#131314] bg-white grow p-4 pr-2 h-full w-full text-[#1f1f1f] dark:text-[#e3e3e3] flex flex-col">
             {{-- <div class="max-w-full max-h-full overflow-auto"> --}}
@@ -100,6 +97,72 @@
             </div>
             @yield('content')
             {{-- </div> --}}
+        </div>
+        <div id="sidebar"
+            class="hidden lg:flex min-w-[300px] max-w-[300px] rounded-[1rem] dark:bg-[#131314] bg-white h-full text-[#1f1f1f] dark:text-[#e3e3e3] flex-col">
+            <div class="flex justify-between p-3 pb-0 sidebar-header">
+                <h3 class="text-[16px] font-medium flex justify-center items-center">
+                    @if (count($data['breadcrumbs']) == 0)
+                        {{ __('Home') }}
+                    @else
+                        {{ $data['breadcrumbs'][count($data['breadcrumbs']) - 1]['name'] }}
+                    @endif
+                </h3>
+                <div
+                    class="w-[30px] h-[30px] rounded-full flex justify-center items-center cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
+                    <i class="fa-duotone fa-regular fa-xmark text-[16px] text-[#1f1f1f] dark:text-[#e3e3e3]"></i>
+                </div>
+            </div>
+            <div class="tab-info grow">
+                <div class="flex border-b border-b-[#c7c7c7] dark:border-b-[#444746] mt-5">
+                    <div class="w-[50%] flex justify-center">
+                        <span class="text-[14px] text-center pb-4 border-b-[3px] font-semibold tab-title active"
+                            data-target-id="tab_1">{{ __('Information') }}</span>
+                    </div>
+                    <div class="w-[50%] flex justify-center">
+                        <span class="text-[14px] text-center pb-4 border-b-[3px] font-semibold tab-title"
+                            data-target-id="tab_2">{{ __('Activity') }}</span>
+                    </div>
+                </div>
+                <div class="tab-data">
+                    <div class="flex gap-4 tab-pane" id="tab_1">
+                        <div class="flex flex-col items-center justify-center grow default">
+                            <img src="{{ asset('assets/media/svg/empty_state_details_v2.svg') }}" alt=""
+                                class="w-[176px]">
+                            <span id="info-text">
+                                {{ __('Select an item to view details') }}
+                            </span>
+                        </div>
+                        <div class="items-center justify-center hidden loading-container grow min-h-[100px]">
+                            <div class="loading"></div>
+                        </div>
+                        <div class="flex-col hidden main grow">
+                            <div
+                                class="flex flex-col justify-center w-full p-3 pb-4 border-b border-b-[#c7c7c7] dark:border-b-[#444746] ">
+                                <img src="" alt="Preview" class="preview w-[176px] mx-auto">
+                                <div class="flex flex-col justify-center w-full mt-3">
+                                    <p>{{ __('Uploaded by') }}</p>
+                                    <div class="flex items-center justify-start gap-2 mt-2">
+                                        <div class="w-[25px] h-[25px] rounded-full">
+                                            <img src="{{ asset('assets/media/avatar/photo.jpg') }}" alt="Owner"
+                                                class="w-full h-full rounded-full">
+                                        </div>
+                                        <span class="text-[14px] font-medium owner-name"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center w-full p-3 pb-4">
+                                <p>{{ __('Details') }}</p>
+                                <div class="flex items-center justify-between mt-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden tab-pane" id="tab_2">
+                        456
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="footer" class="h-[32px] flex justify-center items-center">
@@ -128,10 +191,19 @@
         </script>
     @endsession
     <script type="module">
-        // Set max height of content
-        const content = $('#content');
-        // content height = window height - header height - footer height
-        content.css('max-height', $(window).height() - $('#header').height() - $('#footer').height() - 24);
+        function setMaxHeight() {
+            // Set max height
+            const content = $('#content');
+            const sidebar = $('#sidebar');
+            // content height = window height - header height - footer height
+            let maxContentHeight = $(window).height() - $('#header').height() - $('#footer').height() - 24;
+            content.css('max-height', maxContentHeight);
+            sidebar.css('max-height', maxContentHeight);
+        }
+        setMaxHeight();
+        $(window).resize(function() {
+            setMaxHeight();
+        });
     </script>
     @stack('footerStyles')
     @stack('footerScripts')

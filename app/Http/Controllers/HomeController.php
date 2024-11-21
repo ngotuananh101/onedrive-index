@@ -39,7 +39,6 @@ class HomeController extends Controller
             $rootFolder = $this->controller->getFolderByPath(config('onedrive.root_folder_path'));
             cache(['one_drive_root_data' => $rootFolder]);
         }
-
         // Pass the retrieved data to the home index view
         return view('home.index', [
             'data' => $data
@@ -91,5 +90,12 @@ class HomeController extends Controller
         $downloadData = $this->controller->getDownloadData($fileId);
         // Redirect the user to the download URL
         return redirect($downloadData['@microsoft.graph.downloadUrl']);
+    }
+
+    public function info(Request $request, $fileOrFolderId)
+    {
+        // Get the metadata for the specified file or folder
+        $itemMeta = $this->controller->getItemInfoById($fileOrFolderId);
+        return response()->json($itemMeta);
     }
 }

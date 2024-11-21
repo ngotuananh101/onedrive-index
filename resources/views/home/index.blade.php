@@ -3,8 +3,7 @@
 @section('title')
     @if (count($data['breadcrumbs']) == 0)
         {{ __('Home') }}
-    @endif
-    @if (count($data['breadcrumbs']) > 0)
+    @else
         {{ $data['breadcrumbs'][count($data['breadcrumbs']) - 1]['name'] }}
     @endif
 @endsection
@@ -27,16 +26,16 @@
                     @php
                         $controller = new App\Http\Controllers\OneDriveController();
                     @endphp
-                    <tr
-                        class="font-light text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f1f1] dark:hover:bg-[#212122] border-b-[#c7c7c7] dark:border-b-[#444746]">
+                    <tr class="font-light item-row text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f1f1] dark:hover:bg-[#212122] border-b-[#c7c7c7] dark:border-b-[#444746]"
+                        data-id="{{ $item['id'] }}">
                         <td class="text-[15px]">
                             <a href="{{ isset($item['folder']) ? route('home.folder', ['id' => $item['id']]) : route('home.file', ['id' => $item['id']]) }}"
                                 class="flex items-center gap-2">
 
                                 @if (isset($item['folder']))
-                                    <i class="fa-solid fa-folder text-[#f0b429] text-[25px]"></i>
+                                    <i class="fa-solid fa-folder text-[#f0b429] text-[22px]"></i>
                                 @else
-                                    <i class="fa-solid {{ $controller->getFileIcon($item['name']) }} text-[25px]"></i>
+                                    <i class="fa-solid {{ $controller->getFileIcon($item['name']) }} text-[22px]"></i>
                                 @endif
                                 <span class="font-medium">{{ $item['name'] }}</span>
                             </a>
