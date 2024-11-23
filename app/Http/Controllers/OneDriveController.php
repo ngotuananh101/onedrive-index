@@ -454,6 +454,7 @@ class OneDriveController extends Controller
             // check if the request was successful
             if ($itemActivity->successful()) {
                 $data = $itemActivity->json();
+                // dd($data);
                 // return response()->json($data);
                 $value = $data['value'];
                 $response = [];
@@ -461,9 +462,10 @@ class OneDriveController extends Controller
                 foreach ($value as $item) {
                     $action = $item['action'];
                     $actionKeys = array_keys($action);
+                    $name = isset($action[$actionKeys[0]]['name']) ? $action[$actionKeys[0]]['name'] : null;
                     $actor = $item['actor']['user']['displayName'];
                     $action = [
-                        __('Was'),
+                        $name,
                         __($actionKeys[0]),
                         __('by'),
                         $actor

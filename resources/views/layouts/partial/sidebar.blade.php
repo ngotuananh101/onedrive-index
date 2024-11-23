@@ -121,7 +121,7 @@
                 </div>
                 <div class="flex-col hidden main grow text-[#c7c7c7] dark:text-[#444746]">
                     <!-- component -->
-                    <div class="container max-w-full px-5 py-10 mx-auto">
+                    <div class="container px-5 py-10 mx-auto">
                         <!-- component -->
                         <div class="relative">
                             <div class="absolute top-0 h-full border-r-4 border-[#8f8f8f]"></div>
@@ -135,7 +135,8 @@
                                         <div class="z-10 flex-1 ml-4">
                                             <div
                                                 class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f]">
-                                                <h4 class="mb-3 text-sm font-medium text-[#1f1f1f]">
+                                                <h4
+                                                    class="mb-3 text-sm font-medium text-[#1f1f1f] text-ellipsis overflow-hidden">
                                                     Test
                                                 </h4>
                                                 <p class="m-0 text-xs font-normal text-[#444746]">

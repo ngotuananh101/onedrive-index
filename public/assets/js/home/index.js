@@ -184,8 +184,8 @@ function getActivity(id) {
                                         </div>
                                         <div class="z-10 flex-1 ml-4 font-medium">
                                             <div
-                                                class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f]">
-                                                <h4 class="mb-3 text-sm font-medium text-[#1f1f1f]">
+                                                class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f]" style="max-width: 222px;">
+                                                <h4 class="mb-3 text-sm font-medium text-[#1f1f1f] text-ellipsis overflow-hidden">
                                                     ${item.action}
                                                 </h4>
                                                 <p class="text-xs text-[#444746] m-0 font-normal">
