@@ -26,21 +26,20 @@
                     @php
                         $controller = new App\Http\Controllers\OneDriveController();
                     @endphp
-                    <tr class="font-light item-row text-[#1f1f1f] dark:text-[#e3e3e3] hover:bg-[#f0f1f1] dark:hover:bg-[#212122] border-b-[#c7c7c7] dark:border-b-[#444746]"
+                    <tr class="font-light item-row text-[#444746] dark:text-[#c4c7c5] hover:bg-[#f0f1f1] dark:hover:bg-[#212122] border-b-[#c7c7c7] dark:border-b-[#444746]"
                         data-id="{{ $item['id'] }}">
-                        <td class="text-[15px]">
+                        <td class="text-[14px]">
                             <a href="{{ isset($item['folder']) ? route('home.folder', ['id' => $item['id']]) : route('home.file', ['id' => $item['id']]) }}"
-                                class="flex items-center gap-2">
-
+                                class="flex items-center gap-2 w-fit">
                                 @if (isset($item['folder']))
                                     <i class="fa-solid fa-folder text-[#f0b429] text-[22px]"></i>
                                 @else
                                     <i class="fa-solid {{ $controller->getFileIcon($item['name']) }} text-[22px]"></i>
                                 @endif
-                                <span class="font-medium">{{ $item['name'] }}</span>
+                                <span class="font-semibold text-[#1f1f1f] dark:text-[#e3e3e3]">{{ $item['name'] }}</span>
                             </a>
                         </td>
-                        <td class="hidden lg:table-cell">
+                        <td class="hidden font-medium lg:table-cell">
                             @if (isset($data['owner']))
                                 <div class="flex items-center avatar">
                                     <div class="w-[25px] h-[25px] rounded-full">
@@ -52,10 +51,10 @@
                                 <span class="text-[#f0b429]">{{ __('You') }}</span>
                             @endif
                         </td>
-                        <td class="hidden lg:table-cell">
+                        <td class="hidden font-medium lg:table-cell">
                             {{ Carbon\Carbon::parse($item['lastModifiedDateTime'])->format(config('onedrive.date_format')) }}
                         </td>
-                        <td class="hidden lg:table-cell">{{ $controller->convertSize($item['size']) }}</td>
+                        <td class="hidden font-medium lg:table-cell">{{ $controller->convertSize($item['size']) }}</td>
                         <td>
                             <div class="flex items-center justify-end gap-2">
                                 <div class="dropdown dropdown-end">

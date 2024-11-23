@@ -98,6 +98,7 @@ function getInfo(id) {
         success: function (response) {
             let objectLength = Object.keys(response).length;
             if (objectLength > 0) {
+                $('#sidebar-title').text(response['name']);
                 tab1Main.find('.preview').attr('src', response['thumbnail']);
                 tab1Main.find('.owner-name').text(response['createdBy']['user']['displayName']);
             }

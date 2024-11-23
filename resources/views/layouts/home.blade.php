@@ -16,8 +16,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:300,400,500,600&display=swap" rel="stylesheet" />
+    {{-- <link rel="preconnect" href="https://fonts.bunny.net"> --}}
+    {{-- <link href="https://fonts.bunny.net/css?family=figtree:300,400,500,600&display=swap" rel="stylesheet" /> --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
 
     <!-- Global Styles / Scripts -->
@@ -101,7 +105,7 @@
         <div id="sidebar"
             class="hidden lg:flex min-w-[300px] max-w-[300px] rounded-[1rem] dark:bg-[#131314] bg-white h-full text-[#1f1f1f] dark:text-[#e3e3e3] flex-col">
             <div class="flex justify-between p-3 pb-0 sidebar-header">
-                <h3 class="text-[16px] font-medium flex justify-center items-center">
+                <h3 class="flex items-center justify-center text-base font-medium" id="sidebar-title">
                     @if (count($data['breadcrumbs']) == 0)
                         {{ __('Home') }}
                     @else
@@ -116,11 +120,11 @@
             <div class="tab-info grow">
                 <div class="flex border-b border-b-[#c7c7c7] dark:border-b-[#444746] mt-5">
                     <div class="w-[50%] flex justify-center">
-                        <span class="text-[14px] text-center pb-4 border-b-[3px] font-semibold tab-title active"
+                        <span class="text-center pb-4 border-b-[3px] font-semibold tab-title active text-[0.875rem]"
                             data-target-id="tab_1">{{ __('Information') }}</span>
                     </div>
                     <div class="w-[50%] flex justify-center">
-                        <span class="text-[14px] text-center pb-4 border-b-[3px] font-semibold tab-title"
+                        <span class="text-center pb-4 border-b-[3px] font-semibold tab-title text-[0.875rem]"
                             data-target-id="tab_2">{{ __('Activity') }}</span>
                     </div>
                 </div>
@@ -129,31 +133,34 @@
                         <div class="flex flex-col items-center justify-center grow default">
                             <img src="{{ asset('assets/media/svg/empty_state_details_v2.svg') }}" alt=""
                                 class="w-[176px]">
-                            <span id="info-text">
+                            <span id="info-text" class="text-[0.875rem]">
                                 {{ __('Select an item to view details') }}
                             </span>
                         </div>
                         <div class="items-center justify-center hidden loading-container grow min-h-[100px]">
                             <div class="loading"></div>
                         </div>
-                        <div class="flex-col hidden main grow">
+                        <div class="flex-col hidden main grow text-[#c7c7c7] dark:text-[#444746]">
                             <div
                                 class="flex flex-col justify-center w-full p-3 pb-4 border-b border-b-[#c7c7c7] dark:border-b-[#444746] ">
-                                <img src="" alt="Preview" class="preview w-[176px] mx-auto">
-                                <div class="flex flex-col justify-center w-full mt-3">
-                                    <p>{{ __('Uploaded by') }}</p>
+                                <img src="" alt="Preview" class="max-w-full m-auto preview">
+                                <div class="flex flex-col justify-center w-full mt-5">
+                                    <h2 class="text-base font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                        {{ __('Uploaded by') }}</h2>
                                     <div class="flex items-center justify-start gap-2 mt-2">
                                         <div class="w-[25px] h-[25px] rounded-full">
                                             <img src="{{ asset('assets/media/avatar/photo.jpg') }}" alt="Owner"
                                                 class="w-full h-full rounded-full">
                                         </div>
-                                        <span class="text-[14px] font-medium owner-name"></span>
+                                        <span
+                                            class="text-sm font-medium owner-name text-[#1f1f1f] dark:text-[#050404] opacity-80"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="flex flex-col justify-center w-full p-3 pb-4">
-                                <p>{{ __('Details') }}</p>
-                                <div class="flex items-center justify-between mt-3">
+                                <h2 class="text-base font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                    {{ __('Details') }}</h2>
+                                <div class="flex items-center justify-between gap-4 mt-3">
                                 </div>
                             </div>
                         </div>
