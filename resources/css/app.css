@@ -122,3 +122,11 @@
 .font-sans {
     font-family: 'Open Sans', serif;
 }
+
+tr.selected {
+    background-color: #c2e7ff !important;
+}
+
+.dark tr.selected {
+    background-color: #004a77 !important;
+}

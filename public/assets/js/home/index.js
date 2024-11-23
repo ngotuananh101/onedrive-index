@@ -22,9 +22,9 @@ content.scroll(function () {
                 let nextPage = response.next_url;
                 let html = '';
                 items.forEach(function (item) {
-                    html += `<tr class="font-light text-[#1f1f1f] dark:text-[#e3e3e3] border-b-[#c7c7c7] dark:border-b-[#444746]">
+                    html += `<tr class="font-light item-row text-[#1f1f1f] dark:text-[#e3e3e3] border-b-[#c7c7c7] dark:border-b-[#444746]" data-id="${item.id}">
                         <td class="text-[14px]">
-                            <a href="${item['link']}" class="flex items-center gap-2 item-name">
+                            <a href="${item['link']}" class="flex items-center gap-2 w-fit item-name">
                                 ${item['folder'] ? '<i class="fa-solid fa-folder text-[#f0b429] text-[22px] item-name"></i>' : '<i class="fa-solid ' + item['icon'] + ' text-[22px] item-name"></i>'}
                                 <span class="font-semibold item-name">${item['name']}</span>
                             </a>
@@ -58,6 +58,7 @@ content.scroll(function () {
                     </tr>`;
                 });
                 $('#data').append(html);
+                setRowClick();
                 content.data('nextPage', nextPage);
             },
             error: function (error) {
@@ -67,24 +68,26 @@ content.scroll(function () {
                 $('#loading').addClass('hidden');
             }
         });
-
     }
 });
 
-
-let items = $('.item-row');
-
-items.each(function (index, item) {
-    $(item).click(function (e) {
-        let id = $(this).data('id');
-        // check target do not have class item-name
-        console.log(e.target);
-
-        if (!$(e.target).hasClass('item-name')) {
-            getInfo(id);
-        }
+function setRowClick() {
+    let items = $('.item-row');
+    items.each(function (index, item) {
+        // remove previous click event
+        $(item).off('click');
+        $(item).click(function (e) {
+            let id = $(this).data('id');
+            if (!$(e.target).hasClass('item-name')) {
+                getInfo(id);
+            }
+            items.removeClass('selected');
+            $(this).closest('tr').toggleClass('selected');
+        });
     });
-});
+}
+
+setRowClick();
 
 let tab1 = $('.tab-data #tab_1');
 let tab1Default = tab1.find('.default');
