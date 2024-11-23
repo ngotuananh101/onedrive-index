@@ -1,0 +1,155 @@
+<div id="sidebar"
+    class="hidden lg:flex min-w-[300px] max-w-[300px] rounded-[1rem] dark:bg-[#131314] bg-white h-full text-[#1f1f1f] dark:text-[#e3e3e3] flex-col">
+    <div class="flex justify-between p-3 pb-0 sidebar-header">
+        <div class="flex items-center justify-start max-w-[85%] grow">
+            <h3 class="text-base font-medium truncate " id="sidebar-title">
+                @if (count($data['breadcrumbs']) == 0)
+                    {{ __('Home') }}
+                @else
+                    {{ $data['breadcrumbs'][count($data['breadcrumbs']) - 1]['name'] }}
+                @endif
+            </h3>
+        </div>
+        {{-- <div
+            class="w-[30px] h-[30px] rounded-full flex justify-center items-center cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
+            <i class="fa-duotone fa-regular fa-xmark text-[16px] text-[#1f1f1f] dark:text-[#e3e3e3]"></i>
+        </div> --}}
+    </div>
+    <div class="max-h-full overflow-y-auto tab-info grow">
+        <div class="flex border-b border-b-[#c7c7c7] dark:border-b-[#444746] mt-5 sticky top-5">
+            <div class="w-[50%] flex justify-center">
+                <span class="text-center pb-4 border-b-[3px] font-semibold tab-title active text-[0.875rem]"
+                    data-target-id="tab_1">{{ __('Information') }}</span>
+            </div>
+            <div class="w-[50%] flex justify-center">
+                <span class="text-center pb-4 border-b-[3px] font-semibold tab-title text-[0.875rem]"
+                    data-target-id="tab_2">{{ __('Activity') }}</span>
+            </div>
+        </div>
+        <div class="tab-data">
+            <div class="flex gap-4 tab-pane" id="tab_1">
+                <div class="flex flex-col items-center justify-center grow default">
+                    <img src="{{ asset('assets/media/svg/empty_state_details_v2.svg') }}" alt=""
+                        class="w-[176px]">
+                    <span id="info-text" class="text-[0.875rem]">
+                        {{ __('Select an item to view details') }}
+                    </span>
+                </div>
+                <div class="items-center justify-center hidden loading-container grow min-h-[100px]">
+                    <div class="loading"></div>
+                </div>
+                <div class="flex-col items-center justify-center hidden grow error">
+                    <i class="fa-regular fa-circle-exclamation text-[48px] mt-5"></i>
+                    <span class="text-[16px]">
+                        {{ __('Something went wrong') }}
+                    </span>
+                </div>
+                <div class="flex-col hidden main grow text-[#c7c7c7] dark:text-[#444746]">
+                    <div
+                        class="flex flex-col justify-center w-full p-3 pb-4 border-b border-b-[#c7c7c7] dark:border-b-[#444746] ">
+                        <img src="" alt="Preview" class="max-w-full m-auto preview">
+                        <div class="flex flex-col justify-center w-full mt-5">
+                            <h2 class="text-base font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                {{ __('Uploaded by') }}</h2>
+                            <div class="flex items-center justify-start gap-2 mt-2">
+                                <div class="w-[25px] h-[25px] rounded-full">
+                                    <img src="{{ asset('assets/media/avatar/photo.jpg') }}" alt="Owner"
+                                        class="w-full h-full rounded-full">
+                                </div>
+                                <span
+                                    class="text-sm font-medium owner-name text-[#1f1f1f] dark:text-[#e3e3e3] opacity-80"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center w-full p-3 pb-4">
+                        <h2 class="text-base font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">
+                            {{ __('Details') }}</h2>
+                        <div class="flex flex-col items-start justify-between gap-4 mt-3">
+                            <div class="flex flex-col gap-1 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                <span class="text-xs font-semibold">{{ __('Drive type') }}</span>
+                                <span class="text-sm" id="drive_type"></span>
+                            </div>
+                            <div class="flex flex-col gap-1 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                <span class="text-xs font-medium">{{ __('Location') }}</span>
+                                <a href="#"
+                                    class="text-sm py-1 px-2 border border-[#c7c7c7] dark:border-[#444746] rounded-md"
+                                    id="drive_location">
+                                    <i class="fa-solid fa-folder"></i>
+                                    <span id="parent_name"></span>
+                                </a>
+                            </div>
+                            <div class="flex flex-col gap-1 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                <span class="text-xs font-semibold">{{ __('Owner') }}</span>
+                                <span class="text-sm" id="owner"></span>
+                            </div>
+                            <div class="flex flex-col gap-1 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                <span class="text-xs font-semibold">{{ __('Last modified') }}</span>
+                                <div class="text-sm">
+                                    <span id="last_modified"></span>
+                                    {{ __('by') }}
+                                    <span id="last_modified_by"></span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                <span class="text-xs font-semibold">{{ __('Created at') }}</span>
+                                <span class="text-sm" id="created_at"></span>
+                            </div>
+                            <div class="flex flex-col gap-1 text-[#1f1f1f] dark:text-[#e3e3e3]">
+                                <span class="text-xs font-semibold">{{ __('Size') }}</span>
+                                <span class="text-sm" id="size"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden max-w-full overflow-y-auto tab-pane" id="tab_2">
+                <div class="flex flex-col items-center justify-center grow default">
+                    <img src="{{ asset('assets/media/svg/empty_state_details_v2.svg') }}" alt=""
+                        class="w-[176px]">
+                    <span id="info-text" class="text-[0.875rem]">
+                        {{ __('Select an item to view details') }}
+                    </span>
+                </div>
+                <div class="items-center justify-center hidden loading-container grow min-h-[100px]">
+                    <div class="loading"></div>
+                </div>
+                <div class="flex-col items-center justify-center hidden grow error">
+                    <i class="fa-regular fa-circle-exclamation text-[48px] mt-5"></i>
+                    <span class="text-[16px]">
+                        {{ __('Something went wrong') }}
+                    </span>
+                </div>
+                <div class="flex-col hidden main grow text-[#c7c7c7] dark:text-[#444746]">
+                    <!-- component -->
+                    <div class="container max-w-full px-5 py-10 mx-auto">
+                        <!-- component -->
+                        <div class="relative">
+                            <div class="absolute top-0 h-full border-r-4 border-[#8f8f8f]"></div>
+                            <ul class="p-0 m-0 list-none" id="timeline">
+                                <li class="hidden">
+                                    <div class="flex items-center group ">
+                                        <div
+                                            class="z-10 w-5 h-5 bg-[#8f8f8f] border-4 border-[#8f8f8f] rounded-full group-hover:bg-white">
+                                            <div class="items-center w-6 h-1 mt-1 ml-4 bg-[#8f8f8f]"></div>
+                                        </div>
+                                        <div class="z-10 flex-1 ml-4">
+                                            <div
+                                                class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f]">
+                                                <h4 class="mb-3 text-sm font-medium text-[#1f1f1f]">
+                                                    Test
+                                                </h4>
+                                                <p class="m-0 text-xs font-normal text-[#444746]">
+                                                    Test
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -30,13 +30,15 @@
                         data-id="{{ $item['id'] }}">
                         <td class="text-[14px]">
                             <a href="{{ isset($item['folder']) ? route('home.folder', ['id' => $item['id']]) : route('home.file', ['id' => $item['id']]) }}"
-                                class="flex items-center gap-2 w-fit">
+                                class="flex items-center gap-2 w-fit item-name">
                                 @if (isset($item['folder']))
-                                    <i class="fa-solid fa-folder text-[#f0b429] text-[22px]"></i>
+                                    <i class="fa-solid fa-folder text-[#f0b429] text-[22px] item-name"></i>
                                 @else
-                                    <i class="fa-solid {{ $controller->getFileIcon($item['name']) }} text-[22px]"></i>
+                                    <i
+                                        class="fa-solid {{ $controller->getFileIcon($item['name']) }} text-[22px] item-name"></i>
                                 @endif
-                                <span class="font-semibold text-[#1f1f1f] dark:text-[#e3e3e3]">{{ $item['name'] }}</span>
+                                <span
+                                    class="font-semibold text-[#1f1f1f] dark:text-[#e3e3e3] item-name">{{ $item['name'] }}</span>
                             </a>
                         </td>
                         <td class="hidden font-medium lg:table-cell">

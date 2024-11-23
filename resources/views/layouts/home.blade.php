@@ -61,24 +61,6 @@
                     </ul>
                 </div>
                 @include('layouts.partial.themeTongle')
-                <div class="drawer drawer-end lg:hidden w-fit">
-                    <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
-                    <div
-                        class="flex items-center justify-center drawer-content w-[40px] h-[40px] rounded-full cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
-                        <!-- Page content here -->
-                        <label for="my-drawer-4" class="drawer-button">
-                            <i class="text-2xl fa-solid fa-bars"></i>
-                        </label>
-                    </div>
-                    <div class="drawer-side z-[9999]">
-                        <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
-                        <ul class="min-h-full p-4 menu bg-base-200 text-base-content w-80">
-                            <!-- Sidebar content here -->
-                            <li><a>Sidebar Item 1</a></li>
-                            <li><a>Sidebar Item 2</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -86,7 +68,7 @@
         <div id="content"
             class="rounded-[1rem] dark:bg-[#131314] bg-white grow p-4 pr-2 h-full w-full text-[#1f1f1f] dark:text-[#e3e3e3] flex flex-col">
             {{-- <div class="max-w-full max-h-full overflow-auto"> --}}
-            <div class="max-w-full overflow-hidden breadcrumbs text-[24px] mb-3 p-0 min-h-9">
+            <div class="max-w-full overflow-x-auto breadcrumbs text-[16px] lg:text-[24px] mb-3 p-0 min-h-9">
                 <ul class="">
                     <li class="breadcrumbs-item">
                         <a href="{{ route('home.index') }}" class="decoration-transparent">{{ __('Home') }}</a>
@@ -102,75 +84,7 @@
             @yield('content')
             {{-- </div> --}}
         </div>
-        <div id="sidebar"
-            class="hidden lg:flex min-w-[300px] max-w-[300px] rounded-[1rem] dark:bg-[#131314] bg-white h-full text-[#1f1f1f] dark:text-[#e3e3e3] flex-col">
-            <div class="flex justify-between p-3 pb-0 sidebar-header">
-                <h3 class="flex items-center justify-center text-base font-medium" id="sidebar-title">
-                    @if (count($data['breadcrumbs']) == 0)
-                        {{ __('Home') }}
-                    @else
-                        {{ $data['breadcrumbs'][count($data['breadcrumbs']) - 1]['name'] }}
-                    @endif
-                </h3>
-                <div
-                    class="w-[30px] h-[30px] rounded-full flex justify-center items-center cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
-                    <i class="fa-duotone fa-regular fa-xmark text-[16px] text-[#1f1f1f] dark:text-[#e3e3e3]"></i>
-                </div>
-            </div>
-            <div class="tab-info grow">
-                <div class="flex border-b border-b-[#c7c7c7] dark:border-b-[#444746] mt-5">
-                    <div class="w-[50%] flex justify-center">
-                        <span class="text-center pb-4 border-b-[3px] font-semibold tab-title active text-[0.875rem]"
-                            data-target-id="tab_1">{{ __('Information') }}</span>
-                    </div>
-                    <div class="w-[50%] flex justify-center">
-                        <span class="text-center pb-4 border-b-[3px] font-semibold tab-title text-[0.875rem]"
-                            data-target-id="tab_2">{{ __('Activity') }}</span>
-                    </div>
-                </div>
-                <div class="tab-data">
-                    <div class="flex gap-4 tab-pane" id="tab_1">
-                        <div class="flex flex-col items-center justify-center grow default">
-                            <img src="{{ asset('assets/media/svg/empty_state_details_v2.svg') }}" alt=""
-                                class="w-[176px]">
-                            <span id="info-text" class="text-[0.875rem]">
-                                {{ __('Select an item to view details') }}
-                            </span>
-                        </div>
-                        <div class="items-center justify-center hidden loading-container grow min-h-[100px]">
-                            <div class="loading"></div>
-                        </div>
-                        <div class="flex-col hidden main grow text-[#c7c7c7] dark:text-[#444746]">
-                            <div
-                                class="flex flex-col justify-center w-full p-3 pb-4 border-b border-b-[#c7c7c7] dark:border-b-[#444746] ">
-                                <img src="" alt="Preview" class="max-w-full m-auto preview">
-                                <div class="flex flex-col justify-center w-full mt-5">
-                                    <h2 class="text-base font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">
-                                        {{ __('Uploaded by') }}</h2>
-                                    <div class="flex items-center justify-start gap-2 mt-2">
-                                        <div class="w-[25px] h-[25px] rounded-full">
-                                            <img src="{{ asset('assets/media/avatar/photo.jpg') }}" alt="Owner"
-                                                class="w-full h-full rounded-full">
-                                        </div>
-                                        <span
-                                            class="text-sm font-medium owner-name text-[#1f1f1f] dark:text-[#050404] opacity-80"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col justify-center w-full p-3 pb-4">
-                                <h2 class="text-base font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">
-                                    {{ __('Details') }}</h2>
-                                <div class="flex items-center justify-between gap-4 mt-3">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hidden tab-pane" id="tab_2">
-                        456
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('layouts.partial.sidebar')
     </div>
     <div id="footer" class="h-[32px] flex justify-center items-center">
         <span class="text-[#444746] dark:text-[#c4c7c5] text-xs">
