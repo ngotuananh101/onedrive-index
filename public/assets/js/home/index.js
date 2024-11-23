@@ -185,7 +185,7 @@ function getActivity(id) {
                                             class="z-10 w-5 h-5 bg-[#8f8f8f] border-4 border-[#8f8f8f] rounded-full group-hover:bg-white">
                                             <div class="items-center w-6 h-1 mt-1 ml-4 bg-[#8f8f8f]"></div>
                                         </div>
-                                        <div class="z-10 flex-1 ml-4 font-medium">
+                                        <div class="z-10 flex-1 ml-4 font-medium pb-3">
                                             <div
                                                 class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f]" style="max-width: 222px;">
                                                 <h4 class="mb-3 text-sm font-medium text-[#1f1f1f] text-ellipsis overflow-hidden">

@@ -133,7 +133,7 @@
                                             class="z-10 w-5 h-5 bg-[#8f8f8f] border-4 border-[#8f8f8f] rounded-full group-hover:bg-white">
                                             <div class="items-center w-6 h-1 mt-1 ml-4 bg-[#8f8f8f]"></div>
                                         </div>
-                                        <div class="z-10 flex-1 ml-4">
+                                        <div class="z-10 flex-1 pb-3 ml-4">
                                             <div
                                                 class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f]">
                                                 <h4
