@@ -17,7 +17,7 @@
     </div>
     <div class="max-h-full overflow-y-auto tab-info grow">
         <div
-            class="flex border-b border-b-[#c7c7c7] dark:border-b-[#444746] pt-5 sticky top-0 z-[9999] dark:bg-[#131314] bg-white">
+            class="flex border-b border-b-[#c7c7c7] dark:border-b-[#444746] pt-5 sticky top-0 z-[9000] dark:bg-[#131314] bg-white">
             <div class="w-[50%] flex justify-center">
                 <span class="text-center pb-4 border-b-[3px] font-semibold tab-title active text-[0.875rem]"
                     data-target-id="tab_1">{{ __('Information') }}</span>
