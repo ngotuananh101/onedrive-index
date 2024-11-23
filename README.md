@@ -57,3 +57,15 @@ I will provide a demo soon.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+# Recommended Hosting Providers
+
+## Free
+
+-   [123host.vn](https://client.123host.vn/?affid=866&campaign=free-hosting)
+-   [x10Hosting](https://x10hosting.com/)
+-   [serv00](https://www.serv00.com/)
+
+## Paid
+
+-   [Cloudfly](https://cloudfly.vn/?ref=169025103)
