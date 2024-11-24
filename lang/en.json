@@ -15,6 +15,7 @@
     "delete": "delete",
     "share": "share",
     "create": "create",
+    "move": "move",
     "Home": "Home",
     "Name": "Name",
     "Owner": "Owner",

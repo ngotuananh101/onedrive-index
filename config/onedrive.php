@@ -10,4 +10,14 @@ return [
     'scope' => env('ONEDRIVE_SCOPE'),
     'root_folder_path' => env('ONEDRIVE_ROOT_FOLDER_PATH'),
     'date_format' => env('ONEDRIVE_DATE_FORMAT', 'Y-m-d H:i:s'),
+    'social' => [
+        'facebook' => [
+            'icon' => 'fab fa-facebook',
+            'url' => 'https://www.facebook.com/',
+        ],
+        'github' => [
+            'icon' => 'fab fa-github',
+            'url' => 'https://github.com/',
+        ],
+    ],
 ];

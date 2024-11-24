@@ -52,12 +52,31 @@
                 <div class="dropdown dropdown-end">
                     <div tabindex="0" role="button"
                         class="flex items-center justify-center w-[40px] h-[40px] rounded-full cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
-                        <i class="fa-regular fa-circle-info text-[20px]"></i>
+                        <i class="fa-regular fa-language text-[20px]"></i>
                     </div>
                     <ul tabindex="0"
                         class="dropdown-content menu bg-white dark:bg-[#1e1f20] rounded-box z-[9999] w-52 p-2 shadow-md">
-                        <li><a>Item 1</a></li>
-                        <li><a>Item 2</a></li>
+                        @foreach (['en' => __('en'), 'vi' => __('vi')] as $key => $lang)
+                            <li><a href="{{ route('language', $key) }}">{{ $lang }}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button"
+                        class="flex items-center justify-center w-[40px] h-[40px] rounded-full cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
+                        {{-- <i class="fa-regular fa-circle-info text-[20px]"></i> --}}
+                        <i class="fa-solid fa-address-card text-[20px]"></i>
+                    </div>
+                    <ul tabindex="0"
+                        class="dropdown-content menu bg-white dark:bg-[#1e1f20] rounded-box z-[9999] w-52 p-2 shadow-md">
+                        @foreach (config('onedrive.social') as $key => $s)
+                            <li>
+                                <a class="capitalize" href="{{ $s['url'] }}" target="_blank">
+                                    <i class="{{ $s['icon'] }} text-[18px]"></i>
+                                    {{ $key }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
                 @include('layouts.partial.themeTongle')
