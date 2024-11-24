@@ -83,7 +83,7 @@ class HomeController extends Controller
             // Redirect to the folder page using the obtained folder ID
             return response()->redirectToRoute('home.folder', ['id' => $folderMeta['id']]);
         } catch (\Throwable $th) {
-            abort(500, __('Can not get folder path'));
+            abort(500, __('Can not get folder path.'));
         }
     }
 

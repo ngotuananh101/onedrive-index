@@ -192,13 +192,13 @@ class OneDriveController extends Controller
                     'owner' => cache('one_drive_user')
                 ];
             } else {
-                throw new \Exception('Error getting folder content');
+                throw new \Exception('Error getting folder content.');
             }
         } catch (\Throwable $th) {
             // Log the error
-            Log::error('Error getting folder content: ' . $th->getMessage());
+            Log::error('Error getting folder content.: ' . $th->getMessage());
             // Redirect to the home page
-            abort(500, __('Error getting folder content'));
+            abort(500, __('Error getting folder content.'));
         }
     }
 
@@ -269,11 +269,11 @@ class OneDriveController extends Controller
                         'next_url' => $data['@odata.nextLink'] ?? null
                     ]);
                 } else {
-                    throw new \Exception(__('Can not get next page'));
+                    throw new \Exception(__('Can not get next page.'));
                 }
             } else {
                 // If the next page is not available, throw an exception
-                throw new \Exception(__('Next page is not available'));
+                throw new \Exception(__('Next page is not available.'));
             }
         } catch (\Throwable $th) {
             // Log the error
@@ -281,7 +281,7 @@ class OneDriveController extends Controller
             // Response with error
             return response()->json([
                 'status' => 'error',
-                'message' => __('Can not get next page'),
+                'message' => __('Can not get next page.'),
                 'data' => []
             ]);
         }

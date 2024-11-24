@@ -78,11 +78,19 @@ function setRowClick() {
         $(item).off('click');
         $(item).click(function (e) {
             let id = $(this).data('id');
-            if (!$(e.target).hasClass('item-name')) {
+            if (!$(e.target).hasClass('item-name') && !$(this).hasClass('selected')) {
                 getInfo(id);
             }
             items.removeClass('selected');
-            $(this).closest('tr').toggleClass('selected');
+            $(this).toggleClass('selected');
+        });
+        $(item).off('dblclick');
+        // Double click event
+        $(item).dblclick(function (e) {
+            let href = $(this).find('a.item-name').attr('href');
+            if (href) {
+                window.location.href = href;
+            }
         });
     });
 }
@@ -187,7 +195,7 @@ function getActivity(id) {
                                         </div>
                                         <div class="z-10 flex-1 ml-4 font-medium pb-3">
                                             <div
-                                                class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f]" style="max-width: 222px;">
+                                                class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f] max-w-[259px]">
                                                 <h4 class="mb-3 text-sm font-medium text-[#1f1f1f] text-ellipsis overflow-hidden">
                                                     ${item.action}
                                                 </h4>

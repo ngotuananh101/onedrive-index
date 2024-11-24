@@ -1,5 +1,5 @@
 <div id="sidebar"
-    class="hidden lg:flex min-w-[300px] max-w-[300px] rounded-[1rem] dark:bg-[#131314] bg-white h-full text-[#1f1f1f] dark:text-[#e3e3e3] flex-col">
+    class="hidden lg:flex min-w-[350px] max-w-[350px] rounded-[1rem] dark:bg-[#131314] bg-white h-full text-[#1f1f1f] dark:text-[#e3e3e3] flex-col">
     <div class="flex justify-between p-3 pb-0 sidebar-header">
         <div class="flex items-center justify-start max-w-[85%] grow">
             <h3 class="text-base font-medium truncate " id="sidebar-title">
@@ -33,7 +33,7 @@
                     <img src="{{ asset('assets/media/svg/empty_state_details_v2.svg') }}" alt=""
                         class="w-[176px]">
                     <span id="info-text" class="text-[0.875rem]">
-                        {{ __('Select an item to view details') }}
+                        {{ __('Select an item to view details.') }}
                     </span>
                 </div>
                 <div class="items-center justify-center hidden loading-container grow min-h-[100px]">
@@ -42,7 +42,7 @@
                 <div class="flex-col items-center justify-center hidden grow error">
                     <i class="fa-regular fa-circle-exclamation text-[48px] mt-5"></i>
                     <span class="text-[16px]">
-                        {{ __('Something went wrong') }}
+                        {{ __('Something went wrong.') }}
                     </span>
                 </div>
                 <div class="flex-col hidden main grow text-[#c7c7c7] dark:text-[#444746]">
@@ -108,7 +108,7 @@
                     <img src="{{ asset('assets/media/svg/empty_state_details_v2.svg') }}" alt=""
                         class="w-[176px]">
                     <span id="info-text" class="text-[0.875rem]">
-                        {{ __('Select an item to view details') }}
+                        {{ __('Select an item to view details.') }}
                     </span>
                 </div>
                 <div class="items-center justify-center hidden loading-container grow min-h-[100px]">
@@ -117,7 +117,7 @@
                 <div class="flex-col items-center justify-center hidden grow error">
                     <i class="fa-regular fa-circle-exclamation text-[48px] mt-5"></i>
                     <span class="text-[16px]">
-                        {{ __('Something went wrong') }}
+                        {{ __('Something went wrong.') }}
                     </span>
                 </div>
                 <div class="flex-col hidden main grow text-[#c7c7c7] dark:text-[#444746]">
@@ -135,7 +135,7 @@
                                         </div>
                                         <div class="z-10 flex-1 pb-3 ml-4">
                                             <div
-                                                class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f]">
+                                                class="order-1 p-3 space-y-2 rounded-lg shadow-only transition-ease bg-[#8f8f8f] max-w-[250px]">
                                                 <h4
                                                     class="mb-3 text-sm font-medium text-[#1f1f1f] text-ellipsis overflow-hidden">
                                                     Test
