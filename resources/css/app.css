@@ -39,8 +39,9 @@
 .breadcrumbs-item a {
     /* font-size: 24px; */
     color: #444746;
-    padding: 0 12px;
+    padding: 6px 16px;
     border-radius: 6.25rem;
+    font-weight: 500;
 }
 
 .breadcrumbs-item:last-child a {

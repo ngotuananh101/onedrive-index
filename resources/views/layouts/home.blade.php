@@ -85,26 +85,7 @@
         </div>
     </div>
     <div id="content-wrapper" class="flex w-full gap-3 px-4 grow">
-        <div id="content"
-            class="rounded-[1rem] dark:bg-[#131314] bg-white grow p-3 h-full w-full text-[#1f1f1f] dark:text-[#e3e3e3] flex flex-col">
-            {{-- <div class="max-w-full max-h-full overflow-auto"> --}}
-            <div class="max-w-full overflow-x-auto breadcrumbs text-[16px] lg:text-[24px] mb-3 p-0 min-h-9">
-                <ul class="">
-                    <li class="breadcrumbs-item">
-                        <a href="{{ route('home.index') }}" class="decoration-transparent">{{ __('Home') }}</a>
-                    </li>
-                    @foreach ($data['breadcrumbs'] as $b)
-                        <li class="breadcrumbs-item">
-                            <a href="{{ route('home.path', $b['path']) }}"
-                                class="decoration-transparent">{{ $b['name'] }}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-            @yield('content')
-            {{-- </div> --}}
-        </div>
-        @include('layouts.partial.sidebar')
+        @yield('content')
     </div>
     <div id="footer" class="h-[32px] flex justify-center items-center">
         <span class="text-[#444746] dark:text-[#c4c7c5] text-xs">
