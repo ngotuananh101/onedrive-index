@@ -36,9 +36,9 @@ This is a simple web app that allows you to browse your OneDrive files and downl
 -   [x] View information of files and folders
 -   [x] View file and folder history
 -   [x] Dark mode
--   [ ] Search
--   [ ] Preview
+-   [x] Search
 -   [ ] Preview file
+-   [ ] Password protected files
 
 ## Quick start
 
