@@ -23,4 +23,5 @@ Route::group([
     Route::get('/download/{id}', [HomeController::class, 'download'])->name('download');
     Route::get('/info/{id}', [HomeController::class, 'info'])->name('info');
     Route::get('/activity/{id}', [HomeController::class, 'activity'])->name('activity');
+    Route::post('/search', [HomeController::class, 'search'])->name('search');
 });

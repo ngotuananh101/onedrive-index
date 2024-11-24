@@ -490,4 +490,77 @@ class OneDriveController extends Controller
             ], 500);
         }
     }
+
+    public function search(string $query, int $page)
+    {
+        try {
+            $root = cache('one_drive_root_data');
+            $searchApi = config('onedrive.search_api_url');
+            // Prepare the search data
+            $search_data = [
+                "requests" => [
+                    [
+                        "entityTypes" => ["driveItem"],
+                        "query" => [
+                            "queryString" => $query
+                        ],
+                        "from" => 0,
+                        "size" => 100,
+                        "scopes" => [$root['webUrl']],
+                        "fields" => [
+                            "id",
+                            "name",
+                            "size",
+                            "mimeType",
+                            "fileType",
+                            "parentLink"
+                        ]
+                    ],
+                ]
+            ];
+            $response = Http::withToken($this->ACCESS_TOKEN)->withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post($searchApi, $search_data);
+            if ($response->successful()) {
+                $json = $response->json();
+                $total = $json['value'][0]['hitsContainers'][0]['total'];
+                $data_result = [];
+                if ($total > 0) {
+                    // Process the search results
+                    foreach ($json['value'][0]['hitsContainers'][0]['hits'] as $k => $v) {
+                        $type = $v['resource']['listItem']['fields']['mimeType'] == 'Folder' ? 'folder' : 'file';
+                        $da = [
+                            'id' => $v['resource']['id'],
+                            'icon' => $type == 'folder' ? 'far fa-folder' : $this->getFileIcon($v['resource']['name']),
+                            'name' => $v['resource']['name'],
+                            'size' => $this->convertSize($v['resource']['size']),
+                            'type' => $type,
+                            'path' => str_replace($root['webUrl'], '', $v['resource']['listItem']['fields']['parentLink']),
+                            'link' => $type == 'folder' ? route('home.folder', ['id' => $v['resource']['id']]) : route('home.file', ['id' => $v['resource']['id']])
+                        ];
+                        $data_result[] = $da;
+                    }
+                }
+
+                // Return the search results
+                return response()->json([
+                    'status' => 'success',
+                    'data_result' => $data_result,
+                    'query' => $query,
+                    'total' => $total
+                ], 200);
+            } else {
+                throw new \Exception('Error');
+            }
+        } catch (\Throwable $th) {
+            // Log the error
+            Log::error('Error search: ' . $th->getMessage());
+
+            // return
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error preparing search data'
+            ], 500);
+        }
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -174,5 +175,21 @@ class HomeController extends Controller
     public function activity(Request $request, $fileOrFolderId)
     {
         return $this->controller->getItemActivity($fileOrFolderId);
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $query = trim($query);
+        $queryKey = Str::slug($query);
+        $page = $request->input('page', 1);
+        $cacheKey = 'search_' . $queryKey . '_' . $page;
+        // if (cache()->has($cacheKey)) {
+        //     $result = cache()->get($cacheKey);
+        // } else {
+        $result = $this->controller->search($query, $page);
+        //     cache()->put($cacheKey, $result, 60);
+        // }
+        return $result;
     }
 }

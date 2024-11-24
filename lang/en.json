@@ -31,5 +31,8 @@
     "Drive type": "Drive type",
     "Location": "Location",
     "Last modified": "Last modified",
-    "Created at": "Created at"
+    "Created at": "Created at",
+    "Find in drive": "Find in drive",
+    "Enter keywords to start search": "Enter keywords to start search",
+    "No results found": "No results found"
 }

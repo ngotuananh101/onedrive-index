@@ -39,7 +39,7 @@
     class="font-sans antialiased bg-[#f8fafd] dark:bg-[#1b1b1b] flex flex-col justify-center items-center w-screen h-screen">
     <div id="header" class="w-full p-2 h-[64px] text-[#444746] dark:text-[#c4c7c5]">
         <div class="flex justify-between">
-            <div class="logo">
+            <div class="logo min-w-[50px]">
                 <a href="{{ route('home.index') }}" class="flex items-center justify-start gap-1">
                     <img src="{{ asset('assets/media/logo/onedrive.svg') }}" alt="{{ config('app.name') }}"
                         class="w-[48px] h-[48px]" />
@@ -49,6 +49,7 @@
                 </a>
             </div>
             <div class="flex items-center">
+                @include('layouts.partial.search')
                 <div class="dropdown dropdown-end">
                     <div tabindex="0" role="button"
                         class="flex items-center justify-center w-[40px] h-[40px] rounded-full cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
@@ -145,6 +146,7 @@
             setMaxHeight();
         });
     </script>
+    <script type="module" src="{{ asset('assets/js/home/search.js') }}"></script>
     @stack('footerStyles')
     @stack('footerScripts')
 </body>

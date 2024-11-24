@@ -31,5 +31,8 @@
     "Drive type": "Loại ổ đĩa",
     "Location": "Vị trí",
     "Last modified": "Lần sửa đổi cuối",
-    "Created at": "Được tạo vào"
+    "Created at": "Được tạo vào",
+    "Find in drive": "Tìm kiếm trong ổ đĩa",
+    "Enter keywords to start search": "Nhập từ khóa để bắt đầu tìm kiếm",
+    "No results found": "Không có kết quả"
 }
