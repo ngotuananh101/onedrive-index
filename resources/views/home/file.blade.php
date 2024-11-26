@@ -95,7 +95,7 @@
                             class="flex flex-col justify-center w-full p-3 pb-4 border-b border-b-[#c7c7c7] dark:border-b-[#444746] ">
                             <div class="border rounded-md border-[#c7c7c7] dark:border-[#444746]">
                                 <img src="{{ $file['thumbnail'] }}" alt="Preview"
-                                    class="max-w-full m-auto preview min-h-[176px]">
+                                    class="max-w-full m-auto preview min-h-[176px] rounded-md">
                             </div>
                             <div class="flex flex-col justify-center w-full mt-5">
                                 <h2 class="text-base font-medium text-[#1f1f1f] dark:text-[#e3e3e3]">
