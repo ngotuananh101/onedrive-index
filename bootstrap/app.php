@@ -16,11 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
-            CacheResponse::class,
             LanguageMiddleware::class,
+            CacheResponse::class,
         ]);
 
         $middleware->alias([
+            'cacheResponse' => CacheResponse::class,
             'doNotCacheResponse' => DoNotCacheResponse::class,
             'checkOneDriveToken' => CheckOneDriveTokenMiddleware::class,
         ]);
