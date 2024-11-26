@@ -3,22 +3,22 @@
 return [
     'auth' => [
         'step1' => [
-            'title' => 'Step 1/3: Preparations',
-            'recommendation' => 'For best performance, we recommend using a REDIS as cache driver. <a href="https://laravel.com/docs/11.x/redis" target="_blank" class="text-sm link">Learn more</a>',
-            'description' => 'Authorization is required as no valid access_token or refresh_token is present on this deployed instance. Check the following configurations before proceeding with your own Microsoft account.',
-            'if_incorrect' => 'If you see anything incorrect, please change the following values in your .env file or onedrive config and try again.',
-            'process_to_oauth' => 'Process to OAuth',
+            'title' => 'Bước 1/3: Chuẩn bị',
+            'recommendation' => 'Để có hiệu suất tốt nhất, chúng tôi khuyến nghị sử dụng REDIS làm bộ nhớ đệm. <a href="https://laravel.com/docs/11.x/redis" target="_blank" class="text-sm link">Tìm hiểu thêm</a>',
+            'description' => 'Yêu cầu ủy quyền vì không có access_token hoặc refresh_token hợp lệ trên phiên bản đã triển khai này. Kiểm tra các cấu hình sau trước khi tiếp tục với tài khoản Microsoft của bạn.',
+            'if_incorrect' => 'Nếu bạn thấy bất kỳ điều gì không chính xác, vui lòng thay đổi các giá trị sau trong tệp .env hoặc cấu hình onedrive và thử lại.',
+            'process_to_oauth' => 'Tiến hành OAuth',
         ],
         'step2' => [
-            'title' => 'Step 2/3: Authorization',
-            'not_owner' => 'If you are not the owner of this website, stop now, as continuing with this process may expose your personal files in OneDrive.',
-            'link_created' => 'The OAuth link for getting the authorization code has been created. Click on the button after to get the authorization code. Your browser will redirect to Microsoft\'s account login page. After logging in and authenticating with your Microsoft account, you will be redirected to step 3 if successful.',
-            'authorize' => 'Authorize',
+            'title' => 'Bước 2/3: Ủy quyền',
+            'not_owner' => 'Nếu bạn không phải là chủ sở hữu của trang web này, hãy dừng lại ngay, vì tiếp tục quá trình này có thể làm lộ các tệp cá nhân của bạn trong OneDrive.',
+            'link_created' => 'Liên kết OAuth để lấy mã ủy quyền đã được tạo. Nhấp vào nút bên dưới để lấy mã ủy quyền. Trình duyệt của bạn sẽ chuyển hướng đến trang đăng nhập tài khoản Microsoft. Sau khi đăng nhập và xác thực với tài khoản Microsoft của bạn, bạn sẽ được chuyển hướng đến bước 3 nếu thành công.',
+            'authorize' => 'Ủy quyền',
         ],
         'step3' => [
-            'title' => 'Step 3/3: Success',
-            'success' => 'You have successfully authenticated with your Microsoft account. You can now close this window and click button below to redirect to the homepage.',
-            'redirect_to_homepage' => 'Redirect to Homepage',
+            'title' => 'Bước 3/3: Thành công',
+            'success' => 'Bạn đã xác thực thành công với tài khoản Microsoft của mình. Bạn có thể đóng cửa sổ này và nhấp vào nút bên dưới để chuyển hướng đến trang chủ.',
+            'redirect_to_homepage' => 'Chuyển hướng đến Trang chủ',
         ],
     ],
 ];
