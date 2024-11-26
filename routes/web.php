@@ -20,6 +20,7 @@ Route::group([
     Route::get('/path/{path}', [HomeController::class, 'path'])->name('path')->where('path', '.*');
     Route::get('/folder/{id}', [HomeController::class, 'folder'])->name('folder');
     Route::get('/file/{id}', [HomeController::class, 'file'])->name('file');
+    Route::get('/preview/{id}', [HomeController::class, 'preview'])->name('preview');
     Route::get('/download/{id}', [HomeController::class, 'download'])->name('download');
     Route::get('/info/{id}', [HomeController::class, 'info'])->name('info');
     Route::get('/activity/{id}', [HomeController::class, 'activity'])->name('activity');

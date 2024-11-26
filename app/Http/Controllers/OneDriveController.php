@@ -402,7 +402,7 @@ class OneDriveController extends Controller
      * @param mixed $itemId Item ID, used to identify the item on the server
      * @return array Returns an array containing the item's details, including the thumbnail URL, formatted dates, and converted size
      */
-    public function getItemInfoById($itemId)
+    public function getItemInfoById($itemId, $rawData = false)
     {
         try {
             // Get thumbnail, metadata
@@ -423,7 +423,11 @@ class OneDriveController extends Controller
                 // Convert size
                 $data['size'] = $this->convertSize($data['size']);
                 // Return the processed data
-                return response()->json($data);
+                if ($rawData) {
+                    return $data;
+                } else {
+                    return response()->json($data);
+                }
             } else {
                 throw new \Exception('Error processing request');
             }
@@ -431,10 +435,95 @@ class OneDriveController extends Controller
             // Log the error
             Log::error('Error getting item info: ' . $th->getMessage());
             // return
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error getting item info'
-            ], 500);
+            if ($rawData) {
+                return [
+                    'error' => true,
+                ];
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Error getting item info'
+                ], 500);
+            }
+        }
+    }
+
+    /**
+     * Get item information by path
+     *
+     * This function retrieves item information from a remote server using an HTTP GET request, based on the provided path
+     * It supports returning raw data directly or as a JSON response, depending on the parameter
+     *
+     * @param string $path The path of the item to retrieve information for
+     * @param bool $rawData Determines whether to return the data directly or as a JSON response, default is false
+     *
+     * @return mixed If $rawData is true, returns the raw data, otherwise returns a JSON response
+     */
+    public function getItemInfoByPath($path, $rawData = false)
+    {
+        try {
+            // Get the item information by path
+            $response = Http::withToken($this->ACCESS_TOKEN)->get("{$this->USER_API_URL}/drive/root:{$path}");
+            // Check if the request was successful
+            if ($response->successful()) {
+                // Parse the response data
+                $data = $response->json();
+                // Return the item information
+                if ($rawData) {
+                    return $data;
+                } else {
+                    return response()->json($data);
+                }
+            } else {
+                // If the request fails, throw an exception
+                throw new \Exception('Error processing request');
+            }
+        } catch (\Throwable $th) {
+            // Log the error
+            Log::error('Error getting item info: ' . $th->getMessage());
+            // return
+            if ($rawData) {
+                return [
+                    'error' => true,
+                ];
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Error getting item info'
+                ], 500);
+            }
+        }
+    }
+
+    /**
+     * Get the preview URL for a specified file.
+     *
+     * This function attempts to obtain a file preview URL by making an HTTP POST request to the designated endpoint.
+     * It requires an authenticated access token for the request and captures any errors that occur during execution.
+     *
+     * @param mixed $fileId The unique identifier of the file for which to obtain the preview URL.
+     * @return array Returns an array containing the file preview information or an error message.
+     */
+    public function getPreview($fileId)
+    {
+        try {
+            // Get preview URL for the specified file
+            $response = Http::withToken($this->ACCESS_TOKEN)->post("{$this->USER_API_URL}/drive/items/{$fileId}/preview");
+            // Check if the request was successful
+            if ($response->successful()) {
+                // Parse the response data
+                return $response->json();
+            } else {
+                // If the response indicates failure, throw an exception
+                throw new \Exception('Error getting preview URL');
+            }
+        } catch (\Throwable $th) {
+            // Log the error
+            Log::error('Error getting preview URL: ' . $th->getMessage());
+            // Return an error response
+            return [
+                'error' => true
+            ];
         }
     }
 

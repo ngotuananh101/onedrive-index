@@ -26,6 +26,7 @@
     "Information": "Thông tin",
     "Activity": "Hoạt động",
     "Select an item to view details.": "Chọn một mục để xem chi tiết.",
+    "Preview not available.": "Xem trước không khả dụng.",
     "Uploaded by": "Được tải lên bởi",
     "Details": "Chi tiết",
     "Drive type": "Loại ổ đĩa",
@@ -34,5 +35,19 @@
     "Created at": "Được tạo vào",
     "Find in drive": "Tìm kiếm trong ổ đĩa",
     "Enter keywords to start search": "Nhập từ khóa để bắt đầu tìm kiếm",
-    "No results found": "Không có kết quả"
+    "No results found": "Không có kết quả",
+    "Can not get file info.": "Không thể lấy thông tin tệp.",
+    "Hash": "Hash",
+    "Mimetype": "Loại file",
+    "Image": "Hình ảnh",
+    "Video": "Video",
+    "Audio Bits Per Sample": "Audio Bits Per Sample",
+    "Audio Channels": "Audio Channels",
+    "Audio Samples Per Second": "Audio Samples Per Second",
+    "Bitrate": "Bitrate",
+    "Duration": "Thời lượng",
+    "FourCC": "Dạng nén",
+    "Frame Rate": "Khung hình mỗi giây",
+    "Height": "Chiều cao",
+    "Width": "Chiều rộng"
 }

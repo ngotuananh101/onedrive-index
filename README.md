@@ -37,7 +37,7 @@ This is a simple web app that allows you to browse your OneDrive files and downl
 -   [x] View file and folder history
 -   [x] Dark mode
 -   [x] Search
--   [ ] Preview file
+-   [x] Preview file
 -   [ ] Password protected files
 
 ## Quick start
@@ -65,6 +65,7 @@ I will provide a demo soon.
 -   [123host.vn](https://client.123host.vn/?affid=866&campaign=free-hosting)
 -   [x10Hosting](https://x10hosting.com/)
 -   [serv00](https://www.serv00.com/)
+-   [Render](https://render.com/)
 
 ## Paid
 

@@ -34,5 +34,20 @@
     "Created at": "Created at",
     "Find in drive": "Find in drive",
     "Enter keywords to start search": "Enter keywords to start search",
-    "No results found": "No results found"
+    "No results found": "No results found",
+    "Can not get file info.": "Can not get file info.",
+    "Preview not available.": "Preview not available.",
+    "Hash": "Hash",
+    "Mimetype": "Mimetype",
+    "Image": "Image",
+    "Video": "Video",
+    "Audio Bits Per Sample": "Audio Bits Per Sample",
+    "Audio Channels": "Audio Channels",
+    "Audio Samples Per Second": "Audio Samples Per Second",
+    "Bitrate": "Bitrate",
+    "Duration": "Duration",
+    "FourCC": "FourCC",
+    "Frame Rate": "Frame Rate",
+    "Height": "Height",
+    "Width": "Width"
 }

@@ -129,6 +129,50 @@ class HomeController extends Controller
         }
     }
 
+    public function file(Request $request, $fileId)
+    {
+        try {
+            // Get the download URL for the specified file
+            $fileInfo = $this->controller->getItemInfoById($fileId, true);
+            // Check if there was an error
+            if (isset($fileInfo['error'])) {
+                throw new \Exception('Cannot get file info.');
+            }
+            // check if file is folder
+            if (isset($fileInfo['folder'])) {
+                return response()->redirectToRoute('home.folder', ['id' => $fileId]);
+            }
+
+            // Check file is mp4 video
+            $fileName = $fileInfo['name'];
+            if (Str::endsWith($fileName, '.mp4')) {
+                // Get subtitle file based on video file name
+                $currentPath = $fileInfo['parentReference']['path'];
+                $currentPath = str_replace('/drive/root:', '', $currentPath);
+                $currentPath = $currentPath . '/' . str_replace('.mp4', '.vtt', $fileName);
+                $subTitle = $this->controller->getItemInfoByPath($currentPath, true);
+                if (!isset($subTitle['error'])) {
+                    $fileInfo['subTitle'] = [
+                        'name' => $subTitle['name'],
+                        'downloadUrl' => $subTitle['@microsoft.graph.downloadUrl']
+                    ];
+                }
+            } else {
+                $fileInfo['preview'] = route('home.preview', ['id' => $fileId]);
+            }
+
+            // dd($fileInfo);
+
+            // Pass the retrieved data to the file view
+            return view('home.file', [
+                'file' => $fileInfo,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            abort(500, __('Can not get file info.'));
+        }
+    }
+
     /**
      * Handles file download requests
      *
@@ -172,11 +216,30 @@ class HomeController extends Controller
     }
 
 
+    /**
+     * Get the activity records for a specified file or folder.
+     *
+     * This method retrieves the activity information for a specific file or folder by calling the `getItemActivity` method of the controller.
+     *
+     * @param \Illuminate\Http\Request $request The user request object containing request-related information.
+     * @param mixed $fileOrFolderId The identifier of the file or folder for which to retrieve activity records.
+     *
+     * @return mixed The result returned by the `getItemActivity` method of the controller, typically containing activity record information.
+     */
     public function activity(Request $request, $fileOrFolderId)
     {
         return $this->controller->getItemActivity($fileOrFolderId);
     }
 
+    /**
+     * Executes a search operation
+     *
+     * This method processes a search request, trims and slugs the query, and then either retrieves the result from cache
+     * or performs a search using the OneDriveController. The results are cached for 60 minutes to improve performance.
+     *
+     * @param Request $request The HTTP request object containing the search query and pagination parameters
+     * @return mixed The search results, typically an array of items matching the query
+     */
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -184,12 +247,81 @@ class HomeController extends Controller
         $queryKey = Str::slug($query);
         $page = $request->input('page', 1);
         $cacheKey = 'search_' . $queryKey . '_' . $page;
-        // if (cache()->has($cacheKey)) {
-        //     $result = cache()->get($cacheKey);
-        // } else {
-        $result = $this->controller->search($query, $page);
-        //     cache()->put($cacheKey, $result, 60);
-        // }
+
+        // Check if the search result is already cached
+        if (cache()->has($cacheKey)) {
+            $result = cache()->get($cacheKey);
+        } else {
+            // Perform the search using the OneDriveController
+            $result = $this->controller->search($query, $page);
+            // Cache the search result for 60 minutes
+            cache()->put($cacheKey, $result, 60);
+        }
+
         return $result;
+    }
+
+    /**
+     * Generates a preview for a file.
+     * Attempts to retrieve and process the file preview, removing any branding elements before returning the processed HTML.
+     * If the preview cannot be retrieved or an error occurs, a default empty preview page is returned.
+     *
+     * @param string $fileId The unique identifier of the file for which to generate the preview.
+     * @return \Illuminate\Http\Response Returns an HTTP response containing the HTML content of the preview.
+     */
+    public function preview($fileId)
+    {
+        // Define an empty preview HTML to be used when an error occurs or the preview cannot be retrieved.
+        $empty = '<html><head></head><body style="display: flex; justify-content: center; align-items: center;"><h3>Cannot get preview</h3></body></html>';
+
+        try {
+            // Attempt to retrieve the file preview using the controller.
+            $preview = $this->controller->getPreview($fileId);
+
+            // If there is no error in retrieving the preview, proceed with processing.
+            if (!isset($preview['error'])) {
+                // Retrieve the file preview URL.
+                $fileInfo['preview'] = $preview['getUrl'];
+
+                // Fetch the content of the preview page.
+                $content = file_get_contents($preview['getUrl']);
+
+                // Initialize DOMDocument for parsing and modifying the HTML content.
+                $dom = new \DOMDocument();
+                // Use error suppression to ignore warnings or errors when loading HTML.
+                @$dom->loadHTML($content);
+
+                // Initialize DOMXPath for querying HTML elements.
+                $xpath = new \DOMXPath($dom);
+
+                // Add custom CSS style to hide branding elements.
+                $style = $dom->createElement('style', '.od-Branding {display: none;}');
+
+                // Get the <head> element of the HTML document.
+                $head = $dom->getElementsByTagName('head')->item(0);
+
+                // Append the custom style element to the <head> section.
+                $head->appendChild($style);
+
+                // Remove elements with the 'od-Branding' class to hide branding.
+                $elements = $xpath->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' od-Branding ')]");
+                foreach ($elements as $element) {
+                    // Remove each branding element from the DOM.
+                    $element->parentNode->removeChild($element);
+                }
+
+                // Save the modified HTML content.
+                $data = $dom->saveHTML();
+
+                // Return the processed HTML content as an HTTP response with the appropriate Content-Type header.
+                return response($data)->header('Content-Type', 'text/html');
+            } else {
+                // If an error is encountered while retrieving the preview, return the empty preview page.
+                return response($empty)->header('Content-Type', 'text/html');
+            }
+        } catch (\Throwable $th) {
+            // If an exception occurs, return the empty preview page.
+            return response($empty)->header('Content-Type', 'text/html');
+        }
     }
 }
