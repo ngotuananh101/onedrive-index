@@ -43,7 +43,7 @@ RUN chown -R www-data:www-data /var/www/html/vendor \
 RUN touch database/database.sqlite
 
 # Running migrations
-RUN php artisan migrate --force --seed
+RUN php artisan migrate --force
 
 # Running laravel on port 80
 EXPOSE 80
