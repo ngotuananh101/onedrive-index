@@ -40,9 +40,8 @@ RUN chown -R www-data:www-data /var/www/html/vendor \
     && chmod -R 775 /var/www/html/vendor
 
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
+# Running laravel on port 80
+EXPOSE 80
 
-CMD ["php-fpm"]
-
-# End of Dockerfile
+# Running the application
+CMD php artisan serve --host=0.0.0.0 --port=80
