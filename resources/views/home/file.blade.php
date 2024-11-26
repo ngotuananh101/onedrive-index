@@ -47,7 +47,7 @@
                 </iframe>
             @elseif (isset($file['customPreview']))
                 <div class="flex items-center justify-center w-full h-full">
-                    <video id="player" playsinline controls>
+                    <video id="player" playsinline controls crossorigin>
                         <source src="{{ $file['@microsoft.graph.downloadUrl'] }}" type="video/mp4" />
                         @if (isset($file['subTitle']))
                             <track kind="subtitles" src="{{ $file['subTitle']['downloadUrl'] }}" srclang="UN"
