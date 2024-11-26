@@ -39,6 +39,11 @@ RUN composer install --no-dev --no-interaction --no-progress --no-suggest \
 RUN chown -R www-data:www-data /var/www/html/vendor \
     && chmod -R 775 /var/www/html/vendor
 
+# Touching database file
+RUN touch database/database.sqlite
+
+# Running migrations
+RUN php artisan migrate --force --seed
 
 # Running laravel on port 80
 EXPOSE 80
