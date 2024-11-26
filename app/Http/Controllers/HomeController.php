@@ -156,6 +156,7 @@ class HomeController extends Controller
                         'name' => $subTitle['name'],
                         'downloadUrl' => $subTitle['@microsoft.graph.downloadUrl']
                     ];
+                    $fileInfo['customPreview'] = true;
                 }
             } else {
                 $fileInfo['preview'] = route('home.preview', ['id' => $fileId]);

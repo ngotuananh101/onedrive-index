@@ -2,6 +2,28 @@
 
 @section('title', $file['name'])
 
+@push('headerStyles')
+    @if (isset($file['customPreview']))
+        <link rel="stylesheet" href="{{ asset('assets/css/plyr.css') }}" />
+        <style>
+            .plyr {
+                height: 100%;
+                width: 100%;
+            }
+
+            .plyr__video-wrapper {
+                height: 100%;
+            }
+
+            .plyr__video-wrapper iframe {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    @endif
+@endpush
+
+
 @section('content')
     <div id="content"
         class="rounded-[1rem] dark:bg-[#131314] bg-white grow h-full w-full text-[#1f1f1f] dark:text-[#e3e3e3] flex flex-col border border-[#13131440] dark:border-0">
@@ -23,8 +45,18 @@
                     id="preview">
 
                 </iframe>
+            @elseif (isset($file['customPreview']))
+                <div class="flex items-center justify-center w-full h-full">
+                    <video id="player" playsinline controls>
+                        <source src="{{ $file['@microsoft.graph.downloadUrl'] }}" type="video/mp4" />
+                        @if (isset($file['subTitle']))
+                            <track kind="subtitles" src="{{ $file['subTitle']['downloadUrl'] }}" srclang="UN"
+                                label="{{ $file['subTitle']['name'] }}" />
+                        @endif
+                    </video>
+                </div>
             @else
-                <div class="flex items-center justify-center h-full">
+                <div class="flex items-center justify-center w-full h-full">
                     {{ __('Preview not available.') }}
                 </div>
             @endif
@@ -243,6 +275,12 @@
 
 @push('footerScripts')
     <script src="{{ asset('assets/js/home/file.js') }}" type="module"></script>
+    @if (isset($file['customPreview']))
+        <script src="{{ asset('assets/js/plyr.js') }}"></script>
+        <script>
+            const player = new Plyr('#player');
+        </script>
+    @endif
 @endpush
 
 @push('headerStyles')
