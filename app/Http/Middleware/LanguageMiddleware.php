@@ -21,8 +21,9 @@ class LanguageMiddleware
         // Get theme mode from cookie
         $theme = $request->cookie('theme-mode');
         if ($theme) {
-            $request->session()->put('theme-mode', $theme);
+            session()->put('theme-mode', $theme);
         }
+        dd($theme);
         return $next($request);
     }
 }
