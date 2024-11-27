@@ -25,10 +25,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aquawolf04/font-awesome-pro@5cd1511/css/all.css">
 
     <!-- Global Styles / Scripts -->
+    @include('layouts.partial.themeMode')
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
-    @include('layouts.partial.themeMode')
 
     <!-- Custom Styles / Scripts -->
     @stack('headerStyles')
