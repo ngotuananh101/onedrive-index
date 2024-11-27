@@ -23,7 +23,6 @@ class LanguageMiddleware
         if ($theme) {
             session()->put('theme-mode', $theme);
         }
-        dd($theme);
         return $next($request);
     }
 }

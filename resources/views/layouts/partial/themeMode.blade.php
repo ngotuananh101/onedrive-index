@@ -5,17 +5,13 @@
             document.documentElement.classList.add('dark');
             // Add data-theme attribute
             document.documentElement.setAttribute('data-theme', 'dark');
-            Cookies.set('theme-mode', 'dark', {
-                expires: 365
-            });
+            setCookies('theme-mode', 'dark', 365);
         } else {
             document.documentElement.classList.remove('dark');
             document.documentElement.classList.add('light');
             // Remove data-theme attribute
             document.documentElement.setAttribute('data-theme', 'light');
-            Cookies.set('theme-mode', 'light', {
-                expires: 365
-            });
+            setCookies('theme-mode', 'light', 365);
         }
     }
 
@@ -36,6 +32,21 @@
             const initialMode = userPrefersDarkMode ? 'dark' : 'light';
             setThemeMode(initialMode);
             localStorage.setItem('theme-mode', initialMode);
+        }
+    }
+
+    function setCookies(name, value, days) {
+        // get current cookies
+        const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+        // find the cookie
+        const cookie = cookies.find(cookie => cookie.startsWith(name));
+        // if cookie exists
+        if (cookie) {
+            // update the cookie
+            document.cookie = `${name}=${value}; max-age=${60 * 60 * 24 * days}; path=/`;
+        } else {
+            // create the cookie
+            document.cookie = `${name}=${value}; max-age=${60 * 60 * 24 * days}; path=/`;
         }
     }
 
