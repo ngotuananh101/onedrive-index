@@ -21,6 +21,8 @@ return [
             'url' => 'https://github.com/',
         ],
     ],
-    // Set protected folder with password key is folder path and value is password use / for root folder and /folder for sub folder
+    // Set protected folder with password key is folder path and value is password
+    // use / for root folder and /folder for sub folder
+    // Turn off response cache if you want to use this feature
     'protected' => [],
 ];
