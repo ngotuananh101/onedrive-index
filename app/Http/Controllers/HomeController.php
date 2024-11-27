@@ -32,14 +32,25 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Retrieve data from the specified root folder path configured in the application
-        $data = $this->controller->listByFolder(config('onedrive.root_folder_path'));
-
+        // Check if the root folder data is cached
         if (cache('one_drive_root_data') == null) {
             // Retrieve the root folder's web URL and cache it for future use
             $rootFolder = $this->controller->getFolderByPath(config('onedrive.root_folder_path'));
             cache(['one_drive_root_data' => $rootFolder]);
+        } else {
+            // Retrieve the root folder data from the cache
+            $rootFolder = cache('one_drive_root_data');
         }
+
+        // Retrieve data from the specified root folder path configured in the application
+        $data = $this->controller->listByFolder(config('onedrive.root_folder_path'));
+
+        // Check folder is protected
+        $check = $this->checkProtected(request(), $rootFolder);
+        if ($check) {
+            return $check;
+        }
+
         // Pass the retrieved data to the home index view
         return view('home.index', [
             'data' => $data
@@ -110,6 +121,18 @@ class HomeController extends Controller
 
             // Get metadata for the specified folder
             $folderMeta = $this->controller->getFolderById($folderId);
+
+            // Check if there was an error
+            if (isset($folderMeta['error'])) {
+                throw new \Exception('Cannot get folder.');
+            }
+
+            // Check if the folder is protected
+            $check = $this->checkProtected($request, $folderMeta);
+            if ($check) {
+                return $check;
+            }
+
             $path = $folderMeta['webUrl'];
             $path = str_replace($rootPath, '', $path);
 
@@ -129,6 +152,20 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * Handles file display requests.
+     *
+     * This method is responsible for retrieving file information based on the provided file ID,
+     * and processing different handling logic based on the file type. If the file is a folder,
+     * it redirects to the folder view. If the file is an MP4 video, it attempts to find and
+     * prepare subtitle information. For other file types, it prepares a preview URL.
+     *
+     * @param Request $request The HTTP request object, not directly used in this method, but is available for potential use.
+     * @param int $fileId The unique identifier of the file to be processed.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View Redirects to the appropriate view with the file information.
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException Throws a 500 error response if file information cannot be retrieved.
+     */
     public function file(Request $request, $fileId)
     {
         try {
@@ -141,6 +178,12 @@ class HomeController extends Controller
             // check if file is folder
             if (isset($fileInfo['folder'])) {
                 return response()->redirectToRoute('home.folder', ['id' => $fileId]);
+            }
+
+            // Check if the file is in a protected folder
+            $check = $this->checkProtected($request, $fileInfo);
+            if ($check) {
+                return $check;
             }
 
             // Check file is mp4 video
@@ -161,8 +204,6 @@ class HomeController extends Controller
             } else {
                 $fileInfo['preview'] = route('home.preview', ['id' => $fileId]);
             }
-
-            // dd($fileInfo);
 
             // Pass the retrieved data to the file view
             return view('home.file', [
@@ -323,6 +364,60 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
             // If an exception occurs, return the empty preview page.
             return response($empty)->header('Content-Type', 'text/html');
+        }
+    }
+
+    public function checkProtected(Request $request, $fileOrFolderInfo)
+    {
+        $protected = config('onedrive.protected');
+        if (isset($fileOrFolderInfo['folder'])) {
+            $currentPath = $fileOrFolderInfo['parentReference']['path'] . '/' . $fileOrFolderInfo['name'];
+        } else {
+            $currentPath = $fileOrFolderInfo['parentReference']['path'];
+        }
+        $currentPath = str_replace('/drive/root:', '', $currentPath);
+        $isProtected = false;
+        foreach ($protected as $path => $password) {
+            if (str_contains($currentPath, $path)) {
+                $isProtected = true;
+                $currentPath = $path;
+                break;
+            }
+        }
+        if ($isProtected) {
+            $password = $protected[$currentPath];
+            $cookieKey = 'protected_' . md5($currentPath);
+            $inputPassword = isset($_COOKIE[$cookieKey]) ? $_COOKIE[$cookieKey] : null;
+            if ($inputPassword == $password) {
+                return false;
+            } else {
+                return view('home.protected', [
+                    'path' => $currentPath
+                ]);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function storePassword(Request $request)
+    {
+        try {
+            $path = $request->input('path');
+            $password = $request->input('password');
+
+            return response()->json([
+                'status' => 'success',
+                'cookie' => [
+                    'name' => 'protected_' . md5($path),
+                    'value' => $password,
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => __('Cannot store password.')
+            ]);
         }
     }
 }

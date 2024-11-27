@@ -49,5 +49,12 @@
     "FourCC": "Dạng nén",
     "Frame Rate": "Khung hình mỗi giây",
     "Height": "Chiều cao",
-    "Width": "Chiều rộng"
+    "Width": "Chiều rộng",
+    "Protected Folder": "Thư mục được bảo vệ",
+    "This folder is protected": "Thư mục này được bảo vệ",
+    "Please enter the password to access the content": "Vui lòng nhập mật khẩu để truy cập nội dung",
+    "Password": "Mật khẩu",
+    "Submit": "Gửi",
+    "Loading...": "Đang tải...",
+    "Cannot store password.": "Không thể lưu mật khẩu."
 }

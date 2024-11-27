@@ -49,5 +49,12 @@
     "FourCC": "FourCC",
     "Frame Rate": "Frame Rate",
     "Height": "Height",
-    "Width": "Width"
+    "Width": "Width",
+    "Protected Folder": "Protected Folder",
+    "This folder is protected": "This folder is protected",
+    "Please enter the password to access the content": "Please enter the password to access the content",
+    "Password": "Password",
+    "Submit": "Submit",
+    "Loading...": "Loading...",
+    "Cannot store password.": "Cannot store password."
 }

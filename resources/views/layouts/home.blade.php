@@ -93,21 +93,22 @@
         </span>
     </div>
     <!-- Custom Styles / Scripts -->
+
+    <dialog id="errorModal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button
+                    class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-[#444746] dark:text-[#c4c7c5]">✕</button>
+            </form>
+            <h3 class="text-lg font-bold text-red-400">
+                {{ __('Opps! Something went wrong') }}
+            </h3>
+            <p class="py-4 text-[#444746] dark:text-[#c4c7c5]" id="error-message">
+                {{ session('error') }}
+            </p>
+        </div>
+    </dialog>
     @session('error')
-        <dialog id="errorModal" class="modal">
-            <div class="modal-box">
-                <form method="dialog">
-                    <button
-                        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-[#444746] dark:text-[#c4c7c5]">✕</button>
-                </form>
-                <h3 class="text-lg font-bold text-red-400">
-                    {{ __('Opps! Something went wrong') }}
-                </h3>
-                <p class="py-4 text-[#444746] dark:text-[#c4c7c5] ">
-                    {{ session('error') }}
-                </p>
-            </div>
-        </dialog>
         <script>
             errorModal.showModal()
         </script>

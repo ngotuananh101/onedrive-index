@@ -25,4 +25,5 @@ Route::group([
     Route::get('/info/{id}', [HomeController::class, 'info'])->name('info');
     Route::get('/activity/{id}', [HomeController::class, 'activity'])->name('activity');
     Route::post('/search', [HomeController::class, 'search'])->name('search');
+    Route::post('/store-password', [HomeController::class, 'storePassword'])->name('store-password');
 });
