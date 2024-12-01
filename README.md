@@ -14,19 +14,19 @@
         <img src="https://img.shields.io/badge/daisyUI-%2318A303?style=for-the-badge" alt="OneDrive" />
 </div>
 
-# TL;DR
+## TL;DR
 
 Showcase, share, preview, and download files inside _your_ OneDrive with Onedrive Index.
 
 This is a simple web app that allows you to browse your OneDrive files and download them. It's built with Laravel and
 Tailwind CSS, and uses the OneDrive API to authenticate and retrieve your files.
 
-- Can be completely free to host 💸
-- No ads 💰
-- No tracking 🕵️‍♂️
-- No cookies 🍪
-- Super fast ⚡ and responsive 💦
-- Highly customisable ⚒️
+-   Can be completely free to host 💸
+-   No ads 💰
+-   No tracking 🕵️‍♂️
+-   No cookies 🍪
+-   Super fast ⚡ and responsive 💦
+-   Highly customisable ⚒️
 
 ## Features
 
@@ -54,21 +54,21 @@ _If you happen to like this project, please give it a star!_ :3
 
 ## Demo
 
-I will provide a demo soon.
+Screenshots are hosted on [ImgBB](https://ibb.co/album/KKTKSR).
 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-# Recommended Hosting Providers
+## Recommended Hosting Providers
 
-## Free
+### Free
 
-- [123host.vn](https://client.123host.vn/?affid=866&campaign=free-hosting)
-- [x10Hosting](https://x10hosting.com/)
-- [serv00](https://www.serv00.com/)
-- [Render](https://render.com/)
+-   [123host.vn](https://client.123host.vn/?affid=866&campaign=free-hosting)
+-   [x10Hosting](https://x10hosting.com/)
+-   [serv00](https://www.serv00.com/)
+-   [Render](https://render.com/)
 
-## Paid
+### Paid
 
-- [Cloudfly](https://cloudfly.vn/?ref=169025103)
+-   [Cloudfly](https://cloudfly.vn/?ref=169025103)
