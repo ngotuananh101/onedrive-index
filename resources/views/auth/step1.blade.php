@@ -25,30 +25,30 @@
                 <div class="mt-3 overflow-x-auto">
                     <table class="table">
                         <tbody>
-                            <tr>
-                                <th>CLIENT_ID</th>
-                                <td>{{ config('onedrive.client_id') }}</td>
-                            </tr>
-                            <tr>
-                                <th>CLIENT_SECRET</th>
-                                <td>***********************************</td>
-                            </tr>
-                            <tr>
-                                <th>REDIRECT_URI</th>
-                                <td>{{ config('onedrive.redirect_uri') }}</td>
-                            </tr>
-                            <tr>
-                                <th>AUTH API URL</th>
-                                <td>{{ config('onedrive.auth_api_url') }}</td>
-                            </tr>
-                            <tr>
-                                <th>DRIVE API URL</th>
-                                <td>{{ config('onedrive.drive_api_url') }}</td>
-                            </tr>
-                            <tr>
-                                <th> API SCOPE</th>
-                                <td>{{ config('onedrive.scope') }}</td>
-                            </tr>
+                        <tr>
+                            <th>CLIENT_ID</th>
+                            <td>{{ config('onedrive.client_id') }}</td>
+                        </tr>
+                        <tr>
+                            <th>CLIENT_SECRET</th>
+                            <td>{{ str_repeat('*', strlen(config('onedrive.client_secret'))) }}</td>
+                        </tr>
+                        <tr>
+                            <th>REDIRECT_URI</th>
+                            <td>{{ config('onedrive.redirect_uri') }}</td>
+                        </tr>
+                        <tr>
+                            <th>AUTH API URL</th>
+                            <td>{{ config('onedrive.auth_api_url') }}</td>
+                        </tr>
+                        <tr>
+                            <th>USER API URL</th>
+                            <td>{{ config('onedrive.user_api_url') }}</td>
+                        </tr>
+                        <tr>
+                            <th> API SCOPE</th>
+                            <td>{{ config('onedrive.scope') }}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -59,7 +59,7 @@
             </div>
             <div class="mt-6 text-right">
                 <a href="{{ route('auth.step2') }}"
-                    class="btn bg-[#0b57d0] dark:bg-[#a8c7fa] h-[40px] px-6 rounded-[24px] text-white dark:text-[#062e6f] hover:bg-[#1a73e8] dark:hover:bg-[#8ab4f8]">
+                   class="btn bg-[#0b57d0] dark:bg-[#a8c7fa] h-[40px] px-6 rounded-[24px] text-white dark:text-[#062e6f] hover:bg-[#1a73e8] dark:hover:bg-[#8ab4f8]">
                     {{ __('message.auth.step1.process_to_oauth') }}
                 </a>
             </div>

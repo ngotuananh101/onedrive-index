@@ -18,27 +18,28 @@
 
 Showcase, share, preview, and download files inside _your_ OneDrive with Onedrive Index.
 
-This is a simple web app that allows you to browse your OneDrive files and download them. It's built with Laravel and Tailwind CSS, and uses the OneDrive API to authenticate and retrieve your files.
+This is a simple web app that allows you to browse your OneDrive files and download them. It's built with Laravel and
+Tailwind CSS, and uses the OneDrive API to authenticate and retrieve your files.
 
--   Can be completely free to host 💸
--   No ads 💰
--   No tracking 🕵️‍♂️
--   No cookies 🍪
--   Super fast ⚡ and responsive 💦
--   Highly customisable ⚒️
+- Can be completely free to host 💸
+- No ads 💰
+- No tracking 🕵️‍♂️
+- No cookies 🍪
+- Super fast ⚡ and responsive 💦
+- Highly customisable ⚒️
 
 ## Features
 
 -   [x] OneDrive authentication
 -   [x] Download
--   [x] Share links
--   [x] Folder sharing
+-   [x] Share links (file and folder)
 -   [x] View information of files and folders
 -   [x] View file and folder history
 -   [x] Dark mode
 -   [x] Search
 -   [x] Preview file
--   [ ] Password protected files
+-   [x] Auto load subtitle for video
+-   [x] Password-protected folders
 
 ## Quick start
 
@@ -46,7 +47,8 @@ Documentation is under development.
 
 ## Discussion
 
-Please go to our [Discuss on GitHub](https://github.com/ngotuananh101/onedrive/discussions) for any questions or suggestions.
+Please go to our [Discuss on GitHub](https://github.com/ngotuananh101/onedrive/discussions) for any questions or
+suggestions.
 
 _If you happen to like this project, please give it a star!_ :3
 
@@ -62,11 +64,11 @@ I will provide a demo soon.
 
 ## Free
 
--   [123host.vn](https://client.123host.vn/?affid=866&campaign=free-hosting)
--   [x10Hosting](https://x10hosting.com/)
--   [serv00](https://www.serv00.com/)
--   [Render](https://render.com/)
+- [123host.vn](https://client.123host.vn/?affid=866&campaign=free-hosting)
+- [x10Hosting](https://x10hosting.com/)
+- [serv00](https://www.serv00.com/)
+- [Render](https://render.com/)
 
 ## Paid
 
--   [Cloudfly](https://cloudfly.vn/?ref=169025103)
+- [Cloudfly](https://cloudfly.vn/?ref=169025103)
