@@ -52,11 +52,38 @@
     </div>
     <div id="sidebar"
         class="hidden lg:flex min-w-[350px] max-w-[350px] rounded-[1rem] dark:bg-[#131314] bg-white h-full text-[#1f1f1f] dark:text-[#e3e3e3] flex-col">
-        <div class="flex justify-between p-3 pb-0 sidebar-header">
-            <div class="flex items-center justify-start max-w-[85%] grow">
+        <div class="flex justify-between gap-2 p-3 pb-0 sidebar-header">
+            <a href="{{ route('home.folder', $file['parentReference']['id']) }}"
+                class="flex items-center justify-center w-[30px] h-[30px] rounded-full cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
+                <i class="fa-solid fa-arrow-left text-[#1f1f1f] dark:text-[#e3e3e3]"></i>
+            </a>
+            <div class="flex items-center justify-start grow max-w-[calc(100%-76px)]">
                 <h3 class="text-base font-medium truncate " id="sidebar-title">
                     {{ $file['name'] }}
                 </h3>
+            </div>
+            {{-- <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="m-1 btn">Click</div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                    <li><a>Item 1</a></li>
+                    <li><a>Item 2</a></li>
+                </ul>
+            </div> --}}
+            <div class="flex items-center justify-end gap-2">
+                <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button"
+                        class="flex items-center justify-center w-[30px] h-[30px] rounded-full cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
+                        <i class="fa-regular fa-ellipsis-vertical text-[15px]"></i>
+                    </div>
+                    <ul tabindex="0"
+                        class="dropdown-content menu bg-white dark:bg-[#1e1f20] rounded-box z-[9999] w-52 p-2 shadow">
+                        <li>
+                            <a href="{{ route('home.download', $file['id']) }}" target="_blank">
+                                {{ __('Download') }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="max-h-full overflow-y-auto tab-info grow">
