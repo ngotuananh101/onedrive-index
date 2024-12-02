@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 include __DIR__ . '/auth.php';
+include __DIR__ . '/error.php';
 
 Route::get('/language/{lang}', function ($lang) {
     cache()->forget('language');

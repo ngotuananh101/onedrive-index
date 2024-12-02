@@ -14,15 +14,17 @@ class HomeController extends Controller
      * @var OneDriveController
      */
     public OneDriveController $controller;
+    public ErrorController $errorController;
 
     /**
      * Constructor for the HomeController class.
      *
      * @param OneDriveController $controller The OneDrive controller instance to be used within this class.
      */
-    public function __construct(OneDriveController $controller)
+    public function __construct(OneDriveController $controller, ErrorController $errorController)
     {
         $this->controller = $controller;
+        $this->errorController = $errorController;
     }
 
     /**
@@ -32,6 +34,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $rootFolder = $this->controller->getFolderByPath(config('onedrive.root_folder_path'));
+        cache(['one_drive_root_data' => $rootFolder]);
         // Check if the root folder data is cached
         if (cache('one_drive_root_data') == null) {
             // Retrieve the root folder's web URL and cache it for future use
@@ -95,7 +99,7 @@ class HomeController extends Controller
             // Redirect to the folder page using the obtained folder ID
             return response()->redirectToRoute('home.folder', ['id' => $folderMeta['id']]);
         } catch (\Throwable $th) {
-            abort(500, __('Can not get folder path.'));
+            return $this->errorController->error(500, __('Can not get folder path.'), __('Sorry, we cannot get the folder path. If you need help, please contact the administrator.'));
         }
     }
 
@@ -148,7 +152,7 @@ class HomeController extends Controller
                 'data' => $data
             ]);
         } catch (\Throwable $th) {
-            abort(500, __('Cannot get folder content.'));
+            return $this->errorController->error(500, __('Can not get folder content.'), __('Sorry, we cannot get the folder content. If you need help, please contact the administrator.'));
         }
     }
 
@@ -186,6 +190,14 @@ class HomeController extends Controller
                 return $check;
             }
 
+            // Check if the file path is beyond the root folder
+            $rootFolder = cache('one_drive_root_data');
+            $rootPath = $rootFolder['webUrl'];
+            // dd($fileInfo['webUrl'], $rootPath);
+            if (!str_contains($fileInfo['webUrl'], $rootPath)) {
+                return $this->errorController->error(404, __('File not found.'), __('Sorry, the file you are looking for does not exist.'));
+            }
+
             // Check file is mp4 video
             $fileName = $fileInfo['name'];
             if (Str::endsWith($fileName, '.mp4')) {
@@ -211,7 +223,7 @@ class HomeController extends Controller
             ]);
         } catch (\Throwable $th) {
             //throw $th;
-            abort(500, __('Can not get file info.'));
+            return $this->errorController->error(500, __('Can not get file info.'), __('Sorry, we cannot get the file info. If you need help, please contact the administrator.'));
         }
     }
 
@@ -239,7 +251,7 @@ class HomeController extends Controller
             return redirect($downloadData['@microsoft.graph.downloadUrl']);
         } catch (\Throwable $th) {
             //throw $th;
-            abort(500, __('Can not download file.'));
+            return $this->errorController->error(500, __('Can not download file.'), __('Sorry, we cannot download the file. If you need help, please contact the administrator.'));
         }
     }
 

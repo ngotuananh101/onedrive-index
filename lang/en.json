@@ -4,6 +4,7 @@
     "Opps! Something went wrong.": "Opps! Something went wrong.",
     "Can not get access token. For more information please check application log.": "Can not get access token. For more information please check application log.",
     "Can not get folder path.": "Can not get folder path.",
+    "Sorry, we cannot get the folder path. If you need help, please contact the administrator.": "Sorry, we cannot get the folder path. If you need help, please contact the administrator.",
     "Cannot get folder content.": "Cannot get folder content.",
     "Can not download file.": "Can not download file.",
     "Error getting folder content.": "Error getting folder content.",
@@ -56,5 +57,10 @@
     "Password": "Password",
     "Submit": "Submit",
     "Loading...": "Loading...",
-    "Cannot store password.": "Cannot store password."
+    "Cannot store password.": "Cannot store password.",
+    "File not found.": "File not found.",
+    "Sorry, the file you are looking for does not exist.": "Sorry, the file you are looking for does not exist.",
+    "Sorry, we cannot get the folder content. If you need help, please contact the administrator.": "Sorry, we cannot get the folder content. If you need help, please contact the administrator.",
+    "Sorry, we cannot get the file info. If you need help, please contact the administrator.": "Sorry, we cannot get the file info. If you need help, please contact the administrator.",
+    "Sorry, we cannot download the file. If you need help, please contact the administrator.": "Sorry, we cannot download the file. If you need help, please contact the administrator."
 }

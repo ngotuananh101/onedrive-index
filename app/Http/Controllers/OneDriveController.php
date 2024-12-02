@@ -198,7 +198,8 @@ class OneDriveController extends Controller
             // Log the error
             Log::error('Error getting folder content.: ' . $th->getMessage());
             // Redirect to the home page
-            abort(500, __('Error getting folder content.'));
+            $errorController = new ErrorController();
+            return $errorController->error(500, __('Error getting folder content.'), __('Sorry, we cannot get the folder content. If you need help, please contact the administrator.'));
         }
     }
 
