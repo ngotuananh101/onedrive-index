@@ -4,47 +4,34 @@
 
 @push('headerStyles')
     @if (isset($file['customPreview']))
-        <link rel="stylesheet" href="{{ asset('assets/css/plyr.css') }}" />
         <style>
-            .plyr {
-                height: 100%;
-                width: 100%;
-                border-radius: 1rem;
-            }
-
-            .plyr__video-wrapper {
-                height: 100%;
-            }
-
-            .plyr__video-wrapper iframe {
-                width: 100%;
+            media-player {
                 height: 100%;
             }
         </style>
     @endif
 @endpush
 
+@push('headerScripts')
+    @if (isset($file['customPreview']))
+        <script type="module">
+            const player = await VidstackPlayer.create({
+                target: '#player',
+                title: '{{ $file['name'] }}',
+                poster: '{{ $file['thumbnail'] }}',
+                layout: new VidstackPlayerLayout({}),
+            });
+        </script>
+    @endif
+@endpush
 
 @section('content')
     <div id="content"
         class="rounded-[1rem] dark:bg-[#131314] bg-white grow h-full w-full text-[#1f1f1f] dark:text-[#e3e3e3] flex flex-col border border-[#13131440] dark:border-0">
-        {{-- <div class="max-w-full overflow-x-auto breadcrumbs text-[14px] lg:text-[16px] mb-3 p-0 min-h-9">
-            <ul class="">
-                <li class="breadcrumbs-item">
-                    <a href="{{ route('home.index') }}" class=" decoration-transparent">{{ __('Home') }}</a>
-                </li>
-                @foreach ($breadcrumbs as $b)
-                    <li class="breadcrumbs-item">
-                        <a href="{{ route('home.path', $b['path']) }}" class="decoration-transparent">{{ $b['name'] }}</a>
-                    </li>
-                @endforeach
-            </ul>
-        </div> --}}
         <div class="overflow-hidden grow" id="content-scroll">
             @if (isset($file['preview']))
                 <iframe src="{{ $file['preview'] }}" frameborder="0" class="w-full h-full rounded-[1rem] !m-t-[48px]"
                     id="preview">
-
                 </iframe>
             @elseif (isset($file['customPreview']))
                 <div class="flex items-center justify-center w-full h-full">
@@ -71,10 +58,6 @@
                     {{ $file['name'] }}
                 </h3>
             </div>
-            {{-- <div
-            class="w-[30px] h-[30px] rounded-full flex justify-center items-center cursor-pointer hover:bg-[#1f1f1f14] dark:hover:bg-[#e3e3e314]">
-            <i class="fa-duotone fa-regular fa-xmark text-[16px] text-[#1f1f1f] dark:text-[#e3e3e3]"></i>
-        </div> --}}
         </div>
         <div class="max-h-full overflow-y-auto tab-info grow">
             <div
@@ -276,18 +259,4 @@
 
 @push('footerScripts')
     <script src="{{ asset('assets/js/home/file.js') }}" type="module"></script>
-    @if (isset($file['customPreview']))
-        <script src="{{ asset('assets/js/plyr.js') }}"></script>
-        <script>
-            const player = new Plyr('#player');
-        </script>
-    @endif
-@endpush
-
-@push('headerStyles')
-    <style>
-        #preview .od-Branding {
-            display: none;
-        }
-    </style>
 @endpush
